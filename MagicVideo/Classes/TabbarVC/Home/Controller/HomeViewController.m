@@ -47,26 +47,28 @@ static NSString *kIdentifier = @"kIdentifier";
     self.fd_prefersNavigationBarHidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
+    [self.tableView reloadEmptyDataSet];
 }
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     CGFloat h = CGRectGetMaxY(self.view.frame);
-    self.tableView.frame = CGRectMake(0, 0, ScreenWidth, h);
+    self.tableView.frame = CGRectMake(0, [self statusBarHeight], ScreenWidth, h-[self statusBarHeight]);
 }
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 20;
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     ShortVideoListCell *cell = [tableView dequeueReusableCellWithIdentifier:kIdentifier];
     return cell;
-    
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return self.sizeH(220);
+}
 
 #pragma mark - getter
 - (UITableView *)tableView {
@@ -75,7 +77,7 @@ static NSString *kIdentifier = @"kIdentifier";
         [_tableView registerClass:[ShortVideoListCell class] forCellReuseIdentifier:kIdentifier];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-//        _tableView.scrollEnabled = NO;
+        _tableView.scrollEnabled = YES;
         //Add---
         _tableView.decelerationRate = UIScrollViewDecelerationRateFast;
         
@@ -84,8 +86,8 @@ static NSString *kIdentifier = @"kIdentifier";
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
-        _tableView.separatorColor = KCOLOR(@"#231F1F");
-        _tableView.backgroundColor = KCOLOR(@"#231F1F");
+//        _tableView.separatorColor = KCOLOR(@"#231F1F");
+        _tableView.backgroundColor = White_Color;
         [[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
         [[UITableView appearance] setSeparatorInset:UIEdgeInsetsZero];
         [[UITableViewCell appearance] setSeparatorInset:UIEdgeInsetsZero];

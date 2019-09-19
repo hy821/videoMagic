@@ -15,19 +15,20 @@
 //#import "GDTNativeExpressAdView.h"
 
 @interface ShortVideoListCell ()
-//<GDTNativeExpressAdDelegete>
-@property (nonatomic, strong) UIImageView *headImageView;
-@property (nonatomic, strong) UILabel *nickNameLabel;
-@property (nonatomic, strong) UIImageView *coverImageView;
-@property (nonatomic, strong) UIView *fullMaskView;
+// <GDTNativeExpressAdDelegete>
 @property (nonatomic, strong) UIButton *playBtn;
-@property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, weak) id<ShortVideoListCellDelegate> delegate;
 @property (nonatomic, strong) NSIndexPath *indexPath;
 
-@property (nonatomic,weak) HorizenButton *okBtn;
-@property (nonatomic,weak) HorizenButton *badBtn;
+@property (nonatomic,strong) UIImageView *coverImageView;
+@property (nonatomic, strong) UILabel *videoNameLab;
+@property (nonatomic, strong) UILabel *upNameLab;
+@property (nonatomic, strong) UILabel *upDescLab;
+@property (nonatomic,weak) UIImageView *iconIV;
+
+
 @property (nonatomic,weak) HorizenButton *moreBtn;
+@property (nonatomic,weak) HorizenButton *okBtn;
 @property (nonatomic,weak) HorizenButton *commentBtn;
 
 //@property (nonatomic,strong) CountDownView *countDownView;
@@ -43,20 +44,14 @@
 //    [self.okBtn setTitle:model.interactResult.currentInfo.PRAISE forState:UIControlStateNormal];
 //    [self.okBtn setTitle:model.interactResult.currentInfo.PRAISE forState:UIControlStateSelected];
 //
-//    [self.badBtn setTitle:model.interactResult.currentInfo.STEPON forState:UIControlStateNormal];
-//    [self.badBtn setTitle:model.interactResult.currentInfo.STEPON forState:UIControlStateSelected];
-//
 //    if (model.interactResult.type.length>0) {
 //        if ([model.interactResult.type isEqualToString:@"PRAISE"]) {
 //            self.okBtn.selected = YES;
-//            self.badBtn.selected = NO;
 //        }else {
 //            self.okBtn.selected = NO;
-//            self.badBtn.selected = YES;
 //        }
 //    }else {
 //        self.okBtn.selected = NO;
-//        self.badBtn.selected = NO;
 //    }
 //}
 
@@ -65,7 +60,7 @@
 //    [self resetAdvUI];
 //
 //    [self.headImageView setImageWithURLString:model.authors.firstObject.displayUrl placeholder:nil];
-//    self.nickNameLabel.text = model.authors.firstObject.name;
+//    self.videoNameLab.text = model.authors.firstObject.name;
 //
 //    //Tmp 测试服暂时修改
 //    if([USER_MANAGER isDevStatus]) {
@@ -75,26 +70,21 @@
 //        [self.coverImageView setImageWithURLString:model.poster.url placeholder:nil];
 //    }
 //
-////    self.titleLabel.text = model.name;
-//    self.titleLabel.text = [NSString stringWithFormat:@"keyWord:%@ 个数:%ld个 %@",model.keyWord,(long)model.keyWordCount,model.name];
+////    self.upNameLab.text = model.name;
+//    self.upNameLab.text = [NSString stringWithFormat:@"keyWord:%@ 个数:%ld个 %@",model.keyWord,(long)model.keyWordCount,model.name];
 //
 //    [self.okBtn setTitle:model.interactResult.currentInfo.PRAISE forState:UIControlStateNormal];
 //    [self.okBtn setTitle:model.interactResult.currentInfo.PRAISE forState:UIControlStateSelected];
 //
-//    [self.badBtn setTitle:model.interactResult.currentInfo.STEPON forState:UIControlStateNormal];
-//    [self.badBtn setTitle:model.interactResult.currentInfo.STEPON forState:UIControlStateSelected];
 //
 //    if (model.interactResult.type.length>0) {
 //        if ([model.interactResult.type isEqualToString:@"PRAISE"]) {
 //            self.okBtn.selected = YES;
-//            self.badBtn.selected = NO;
 //        }else {
 //            self.okBtn.selected = NO;
-//            self.badBtn.selected = YES;
 //        }
 //    }else {
 //        self.okBtn.selected = NO;
-//        self.badBtn.selected = NO;
 //    }
 //
 //    [self.headImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -102,7 +92,7 @@
 //        make.width.height.equalTo(self.sizeH(38));
 //        make.left.equalTo(self.contentView).offset(self.sizeW(12));
 //    }];
-//    [self.nickNameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+//    [self.videoNameLab mas_remakeConstraints:^(MASConstraintMaker *make) {
 //        make.centerY.equalTo(self.headImageView);
 //        make.left.equalTo(self.headImageView.mas_right).offset(self.sizeW(8));
 //    }];
@@ -118,7 +108,7 @@
 //    CGFloat titleHeight = [Helper heightOfString:model.name font:Font_Size(17) width:(ScreenWidth-self.sizeW(20))];
 //    titleHeight = titleHeight + self.sizeH(20);
 //
-//    [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+//    [self.upNameLab mas_remakeConstraints:^(MASConstraintMaker *make) {
 //        make.top.equalTo(self.coverImageView.mas_bottom).offset(self.sizeH(0));
 //        make.left.equalTo(self.contentView).offset(self.sizeW(10));
 //        make.right.equalTo(self.contentView).offset(self.sizeW(-10));
@@ -135,43 +125,49 @@
 }
 
 - (void)initUI {
-    self.contentView.backgroundColor = KCOLOR(@"#231F1F");
-    [self.contentView addSubview:self.headImageView];
-    [self.contentView addSubview:self.nickNameLabel];
+    self.contentView.backgroundColor = White_Color;
     [self.contentView addSubview:self.coverImageView];
     [self.coverImageView addSubview:self.playBtn];
-    [self.contentView addSubview:self.titleLabel];
-    [self.contentView addSubview:self.fullMaskView];
-
+    [self.coverImageView addSubview:self.videoNameLab];
+    
+    UIImageView *iconIV = [[UIImageView alloc]init];
+    iconIV.image = img_placeHolderIcon;
+    iconIV.contentMode = UIViewContentModeScaleAspectFill;
+    iconIV.layer.masksToBounds = YES;
+    [self.contentView addSubview:iconIV];
+    self.iconIV = iconIV;
+    
+    UIImageView *coverIV = [[UIImageView alloc]init];
+    coverIV.image = Image_Named(@"circleWhite");
+    coverIV.contentMode = UIViewContentModeScaleAspectFill;
+    coverIV.layer.masksToBounds = YES;
+    [self.contentView addSubview:coverIV];
+    [coverIV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.iconIV);
+    }];
+    
+    [self.contentView addSubview:self.upNameLab];
+    [self.contentView addSubview:self.upDescLab];
+    
     CGFloat minVideoHeight = (ScreenWidth-self.sizeW(20))*585/1008;
-
-    [self.headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(self.sizeH(10));
-        make.width.height.equalTo(self.sizeH(38));
-        make.left.equalTo(self.contentView).offset(self.sizeW(12));
-    }];
-    [self.nickNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.headImageView);
-        make.left.equalTo(self.headImageView.mas_right).offset(self.sizeW(8));
-    }];
     [self.coverImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.headImageView.mas_bottom).offset(self.sizeH(10));
-        make.left.right.equalTo(self.contentView);
+        make.top.left.right.equalTo(self.contentView);
         make.height.equalTo(minVideoHeight);
+    }];
+    [self.videoNameLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.coverImageView).offset(self.sizeW(15));
+        make.right.equalTo(self.coverImageView).offset(self.sizeW(-15));
+        make.top.equalTo(self.coverImageView).offset(self.sizeW(12));
     }];
     [self.playBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.coverImageView);
     }];
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.coverImageView.mas_bottom).offset(self.sizeH(10));
-        make.left.equalTo(self.contentView).offset(self.sizeW(10));
-        make.right.equalTo(self.contentView).offset(self.sizeW(-10));
-    }];
-    [self.fullMaskView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.contentView);
-    }];
     
-//    [self.contentView addSubview:self.countDownView];
+    [self.iconIV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.coverImageView.mas_bottom).offset(self.sizeH(8));
+        make.left.equalTo(self.contentView).offset(self.sizeW(10));
+        make.width.height.equalTo(self.sizeW(43));
+    }];
   
     HorizenButton *moreBtn = [[HorizenButton alloc]init];
     [moreBtn setTitle:@"" forState:UIControlStateNormal];
@@ -181,59 +177,15 @@
     moreBtn.isTitleLeft = NO;
     moreBtn.margeWidth = 2.f;
     moreBtn.uxy_acceptEventInterval = 0.3f;
-    [moreBtn setImage:Image_Named(@"svRecomList_more") forState:UIControlStateNormal];
-    [moreBtn setImage:Image_Named(@"svRecomList_more") forState:UIControlStateSelected];
+    [moreBtn setImage:Image_Named(@"ic_shareMore") forState:UIControlStateNormal];
+    [moreBtn setImage:Image_Named(@"ic_shareMore") forState:UIControlStateSelected];
     [moreBtn addTarget:self action:@selector(moreShareBtnAction) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:moreBtn];
     self.moreBtn = moreBtn;
     [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(ScreenWidth/4);
-        make.right.equalTo(self.contentView).offset(self.sizeW(-10));
-        make.top.equalTo(self.titleLabel.mas_bottom).offset(0);
-        make.bottom.equalTo(self.contentView);
-    }];
-    
-    //评论按钮先隐藏
-    HorizenButton *commentBtn = [[HorizenButton alloc]init];
-    [commentBtn setTitle:@"评论" forState:UIControlStateNormal];
-    [commentBtn setTitle:@"评论" forState:UIControlStateSelected];
-    commentBtn.titleLabel.font = Font_Size(12);
-    [commentBtn setTitleColor:KCOLOR(@"#4A4A4A") forState:UIControlStateNormal];
-    [commentBtn setTitleColor:KCOLOR(@"#4A4A4A") forState:UIControlStateSelected];
-    commentBtn.isTitleLeft = NO;
-    commentBtn.margeWidth = 2.f;
-    commentBtn.userInteractionEnabled = NO;
-    [commentBtn setImage:Image_Named(@"ic_commentGray") forState:UIControlStateNormal];
-    [commentBtn setImage:Image_Named(@"ic_commentGray") forState:UIControlStateSelected];
-    [self.contentView addSubview:commentBtn];
-    self.commentBtn = commentBtn;
-    [self.commentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(self.moreBtn);
-        make.height.equalTo(self.moreBtn);
-        make.right.equalTo(self.moreBtn.mas_left).offset(0);
-        make.centerY.equalTo(self.moreBtn);
-    }];
-    
-    HorizenButton *badBtn = [[HorizenButton alloc]init];
-    [badBtn setTitle:@"踩" forState:UIControlStateNormal];
-    [badBtn setTitle:@"踩" forState:UIControlStateSelected];
-    badBtn.titleLabel.font = Font_Size(12);
-    [badBtn setTitleColor:KCOLOR(@"#4A4A4A") forState:UIControlStateNormal];
-    [badBtn setTitleColor:KCOLOR(@"#4A4A4A") forState:UIControlStateSelected];
-    badBtn.isTitleLeft = NO;
-    badBtn.margeWidth = 2.f;
-    badBtn.tag = 200;
-    badBtn.uxy_acceptEventInterval = 0.5f;
-    [badBtn setImage:Image_Named(@"ic_unlike") forState:UIControlStateNormal];
-    [badBtn setImage:Image_Named(@"ic_unlike_choose") forState:UIControlStateSelected];
-    [badBtn addTarget:self action:@selector(likeOrSetOnAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.contentView addSubview:badBtn];
-    self.badBtn = badBtn;
-    [self.badBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(self.moreBtn);
-        make.height.equalTo(self.moreBtn);
-        make.right.equalTo(self.commentBtn.mas_left).offset(0);
-        make.centerY.equalTo(self.moreBtn);
+        make.width.height.equalTo(self.sizeW(30));
+        make.right.equalTo(self.contentView).offset(self.sizeW(0));
+        make.centerY.equalTo(self.iconIV);
     }];
     
     HorizenButton *okBtn = [[HorizenButton alloc]init];
@@ -252,9 +204,28 @@
     [self.contentView addSubview:okBtn];
     self.okBtn = okBtn;
     [self.okBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(self.moreBtn);
-        make.height.equalTo(self.moreBtn);
-        make.right.equalTo(self.badBtn.mas_left).offset(0);
+        make.width.height.equalTo(self.sizeW(56));
+        make.right.equalTo(self.moreBtn.mas_left).offset(0);
+        make.centerY.equalTo(self.moreBtn);
+    }];
+    
+    //评论按钮先隐藏
+    HorizenButton *commentBtn = [[HorizenButton alloc]init];
+    [commentBtn setTitle:@"评论" forState:UIControlStateNormal];
+    [commentBtn setTitle:@"评论" forState:UIControlStateSelected];
+    commentBtn.titleLabel.font = Font_Size(12);
+    [commentBtn setTitleColor:KCOLOR(@"#4A4A4A") forState:UIControlStateNormal];
+    [commentBtn setTitleColor:KCOLOR(@"#4A4A4A") forState:UIControlStateSelected];
+    commentBtn.isTitleLeft = NO;
+    commentBtn.margeWidth = 2.f;
+    commentBtn.userInteractionEnabled = NO;
+    [commentBtn setImage:Image_Named(@"ic_commentGray") forState:UIControlStateNormal];
+    [commentBtn setImage:Image_Named(@"ic_commentGray") forState:UIControlStateSelected];
+    [self.contentView addSubview:commentBtn];
+    self.commentBtn = commentBtn;
+    [self.commentBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(self.okBtn);
+        make.right.equalTo(self.okBtn.mas_left).offset(0);
         make.centerY.equalTo(self.moreBtn);
     }];
     
@@ -265,6 +236,21 @@
         make.left.right.bottom.equalTo(self.contentView);
         make.height.equalTo(0.8f);
     }];
+    
+    [self.upNameLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.iconIV.mas_centerY).offset(self.sizeH(0));
+        make.left.equalTo(self.iconIV.mas_right).offset(self.sizeW(5));
+        make.right.equalTo(self.commentBtn.mas_left).offset(self.sizeW(-10));
+    }];
+    [self.upDescLab mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.iconIV.mas_centerY).offset(self.sizeH(2));
+        make.left.right.equalTo(self.upNameLab);
+    }];
+ 
+    _upNameLab.text = @"百变影院";
+    _upDescLab.text = @"精彩大片视频曝光，敬请关注。";
+    _videoNameLab.text = @"一部好莱坞顶级科幻动作电影 简直是一场视觉的饕餮盛宴 极度震撼";
+    _coverImageView.image = Image_Named(@"img_user_bg");
     
 }
 
@@ -336,31 +322,6 @@
     self.delegate = delegate;
     self.indexPath = indexPath;
 }
-
-- (void)setNormalMode {
-    self.fullMaskView.hidden = YES;
-    self.titleLabel.textColor = [UIColor blackColor];
-    self.nickNameLabel.textColor = [UIColor blackColor];
-    self.contentView.backgroundColor = [UIColor whiteColor];
-}
-
-//- (void)showMaskView {
-//    [self resetAdvUI];
-//
-//    [UIView animateWithDuration:0.3 animations:^{
-//        self.fullMaskView.alpha = 1;
-//    }];
-//}
-//
-//- (void)hideMaskViewWithAdv:(BOOL)isShowAdv {
-//    if (isShowAdv) {
-//        [self showCountDownAdv];
-//    }
-//
-//    [UIView animateWithDuration:0.3 animations:^{
-//        self.fullMaskView.alpha = 0;
-//    }];
-//}
 
 - (void)playBtnClick:(UIButton *)sender {
     if ([self.delegate respondsToSelector:@selector(zf_playTheVideoAtIndexPath:)]) {
@@ -514,47 +475,38 @@
     }return _playBtn;
 }
 
-- (UIView *)fullMaskView {
-    if (!_fullMaskView) {
-        _fullMaskView = [UIView new];
-        _fullMaskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
-        _fullMaskView.userInteractionEnabled = NO;
-    }return _fullMaskView;
+- (UILabel *)upNameLab {
+    if (!_upNameLab) {
+        _upNameLab = [[UILabel alloc]init];
+        _upNameLab.textColor = Black_Color;
+        _upNameLab.font = [UIFont systemFontOfSize:15];
+    }return _upNameLab;
 }
 
-- (UILabel *)titleLabel {
-    if (!_titleLabel) {
-        _titleLabel = [UILabel new];
-        _titleLabel.textColor = [UIColor whiteColor];
-        _titleLabel.numberOfLines = 0;
-        _titleLabel.font = [UIFont systemFontOfSize:17];
-    }return _titleLabel;
+- (UILabel *)upDescLab {
+    if (!_upDescLab) {
+        _upDescLab = [[UILabel alloc]init];
+        _upDescLab.textColor = Black_Color;
+        _upDescLab.font = [UIFont systemFontOfSize:11];
+    }return _upDescLab;
 }
 
-- (UILabel *)nickNameLabel {
-    if (!_nickNameLabel) {
-        _nickNameLabel = [UILabel new];
-        _nickNameLabel.textColor = [UIColor whiteColor];
-        _nickNameLabel.font = [UIFont systemFontOfSize:15];
-    }return _nickNameLabel;
+- (UILabel *)videoNameLab {
+    if (!_videoNameLab) {
+        _videoNameLab = [[UILabel alloc]init];
+        _videoNameLab.numberOfLines = 0;
+        _videoNameLab.textColor = White_Color;
+        _videoNameLab.font = [UIFont systemFontOfSize:18];
+    }return _videoNameLab;
 }
-
-- (UIImageView *)headImageView {
-    if (!_headImageView) {
-        _headImageView = [[UIImageView alloc] init];
-        _headImageView.userInteractionEnabled = YES;
-        _headImageView.layer.masksToBounds = YES;
-        _headImageView.layer.cornerRadius = self.sizeH(38/2);
-    }return _headImageView;
-}
-
 - (UIImageView *)coverImageView {
     if (!_coverImageView) {
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.userInteractionEnabled = YES;
         _coverImageView.tag = 100;
-        _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
         _coverImageView.clipsToBounds = YES;
+
     }return _coverImageView;
 }
 

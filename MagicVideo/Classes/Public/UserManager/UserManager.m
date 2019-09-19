@@ -221,10 +221,10 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 
 /** 从某个vc去登录, 成功后返回这个vc*/
 - (void)gotoLoginFromVC:(UIViewController *)vcFrom {
-//    LoginViewController * login = [[LoginViewController alloc]init];
-//    login.vcFrom = vcFrom;
-//    login.hidesBottomBarWhenPushed = YES;
-//    [vcFrom.navigationController pushViewController:login animated:YES];
+    LoginViewController * login = [[LoginViewController alloc]init];
+    login.vcFrom = vcFrom;
+    login.hidesBottomBarWhenPushed = YES;
+    [vcFrom.navigationController pushViewController:login animated:YES];
 }
 
 //是否是测试服

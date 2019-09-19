@@ -1,0 +1,450 @@
+//
+//  LoginTextField.m
+//
+
+#import "LoginTextField.h"
+#import "UIImage+Extension.h"
+#import "SSRequest.h"
+#import "UILabel+Category.h"
+#import "LoginAlphaBtn.h"
+
+@interface LoginTextField()<UITextFieldDelegate>
+@property (nonatomic,assign) TextFieldType type;
+@property (nonatomic,copy) NSString * placeholder;
+@property (nonatomic,strong) UIImageView *logoIV;
+@property (nonatomic,strong) UILabel * headLab; //+86
+@property (nonatomic,strong) UIButton * timeBtn;
+@property (nonatomic,strong) UIButton * forgetPassWordBtn;
+@property (nonatomic,strong) NSTimer * timer;
+@property (nonatomic,assign) NSInteger currentIndex;
+
+@end
+@implementation LoginTextField
+
+-(instancetype)initWithPlaceholder:(NSString *)placeholder andStyle:(TextFieldType)type {
+    if(self = [super init]) {
+        self.type = type;
+        self.placeholder = placeholder;
+        //配置相关参数
+        [self createUI];
+        [self makeMas];
+    }return self;
+}
+-(void)createUI {
+    self.layer.cornerRadius = self.sizeH(8);
+    self.clipsToBounds = YES;
+    self.layer.borderColor = KCOLOR(@"#ffffff").CGColor;
+    self.layer.borderWidth = 1.5f;
+    
+    UIView *loginAlphaView = [[UIView alloc]init];
+    loginAlphaView.backgroundColor = KCOLOR(@"#ffffff");
+    loginAlphaView.alpha = 0.2;
+    loginAlphaView.layer.masksToBounds = YES;
+    loginAlphaView.layer.cornerRadius = self.sizeH(8);
+    loginAlphaView.userInteractionEnabled = YES;
+    [self addSubview:loginAlphaView];
+    [loginAlphaView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self);
+    }];
+    
+    [self addSubview:self.textField];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textFieldChange:) name:UITextFieldTextDidChangeNotification object:self.textField];
+    
+    if(self.type == GetCode_type) {
+        self.currentIndex = 0;
+        [self addSubview:self.timeBtn];
+    }
+    
+    if (self.type == Normal_Type) {  //输入手机号
+        [self addSubview:self.headLab];
+    }
+    
+    if (self.type == Password_Type) {  //输入密码 带按钮
+        [self addSubview:self.forgetPassWordBtn];
+    }
+
+    if (self.type == Normal_Type || self.type == GetCode_type) {  //输入手机号 or 验证码
+        [self addSubview:self.logoIV];
+    }
+    
+}
+-(void)makeMas {
+    
+    if (self.type == Normal_Type || self.type == GetCode_type) {  //输入手机号 or 验证码
+        [self.logoIV mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self).offset(self.sizeW(12));
+            make.centerY.equalTo(self);
+            make.width.equalTo(self.sizeW(35));
+        }];
+    }
+    
+    if(self.type == Normal_Type) {
+
+        [self.headLab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.logoIV.mas_right).offset(self.sizeW(8));
+            make.centerY.equalTo(self);
+            make.width.equalTo(self.sizeW(40));
+        }];
+        
+        [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.headLab.mas_right).offset(5);
+            make.right.equalTo(self);
+            make.centerY.equalTo(self);
+            make.height.mas_equalTo(30.f);
+        }];
+        
+    }else if (self.type == GetCode_type) {
+        
+        [self.timeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self).offset(self.sizeW(-5));
+            make.centerY.equalTo(self);
+            make.height.mas_equalTo(self.sizeH(24));
+            make.width.mas_equalTo(self.sizeW(75));
+        }];
+        [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.logoIV.mas_right).offset(10);
+            make.right.equalTo(self.timeBtn.mas_left).offset(-5.f);
+            make.centerY.equalTo(self);
+            make.height.mas_equalTo(30.f);
+        }];
+    }else if (self.type == Password_Type) {
+        
+        [self.forgetPassWordBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self);
+            make.centerY.equalTo(self).offset(-3);
+            make.height.mas_equalTo(self.sizeH(25));
+            make.width.mas_equalTo(self.sizeW(65));
+        }];
+        [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self);
+            make.right.equalTo(self.forgetPassWordBtn.mas_left).offset(-5.f);
+            make.centerY.equalTo(self);
+            make.height.mas_equalTo(30.f);
+        }];
+    }else if (self.type == SetPassword_Type) {
+        
+        [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.centerY.equalTo(self);
+            make.height.mas_equalTo(30.f);
+        }];
+        
+    }
+}
+
+#pragma mark--noti
+-(void)textFieldChange:(NSNotification*)noti {
+    UITextField * textField = noti.object;
+    
+    switch (self.type) {
+        case Normal_Type:
+        {
+            if(textField.text.length == 12) {
+                if(self.checkBlock) {
+                    self.checkBlock(textField.text);
+                }
+            }
+            if(textField.text.length>12) {
+                textField.text = [textField.text substringWithRange:NSMakeRange(0, 12)];
+            }
+        }
+            break;
+        case GetCode_type:
+        {
+            if(textField.text.length == 8) {
+                if(self.checkBlock){
+                    self.checkBlock(textField.text);
+                }
+            }
+            
+            if(textField.text.length>8) {
+                textField.text = [textField.text substringWithRange:NSMakeRange(0, 8)];
+            }
+        }
+            break;
+        case Password_Type:
+        case SetPassword_Type:
+        {
+            if(textField.text.length == 12) {
+                if(self.checkBlock){
+                    self.checkBlock(textField.text);
+                }
+            }
+            
+            if(textField.text.length>12) {
+                textField.text = [textField.text substringWithRange:NSMakeRange(0, 12)];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+
+    
+    
+    if(self.textChangeBlock){
+        self.textChangeBlock(textField.text);
+    }
+}
+
+- (void)setMobileText:(NSString *)mobileText
+{
+    _mobileText = mobileText;
+    
+//    // 如果验证码按钮 显示 获取验证码,  再根据手机号是否正确 , 改变颜色,  这里只改变颜色
+//    if([self.timeBtn.currentTitle isEqualToString:@"获取验证码"]) {
+//        NSString *MOBILE = @"^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$";
+//        NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
+//        if([regextestmobile evaluateWithObject:self.mobileText]) {  //手机号正确
+//            [self.timeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//            UIColor *topleftColor = KCOLOR(@"#ffffff");
+//            UIColor *bottomrightColor = KCOLOR(@"#ffffff");
+//            UIImage *bgImg = [UIImage gradientColorImageFromColors:@[topleftColor, bottomrightColor] gradientType:GradientTypeUpleftToLowright imgSize:CGSizeMake(self.sizeW(110), self.sizeH(38))];
+//            [self.timeBtn setBackgroundImage:bgImg forState:UIControlStateNormal];
+//        }else {
+//            [self.timeBtn setBackgroundImage:Image_Named(@"circle") forState:UIControlStateNormal];
+//            [self.timeBtn setTitleColor:KCOLOR(@"#E95727") forState:UIControlStateNormal];
+//        }
+//    }
+}
+
+- (void)forgetPasswordAction {
+    if (self.forgetPasswordBlock) {
+        self.forgetPasswordBlock((self.textField.text.length>0) ? self.textField.text : @"");
+    }
+}
+
+#pragma mark - lazyLoad
+- (UITextField *)textField {
+    if (!_textField) {
+        _textField = [[UITextField alloc]init];
+        _textField.textAlignment = NSTextAlignmentLeft;
+        _textField.delegate = self;
+        _textField.textColor = White_Color;
+        _textField.font = Font_Size(17);
+
+        NSString*holderText = self.placeholder;
+        NSMutableAttributedString*placeholder = [[NSMutableAttributedString alloc]initWithString:holderText];
+        [placeholder addAttribute:NSForegroundColorAttributeName
+                           value:White_Color
+                           range:NSMakeRange(0,holderText.length)];
+        _textField.attributedPlaceholder = placeholder;
+        
+        switch (self.type) {
+            case Normal_Type:
+            {
+                _textField.keyboardType = UIKeyboardTypeNumberPad;
+            }
+                break;
+            case GetCode_type:
+            {
+                _textField.keyboardType = UIKeyboardTypeNumberPad;
+            }
+                break;
+            case Password_Type:
+            {
+                _textField.keyboardType = UIKeyboardTypeDefault;
+                _textField.secureTextEntry = YES;
+            }
+            case SetPassword_Type:
+            {
+                _textField.keyboardType = UIKeyboardTypeDefault;
+            }
+                break;
+            default:
+                break;
+        }
+    }return _textField;
+}
+
+-(UILabel *)headLab {
+    if (!_headLab) {
+        _headLab = [UILabel labelWithTitle:@"+86" font:17 textColor:KCOLOR(@"#ffffff") textAlignment:0];
+    }return _headLab;
+}
+
+-(UIImageView *)logoIV {
+    if (!_logoIV) {
+        _logoIV = [[UIImageView alloc] init];
+        _logoIV.contentMode = UIViewContentModeScaleAspectFit;
+        if(self.type == Normal_Type) {
+            _logoIV.image = Image_Named(@"loginInputLogoPhone");
+        }else if (self.type == GetCode_type) {
+            _logoIV.image = Image_Named(@"loginInputLogoCode");
+        }else {
+            _logoIV.image = Image_Named(@"");
+        }
+    }return _logoIV;
+}
+
+-(UIButton *)timeBtn {
+    if(_timeBtn == nil) {
+        _timeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_timeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
+        [_timeBtn setTitle:@"获取验证码" forState:UIControlStateSelected];
+        [_timeBtn setTitleColor:KCOLOR(@"#ffffff") forState:UIControlStateNormal];
+        [_timeBtn setTitleColor:KCOLOR(@"#ffffff") forState:UIControlStateSelected];
+        _timeBtn.backgroundColor = Clear_Color;
+        _timeBtn.titleLabel.font = KFONT(12);
+        _timeBtn.layer.cornerRadius = self.sizeH(12.f);
+        _timeBtn.clipsToBounds = YES;
+        _timeBtn.layer.borderColor = KCOLOR(@"#ffffff").CGColor;
+        _timeBtn.layer.borderWidth = 1;
+        [_timeBtn addTarget:self action:@selector(startAnimation:) forControlEvents:UIControlEventTouchUpInside];
+    }return _timeBtn;
+}
+
+-(UIButton *)forgetPassWordBtn {
+    if(_forgetPassWordBtn == nil) {
+        _forgetPassWordBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_forgetPassWordBtn setTitle:@"忘记密码" forState:UIControlStateNormal];
+        [_forgetPassWordBtn setTitle:@"忘记密码" forState:UIControlStateSelected];
+        [_forgetPassWordBtn setTitleColor:KCOLOR(@"#E95727") forState:UIControlStateNormal];
+        [_forgetPassWordBtn setTitleColor:KCOLOR(@"#E95727") forState:UIControlStateSelected];
+        _forgetPassWordBtn.backgroundColor = White_Color;
+        _forgetPassWordBtn.titleLabel.font = KFONT(12);
+        _forgetPassWordBtn.layer.cornerRadius = self.sizeH(12.f);
+        _forgetPassWordBtn.clipsToBounds = YES;
+        _forgetPassWordBtn.layer.borderColor = KCOLOR(@"#E95727").CGColor;
+        _forgetPassWordBtn.layer.borderWidth = 0.8f;
+        [_forgetPassWordBtn addTarget:self action:@selector(forgetPasswordAction) forControlEvents:UIControlEventTouchUpInside];
+    }return _forgetPassWordBtn;
+}
+
+-(void)startAnimation:(UIButton*)sender {
+    if([self.timeBtn.currentTitle isEqualToString:@"获取验证码"]){
+        NSString *MOBILE = @"^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$";
+        NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
+        if(![regextestmobile evaluateWithObject:self.mobileText]){
+            SSMBToast(@"请填写正确的手机号", MainWindow);
+            return;
+        }
+
+        //"-1", "1"  手机登录
+        //"0", "1"  注册
+        NSDictionary *dic;
+        if (self.codeType == 1) {
+            dic = @{@"mobile" : self.mobileText,
+                    @"filter":@"0",
+                    @"action":@"1"
+                    };
+        }else if (self.codeType == 2) {
+            dic = @{@"mobile" : self.mobileText,
+                    @"filter":@"-1",
+                    @"action":@"1"
+                    };
+        }else if (self.codeType == 3) {
+            dic = @{@"mobile" : self.mobileText,
+                    @"filter":@"1",
+                    @"action":@"1"
+                    };
+        }else {
+            return;
+        }
+        
+        SSGifShow(MainWindow, @"加载中");
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            SSDissMissAllGifHud(MainWindow, YES);
+            [self timeStart];
+            [self.textField becomeFirstResponder];
+            SSMBToast(@"验证码 1234", MainWindow);
+        });
+        
+//        [[SSRequest request] GETAboutLogin:RegisterOrLoginGetCodeUrl parameters:dic success:^(SSRequest *request, NSDictionary *response) {
+//
+//            SSDissMissAllGifHud(MainWindow, YES);
+//            [self timeStart];
+//            [self.textField becomeFirstResponder];
+//
+//        } failure:^(SSRequest *request, NSString *errorMsg) {
+//            SSDissMissAllGifHud(MainWindow, YES);
+//            SSMBToast(errorMsg, MainWindow);
+//
+//        }];
+        
+    }
+}
+
+-(void)timeStart {
+    if(self.timer) {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+    self.currentIndex = 60;
+    [self.timeBtn setTitle:[NSString stringWithFormat:@"剩余%zd秒",self.currentIndex] forState:UIControlStateNormal];
+    self.timer = [NSTimer timerWithTimeInterval:1.f target:self selector:@selector(timeRun) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+-(void)timeRun {
+    if(self.currentIndex == 1) {
+        self.timeBtn.userInteractionEnabled = YES;
+        [self.timeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
+        
+//        NSString *MOBILE = @"^((13[0-9])|(14[0-9])|(15[0-9])|(17[0-9])|(18[0-9]))//d{8}$";
+//        NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
+//        if([regextestmobile evaluateWithObject:self.mobileText]){  //手机号正确
+//
+//        }else {
+//
+//        }
+        
+        if(self.timer) {
+            [self.timer invalidate];
+            self.timer = nil;
+        }
+        return;
+    }
+    self.currentIndex--;
+    [self.timeBtn setTitle:[NSString stringWithFormat:@"剩余%zd秒",self.currentIndex] forState:UIControlStateNormal];
+}
+
+-(void)startTimer {
+    if(self.currentIndex != 0){
+        if(self.timer)
+        {
+            [self.timer invalidate];
+            self.timer = nil;
+        }
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1.f target:self selector:@selector(timeRun) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    }
+}
+
+-(void)sinleRegist
+{
+    
+    
+}
+
+-(void)lastDoForCode
+{
+    
+}
+-(void)netErrorToDo
+{
+    if([self.timeBtn.currentTitle isEqualToString:@"获取验证码"]){
+        
+    }
+}
+
+-(NSString *)text
+{
+    return self.textField.text;
+}
+-(void)pauseTimer{
+    if(self.timer)
+    {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+}
+
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+ 
+    if(self.timer) {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+}
+@end

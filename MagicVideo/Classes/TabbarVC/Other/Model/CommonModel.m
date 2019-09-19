@@ -11,3 +11,14 @@
 @implementation CommonModel
 
 @end
+
+@implementation MineTVCellModel
+@end
+
+@implementation MsgCenterCellModel
+
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{@"idForModel" : @"id"};
+}
+
+@end

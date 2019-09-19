@@ -18,10 +18,10 @@ target ‘MagicVideo’ do
     
     pod 'WechatOpenSDK'
 
-    # U-Share SDK UI模块（分享面板，建议添加）
-    pod 'UMengUShare/UI'
-    # 集成微信(完整版14.4M)
-    pod 'UMengUShare/Social/WeChat'
+#    # U-Share SDK UI模块（分享面板，建议添加）
+#    pod 'UMengUShare/UI'
+#    # 集成微信(完整版14.4M)
+#    pod 'UMengUShare/Social/WeChat'
 
     
 #    唱吧框架 缓存音视频

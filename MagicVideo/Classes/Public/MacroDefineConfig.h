@@ -37,8 +37,14 @@
 #define ContentOffsetInTop   [UIApplication sharedApplication].statusBarFrame.size.height == 44?88.f:64.f
 
 //------ appKey ------//
-//#define WXAppID    @"wxf9b07786a850284f"
-//#define WXAppSecret   @"6252d2b64b24169f856b82ffa30f36b0"
+#define WXAppID    @"wx4c5db2735a6cc501"
+#define WXAppSecret   @""
+
+//#define UMengAppKey    @"5926777e45297d310e001cb8"
+//
+//#define kGtAppId           @"IbD4WuSdxfAzgQocuSZyl3"
+//#define kGtAppKey          @"kkE3t9ZZZY66v4XJVH0tX6"
+//#define kGtAppSecret       @"7AjE4wO0mc5M11qMqG6sQ4"
 
 #define MainWindow [UIApplication sharedApplication].keyWindow
 #define KFONT(size) [UIFont systemFontOfSize:size]
@@ -218,18 +224,6 @@
 
 //表名  缓存表 存 LJDownloadModel
 #define CACHE_Table @"HistoryCACHE_Table"
-
-//------ appKey ------//
-
-//#define WXAppID    @"wxf9b07786a850284f"
-//#define WXAppSecret   @"6252d2b64b24169f856b82ffa30f36b0"
-
-#define UMengAppKey    @"5926777e45297d310e001cb8"
-
-#define kGtAppId           @"IbD4WuSdxfAzgQocuSZyl3"
-#define kGtAppKey          @"kkE3t9ZZZY66v4XJVH0tX6"
-#define kGtAppSecret       @"7AjE4wO0mc5M11qMqG6sQ4"
-
 
 //Adv_ClickPercent
 #define AdvClickPercentCacheKey @"AdvClickPercentCacheKey"

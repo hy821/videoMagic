@@ -18,10 +18,6 @@
 
 @implementation AppDelegate (LoginRequest)
 
--(void)wxRegister {
-    [WXApi registerApp:WX_APPID];
-}
-
 #pragma mark - 更新地理位置forAdv
 - (void)updateLocationMsg {
     [[TZLocationManager manager] startLocationWithSuccessBlock:^(CLLocation *location, CLLocation *oldLocation) {
@@ -381,6 +377,11 @@
     [advertiseView showSplashScreenWithTime:3 andImgUrl:self.advModel.url];
 }
 */
+
+
+-(void)wxRegister {
+    [WXApi registerApp:WXAppID];
+}
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     [WXApi handleOpenURL:url delegate: self];

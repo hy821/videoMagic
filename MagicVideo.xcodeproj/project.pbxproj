@@ -20,7 +20,6 @@
 		602806412331DC75000AFF4B /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6028063B2331DC74000AFF4B /* UserManager.m */; };
 		602806422331DC75000AFF4B /* KSConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 6028063E2331DC74000AFF4B /* KSConst.m */; };
 		602806432331DC75000AFF4B /* SSRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 602806402331DC74000AFF4B /* SSRequest.m */; };
-		6028065D2331DD46000AFF4B /* BAShareManage.m in Sources */ = {isa = PBXBuildFile; fileRef = 602806442331DD44000AFF4B /* BAShareManage.m */; };
 		6028065E2331DD46000AFF4B /* QNImageUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 602806482331DD45000AFF4B /* QNImageUploader.m */; };
 		6028065F2331DD46000AFF4B /* RSAUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 6028064A2331DD45000AFF4B /* RSAUtil.m */; };
 		602806602331DD46000AFF4B /* KSLayerAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6028064B2331DD45000AFF4B /* KSLayerAnimation.m */; };
@@ -239,7 +238,21 @@
 		60280B3A2331FEC1000AFF4B /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280B392331FEC1000AFF4B /* LoginViewController.m */; };
 		60280B3D23320061000AFF4B /* CommonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280B3C23320061000AFF4B /* CommonModel.m */; };
 		60280B4023321F87000AFF4B /* ShortVideoListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280B3F23321F87000AFF4B /* ShortVideoListCell.m */; };
-		60280B4323323165000AFF4B /* LoginByCodeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280B4223323164000AFF4B /* LoginByCodeController.m */; };
+		60280B4623332B1A000AFF4B /* LoginTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280B4523332B1A000AFF4B /* LoginTextField.m */; };
+		60280B4923332C7D000AFF4B /* LoginAlphaBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280B4823332C7D000AFF4B /* LoginAlphaBtn.m */; };
+		60280B5123336F56000AFF4B /* MineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280B4D23336F56000AFF4B /* MineTableViewCell.m */; };
+		60280B5223336F56000AFF4B /* MineTableViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280B4E23336F56000AFF4B /* MineTableViewHeaderView.m */; };
+		60280B5523337592000AFF4B /* WatchPointCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280B5423337592000AFF4B /* WatchPointCell.m */; };
+		60280BE623338768000AFF4B /* JQFMDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280BDE23338768000AFF4B /* JQFMDB.m */; };
+		60280BE723338768000AFF4B /* CacheModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280BE323338768000AFF4B /* CacheModel.m */; };
+		60280BE823338768000AFF4B /* WatchHistoryCacheModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280BE423338768000AFF4B /* WatchHistoryCacheModel.m */; };
+		60280BF9233396F4000AFF4B /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 60280BEA233396F4000AFF4B /* README.markdown */; };
+		60280BFA233396F4000AFF4B /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60280BEB233396F4000AFF4B /* LICENSE.txt */; };
+		60280BFB233396F4000AFF4B /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280BEF233396F4000AFF4B /* FMDatabaseQueue.m */; };
+		60280BFC233396F4000AFF4B /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280BF2233396F4000AFF4B /* FMDatabaseAdditions.m */; };
+		60280BFD233396F4000AFF4B /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280BF3233396F4000AFF4B /* FMDatabase.m */; };
+		60280BFE233396F4000AFF4B /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280BF7233396F4000AFF4B /* FMDatabasePool.m */; };
+		60280BFF233396F4000AFF4B /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 60280BF8233396F4000AFF4B /* FMResultSet.m */; };
 		60BBAFA92330D5600034C719 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60BBAFA72330D5600034C719 /* Main.storyboard */; };
 		60BBAFAB2330D5630034C719 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60BBAFAA2330D5630034C719 /* Assets.xcassets */; };
 		60BBAFAE2330D5630034C719 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60BBAFAC2330D5630034C719 /* LaunchScreen.storyboard */; };
@@ -294,8 +307,6 @@
 		6028063E2331DC74000AFF4B /* KSConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSConst.m; sourceTree = "<group>"; };
 		6028063F2331DC74000AFF4B /* KSUrlManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSUrlManager.h; sourceTree = "<group>"; };
 		602806402331DC74000AFF4B /* SSRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSRequest.m; sourceTree = "<group>"; };
-		602806442331DD44000AFF4B /* BAShareManage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAShareManage.m; sourceTree = "<group>"; };
-		602806462331DD44000AFF4B /* BAShareManage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAShareManage.h; sourceTree = "<group>"; };
 		602806472331DD45000AFF4B /* QNImageUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QNImageUploader.h; sourceTree = "<group>"; };
 		602806482331DD45000AFF4B /* QNImageUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QNImageUploader.m; sourceTree = "<group>"; };
 		602806492331DD45000AFF4B /* RSAUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSAUtil.h; sourceTree = "<group>"; };
@@ -726,8 +737,35 @@
 		60280B3C23320061000AFF4B /* CommonModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonModel.m; sourceTree = "<group>"; };
 		60280B3E23321F87000AFF4B /* ShortVideoListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShortVideoListCell.h; sourceTree = "<group>"; };
 		60280B3F23321F87000AFF4B /* ShortVideoListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShortVideoListCell.m; sourceTree = "<group>"; };
-		60280B4123323164000AFF4B /* LoginByCodeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginByCodeController.h; sourceTree = "<group>"; };
-		60280B4223323164000AFF4B /* LoginByCodeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginByCodeController.m; sourceTree = "<group>"; };
+		60280B4423332B1A000AFF4B /* LoginTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginTextField.h; sourceTree = "<group>"; };
+		60280B4523332B1A000AFF4B /* LoginTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTextField.m; sourceTree = "<group>"; };
+		60280B4723332C7D000AFF4B /* LoginAlphaBtn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginAlphaBtn.h; sourceTree = "<group>"; };
+		60280B4823332C7D000AFF4B /* LoginAlphaBtn.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginAlphaBtn.m; sourceTree = "<group>"; };
+		60280B4A23336F55000AFF4B /* MineTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineTableViewCell.h; sourceTree = "<group>"; };
+		60280B4D23336F56000AFF4B /* MineTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineTableViewCell.m; sourceTree = "<group>"; };
+		60280B4E23336F56000AFF4B /* MineTableViewHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineTableViewHeaderView.m; sourceTree = "<group>"; };
+		60280B4F23336F56000AFF4B /* MineTableViewHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineTableViewHeaderView.h; sourceTree = "<group>"; };
+		60280B5323337592000AFF4B /* WatchPointCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchPointCell.h; sourceTree = "<group>"; };
+		60280B5423337592000AFF4B /* WatchPointCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchPointCell.m; sourceTree = "<group>"; };
+		60280BDE23338768000AFF4B /* JQFMDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JQFMDB.m; sourceTree = "<group>"; };
+		60280BDF23338768000AFF4B /* JQFMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JQFMDB.h; sourceTree = "<group>"; };
+		60280BE123338768000AFF4B /* CacheModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CacheModel.h; sourceTree = "<group>"; };
+		60280BE223338768000AFF4B /* WatchHistoryCacheModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatchHistoryCacheModel.h; sourceTree = "<group>"; };
+		60280BE323338768000AFF4B /* CacheModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CacheModel.m; sourceTree = "<group>"; };
+		60280BE423338768000AFF4B /* WatchHistoryCacheModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatchHistoryCacheModel.m; sourceTree = "<group>"; };
+		60280BEA233396F4000AFF4B /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
+		60280BEB233396F4000AFF4B /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		60280BEE233396F4000AFF4B /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		60280BEF233396F4000AFF4B /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		60280BF0233396F4000AFF4B /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		60280BF1233396F4000AFF4B /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		60280BF2233396F4000AFF4B /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		60280BF3233396F4000AFF4B /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		60280BF4233396F4000AFF4B /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		60280BF5233396F4000AFF4B /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		60280BF6233396F4000AFF4B /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		60280BF7233396F4000AFF4B /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		60280BF8233396F4000AFF4B /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		60BBAF9E2330D5600034C719 /* MagicVideo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicVideo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60BBAFA82330D5600034C719 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		60BBAFAA2330D5630034C719 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -875,6 +913,8 @@
 		602805942330F874000AFF4B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				60280B5323337592000AFF4B /* WatchPointCell.h */,
+				60280B5423337592000AFF4B /* WatchPointCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -941,6 +981,10 @@
 		6028059C2330F874000AFF4B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				60280B4F23336F56000AFF4B /* MineTableViewHeaderView.h */,
+				60280B4E23336F56000AFF4B /* MineTableViewHeaderView.m */,
+				60280B4A23336F55000AFF4B /* MineTableViewCell.h */,
+				60280B4D23336F56000AFF4B /* MineTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -993,8 +1037,6 @@
 			children = (
 				60280B382331FEC1000AFF4B /* LoginViewController.h */,
 				60280B392331FEC1000AFF4B /* LoginViewController.m */,
-				60280B4123323164000AFF4B /* LoginByCodeController.h */,
-				60280B4223323164000AFF4B /* LoginByCodeController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1009,6 +1051,10 @@
 		602805A42330F874000AFF4B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				60280B4423332B1A000AFF4B /* LoginTextField.h */,
+				60280B4523332B1A000AFF4B /* LoginTextField.m */,
+				60280B4723332C7D000AFF4B /* LoginAlphaBtn.h */,
+				60280B4823332C7D000AFF4B /* LoginAlphaBtn.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1049,6 +1095,7 @@
 		602805A62330F874000AFF4B /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				60280BD923338768000AFF4B /* DB */,
 				6028063A2331DC74000AFF4B /* UserManager */,
 				602806382331DC74000AFF4B /* KSConst.h */,
 				6028063E2331DC74000AFF4B /* KSConst.m */,
@@ -1075,6 +1122,7 @@
 		602805AA2330F874000AFF4B /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				60280BE9233396F4000AFF4B /* FMDB */,
 				602809A02331FD35000AFF4B /* HeadPageVC */,
 				602809532331FD34000AFF4B /* HXWeiboPhotoPicker */,
 				602809122331FD34000AFF4B /* LCActionSheet */,
@@ -1116,8 +1164,6 @@
 			isa = PBXGroup;
 			children = (
 				6028066A2331DE1C000AFF4B /* Hud */,
-				602806462331DD44000AFF4B /* BAShareManage.h */,
-				602806442331DD44000AFF4B /* BAShareManage.m */,
 				602806532331DD45000AFF4B /* GCDTimer.h */,
 				602806552331DD45000AFF4B /* GCDTimer.m */,
 				602806512331DD45000AFF4B /* Helper.h */,
@@ -1924,6 +1970,71 @@
 			path = SafeObject;
 			sourceTree = "<group>";
 		};
+		60280BD923338768000AFF4B /* DB */ = {
+			isa = PBXGroup;
+			children = (
+				60280BDD23338768000AFF4B /* DBManager */,
+				60280BE023338768000AFF4B /* DataBaseModel */,
+			);
+			path = DB;
+			sourceTree = "<group>";
+		};
+		60280BDD23338768000AFF4B /* DBManager */ = {
+			isa = PBXGroup;
+			children = (
+				60280BDE23338768000AFF4B /* JQFMDB.m */,
+				60280BDF23338768000AFF4B /* JQFMDB.h */,
+			);
+			path = DBManager;
+			sourceTree = "<group>";
+		};
+		60280BE023338768000AFF4B /* DataBaseModel */ = {
+			isa = PBXGroup;
+			children = (
+				60280BE123338768000AFF4B /* CacheModel.h */,
+				60280BE323338768000AFF4B /* CacheModel.m */,
+				60280BE223338768000AFF4B /* WatchHistoryCacheModel.h */,
+				60280BE423338768000AFF4B /* WatchHistoryCacheModel.m */,
+			);
+			path = DataBaseModel;
+			sourceTree = "<group>";
+		};
+		60280BE9233396F4000AFF4B /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				60280BEA233396F4000AFF4B /* README.markdown */,
+				60280BEB233396F4000AFF4B /* LICENSE.txt */,
+				60280BEC233396F4000AFF4B /* src */,
+			);
+			path = FMDB;
+			sourceTree = "<group>";
+		};
+		60280BEC233396F4000AFF4B /* src */ = {
+			isa = PBXGroup;
+			children = (
+				60280BED233396F4000AFF4B /* fmdb */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		60280BED233396F4000AFF4B /* fmdb */ = {
+			isa = PBXGroup;
+			children = (
+				60280BEE233396F4000AFF4B /* FMDatabase.h */,
+				60280BEF233396F4000AFF4B /* FMDatabaseQueue.m */,
+				60280BF0233396F4000AFF4B /* FMResultSet.h */,
+				60280BF1233396F4000AFF4B /* FMDatabasePool.h */,
+				60280BF2233396F4000AFF4B /* FMDatabaseAdditions.m */,
+				60280BF3233396F4000AFF4B /* FMDatabase.m */,
+				60280BF4233396F4000AFF4B /* FMDatabaseQueue.h */,
+				60280BF5233396F4000AFF4B /* FMDB.h */,
+				60280BF6233396F4000AFF4B /* FMDatabaseAdditions.h */,
+				60280BF7233396F4000AFF4B /* FMDatabasePool.m */,
+				60280BF8233396F4000AFF4B /* FMResultSet.m */,
+			);
+			path = fmdb;
+			sourceTree = "<group>";
+		};
 		60BBAF952330D55F0034C719 = {
 			isa = PBXGroup;
 			children = (
@@ -2006,7 +2117,6 @@
 				60BBAF9A2330D5600034C719 /* Sources */,
 				60BBAF9B2330D5600034C719 /* Frameworks */,
 				60BBAF9C2330D5600034C719 /* Resources */,
-				B213F59DC9DCBEAE79C65FF5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2106,6 +2216,8 @@
 				60280A9B2331FD36000AFF4B /* HXWeiboPhotoPicker.bundle in Resources */,
 				60BBAFAB2330D5630034C719 /* Assets.xcassets in Resources */,
 				60280ADA2331FD36000AFF4B /* MBProgressHUD.bundle in Resources */,
+				60280BFA233396F4000AFF4B /* LICENSE.txt in Resources */,
+				60280BF9233396F4000AFF4B /* README.markdown in Resources */,
 				60280A3E2331FD36000AFF4B /* README.md in Resources */,
 				60280A3D2331FD36000AFF4B /* LICENSE in Resources */,
 				60280ABC2331FD36000AFF4B /* MJRefresh.bundle in Resources */,
@@ -2154,30 +2266,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B213F59DC9DCBEAE79C65FF5 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-MagicVideo/Pods-MagicVideo-resources.sh",
-				"${PODS_ROOT}/UMengUShare/UShareSDK/UMSocialSDK/UMSocialSDKPromptResources.bundle",
-				"${PODS_ROOT}/UMengUShare/UShareSDK/UMSocialUI/UMSocialSDKResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMSocialSDKPromptResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMSocialSDKResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MagicVideo/Pods-MagicVideo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -2185,6 +2273,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60280B5523337592000AFF4B /* WatchPointCell.m in Sources */,
 				60280A692331FD36000AFF4B /* UIImage+LCActionSheet.m in Sources */,
 				60280A532331FD36000AFF4B /* ZFKVOController.m in Sources */,
 				602806702331DE1C000AFF4B /* MMMaterialDesignSpinner.m in Sources */,
@@ -2200,6 +2289,7 @@
 				60280A6C2331FD36000AFF4B /* WRNavigationBar.m in Sources */,
 				60280A4B2331FD36000AFF4B /* ZFPlayerGestureControl.m in Sources */,
 				60280ADD2331FD36000AFF4B /* WXSTransitionManager+InsideThenPushAnimation.m in Sources */,
+				60280B4923332C7D000AFF4B /* LoginAlphaBtn.m in Sources */,
 				60280AC82331FD36000AFF4B /* MJRefreshGifHeader.m in Sources */,
 				602806762331F891000AFF4B /* DiscoverViewController.m in Sources */,
 				60280AE52331FD36000AFF4B /* WXSPercentDrivenInteractiveTransition.m in Sources */,
@@ -2240,6 +2330,7 @@
 				60280B292331FE8A000AFF4B /* VerticalButton.m in Sources */,
 				60280A452331FD36000AFF4B /* TAAnimatedDotView.m in Sources */,
 				60280A612331FD36000AFF4B /* ZFLoadingView.m in Sources */,
+				60280BE723338768000AFF4B /* CacheModel.m in Sources */,
 				60280B322331FE8A000AFF4B /* NSObject+Swizzling.m in Sources */,
 				60280B302331FE8A000AFF4B /* NSMutableString+Safe.m in Sources */,
 				60280A792331FD36000AFF4B /* TZPhotoPickerController.m in Sources */,
@@ -2251,6 +2342,7 @@
 				60280A962331FD36000AFF4B /* HXPhotoManager.m in Sources */,
 				60280AC12331FD36000AFF4B /* MJRefreshBackStateFooter.m in Sources */,
 				60280A802331FD36000AFF4B /* SSPhotoSelectViewController.m in Sources */,
+				60280BE823338768000AFF4B /* WatchHistoryCacheModel.m in Sources */,
 				60280A492331FD36000AFF4B /* NSDate+Extension.m in Sources */,
 				60280A672331FD36000AFF4B /* LCActionSheetViewController.m in Sources */,
 				60280A822331FD36000AFF4B /* SSPhotoBrowerViewController.m in Sources */,
@@ -2264,6 +2356,7 @@
 				60280A952331FD36000AFF4B /* HXDatePhotoViewController.m in Sources */,
 				60280A6D2331FD36000AFF4B /* WRCustomNavigationBar.m in Sources */,
 				60280A542331FD36000AFF4B /* ZFReachabilityManager.m in Sources */,
+				60280B5223336F56000AFF4B /* MineTableViewHeaderView.m in Sources */,
 				60280ADC2331FD36000AFF4B /* WXSTransitionManager+SpreadAnimation.m in Sources */,
 				602806612331DD46000AFF4B /* PubTextView.m in Sources */,
 				60280A562331FD36000AFF4B /* ZFIJKPlayerManager.m in Sources */,
@@ -2301,17 +2394,18 @@
 				60280A402331FD36000AFF4B /* SDCycleScrollView.m in Sources */,
 				60280A5B2331FD36000AFF4B /* ZFLandScapeControlView.m in Sources */,
 				60280AA62331FD36000AFF4B /* HXDatePhotoToolManager.m in Sources */,
+				60280BFD233396F4000AFF4B /* FMDatabase.m in Sources */,
 				602806642331DD46000AFF4B /* GCDTimer.m in Sources */,
 				60280B342331FE8A000AFF4B /* NSObject+ImpChangeTool.m in Sources */,
 				60280B212331FE8A000AFF4B /* NSObject+BaseObject.m in Sources */,
 				60280AAB2331FD36000AFF4B /* HJTabViewControllerPlugin_HeaderScroll.m in Sources */,
 				60280A4C2331FD36000AFF4B /* ZFPlayerController.m in Sources */,
-				60280B4323323165000AFF4B /* LoginByCodeController.m in Sources */,
 				60280A5C2331FD36000AFF4B /* ZFNetworkSpeedMonitor.m in Sources */,
 				60280A7A2331FD36000AFF4B /* TZPhotoPreviewCell.m in Sources */,
 				60280AA12331FD36000AFF4B /* HXPhotoSubViewCell.m in Sources */,
 				60280ACF2331FD36000AFF4B /* TYPagerViewLayout.m in Sources */,
 				60280AB12331FD36000AFF4B /* HJTabViewBar.m in Sources */,
+				60280BFF233396F4000AFF4B /* FMResultSet.m in Sources */,
 				60280B252331FE8A000AFF4B /* UIBarButtonItem+Extension.m in Sources */,
 				60280B2F2331FE8A000AFF4B /* NSMutableDictionary+Safe.m in Sources */,
 				602805C32330F917000AFF4B /* UITabBar+badge.m in Sources */,
@@ -2339,11 +2433,13 @@
 				60280A832331FD36000AFF4B /* SSPhotoCell.m in Sources */,
 				60280AA02331FD36000AFF4B /* HXDatePhotoViewTransition.m in Sources */,
 				60280A812331FD36000AFF4B /* SSphotoListCell.m in Sources */,
+				60280BFB233396F4000AFF4B /* FMDatabaseQueue.m in Sources */,
 				60280AAF2331FD36000AFF4B /* HJTabViewControllerPlugin_BottomInset.m in Sources */,
 				60280AA42331FD36000AFF4B /* HXCustomPreviewView.m in Sources */,
 				60280A4D2331FD36000AFF4B /* ZFOrientationObserver.m in Sources */,
 				60280A912331FD36000AFF4B /* HXPhotoCustomNavigationBar.m in Sources */,
 				60280A972331FD36000AFF4B /* HXDatePhotoViewPresentTransition.m in Sources */,
+				60280BE623338768000AFF4B /* JQFMDB.m in Sources */,
 				60280A702331FD36000AFF4B /* TZAssetCell.m in Sources */,
 				60280A652331FD36000AFF4B /* KSMediaPlayerManager.m in Sources */,
 				602806422331DC75000AFF4B /* KSConst.m in Sources */,
@@ -2354,7 +2450,9 @@
 				60280AAC2331FD36000AFF4B /* HJTabViewController.m in Sources */,
 				60280A6B2331FD36000AFF4B /* LCActionSheet.m in Sources */,
 				60280A502331FD36000AFF4B /* ZFPlayerNotification.m in Sources */,
+				60280B4623332B1A000AFF4B /* LoginTextField.m in Sources */,
 				60280ABB2331FD36000AFF4B /* MJRefreshConst.m in Sources */,
+				60280BFC233396F4000AFF4B /* FMDatabaseAdditions.m in Sources */,
 				60280A8A2331FD36000AFF4B /* NSBundle+HXWeiboPhotoPicker.m in Sources */,
 				602806602331DD46000AFF4B /* KSLayerAnimation.m in Sources */,
 				60280A4A2331FD36000AFF4B /* UIView+Extension.m in Sources */,
@@ -2378,14 +2476,15 @@
 				60280A7E2331FD36000AFF4B /* VPImageCropperViewController.m in Sources */,
 				60280A892331FD36000AFF4B /* HXDatePhotoPreviewBottomView.m in Sources */,
 				60280AA22331FD36000AFF4B /* HXAlbumModel.m in Sources */,
-				6028065D2331DD46000AFF4B /* BAShareManage.m in Sources */,
 				602806632331DD46000AFF4B /* MYHRocketHeader.m in Sources */,
 				60280A9E2331FD36000AFF4B /* NSDate+HXExtension.m in Sources */,
 				60280AD92331FD36000AFF4B /* MBProgressHUD+MJ.m in Sources */,
 				60280A852331FD36000AFF4B /* UIViewController+HXExtension.m in Sources */,
+				60280B5123336F56000AFF4B /* MineTableViewCell.m in Sources */,
 				60280ACD2331FD36000AFF4B /* MJRefreshComponent.m in Sources */,
 				60280ABF2331FD36000AFF4B /* UIView+MJExtension.m in Sources */,
 				60280A5E2331FD36000AFF4B /* ZFSliderView.m in Sources */,
+				60280BFE233396F4000AFF4B /* FMDatabasePool.m in Sources */,
 				60280AE62331FD36000AFF4B /* WXSTransitionManager+TypeTool.m in Sources */,
 				60280A9F2331FD36000AFF4B /* HXCustomNavigationController.m in Sources */,
 				6028065F2331DD46000AFF4B /* RSAUtil.m in Sources */,
@@ -2575,6 +2674,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5P9562ZCTP;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MagicVideo/Classes/ThirdParty/MOBFoundation",
@@ -2591,7 +2691,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ShangHaiYoudu.MagicVideo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.51tv.faxian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2604,6 +2704,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5P9562ZCTP;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MagicVideo/Classes/ThirdParty/MOBFoundation",
@@ -2620,7 +2721,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ShangHaiYoudu.MagicVideo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.51tv.faxian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

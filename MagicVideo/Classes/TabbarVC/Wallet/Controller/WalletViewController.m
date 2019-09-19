@@ -18,8 +18,15 @@
 
 @implementation WalletViewController
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [NOTIFICATION addObserver:self selector:@selector(refreshWhenLoginChange) name:LoginAndRefreshNoti object:nil];
+    [NOTIFICATION addObserver:self selector:@selector(refreshWhenLoginChange) name:LOGIN_OUT object:nil];
     [self initUI];
    
 }
@@ -33,18 +40,22 @@
         [self.view addSubview:self.unLoginView];
         [self.unLoginView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view).insets(UIEdgeInsetsMake([self contentOffset], 0, 0, 0));
-//            make.top.equalTo(self.view).offset([self contentOffset]);
-//            make.left.right.bottom.equalTo(self.view);
         }];
         self.unLoginView.hidden = NO;
     }
 }
 
+//登录, 登出都刷新
+- (void)refreshWhenLoginChange {
+    [self initUI];
+}
+
 -(WalletUnLoginView *)unLoginView {
     if (!_unLoginView) {
         _unLoginView = [[WalletUnLoginView alloc]init];
+        WS()
         _unLoginView.loginBlock = ^{
-            [USER_MANAGER gotoLogin];
+            [USER_MANAGER gotoLoginFromVC:weakSelf];
         };
     }return _unLoginView;
 }
