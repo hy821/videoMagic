@@ -43,13 +43,13 @@
     self.centerImg = imageV;
     
     UILabel * titleLable = [[UILabel alloc]init];
-    titleLable.font = KFONT(15);
+    titleLable.font = Font_Size(15);
     titleLable.textColor = KCOLOR(@"#333333");
     [self addSubview:titleLable];
     self.titleLable = titleLable;
     
     UILabel * subLable = [[UILabel alloc]init];
-    subLable.font = KFONT(12);
+    subLable.font = Font_Size(12);
     subLable.textColor = KCOLOR(@"#999999");
     subLable.text = @"请检查网络重新加载呗";
     [self addSubview:subLable];

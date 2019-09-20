@@ -10,6 +10,7 @@
 #import "WatchPointCell.h"
 #import "MYHRocketHeader.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+#import "HomeViewController.h"
 
 @interface DiscoverViewController ()<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 
@@ -27,7 +28,7 @@ static NSString * const cellID = @"WatchPointCell";
 - (NSMutableArray *)dataArr {
     if (!_dataArr) {
         _dataArr = [NSMutableArray array];
-//        [_dataArr addObjectsFromArray:@[@"",@"",@"",@"",@"",@"",@"",@"",@"",@""]];
+        [_dataArr addObjectsFromArray:@[@"",@"",@"",@"",@"",@"",@"",@"",@"",@""]];
     }return _dataArr;
 }
 
@@ -62,9 +63,6 @@ static NSString * const cellID = @"WatchPointCell";
         [self.mainTableView.mj_header endRefreshing];
         [self.mainTableView.mj_footer endRefreshing];
 
-        if(self.page == 0 && (self.dataArr.count>0)) {
-            [self.dataArr removeAllObjects];
-        }
          [self.mainTableView reloadData];
     });
     
@@ -152,7 +150,7 @@ static NSString * const cellID = @"WatchPointCell";
 #pragma mark--DZ
 -(UIImage*)imageForEmptyDataSet:(UIScrollView *)scrollView {
     if(self.isNetError==SSNetLoading_state)return nil;
-    return self.isNetError == SSNetNormal_state ? K_IMG(@"netError") : K_IMG(@"netError");
+    return self.isNetError == SSNetNormal_state ? Image_Named(@"netError") : Image_Named(@"netError");
 }
 
 -(NSAttributedString*)titleForEmptyDataSet:(UIScrollView *)scrollView {
@@ -173,7 +171,7 @@ static NSString * const cellID = @"WatchPointCell";
 -(UIImage*)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state
 {
     if(self.isNetError!=SSNetError_state)return nil;
-    return K_IMG(@"reload");
+    return Image_Named(@"reload");
 }
 
 -(BOOL)emptyDataSetShouldAllowScroll:(UIScrollView *)scrollView {

@@ -20,8 +20,13 @@
 - (CGFloat (^)(CGFloat))sizeH
 {
     return ^(CGFloat size){
-        size = size * (ScreenHeight / 667);
+        
+        size = size * (ScreenWidth / 375);
         return size;
+        
+//            size = size * (ScreenHeight / 667);
+//            return size;
+       
     };
 }
 -(CGFloat)contentOffset
@@ -31,7 +36,7 @@
 }
 -(CGFloat)tabbarHeight
 {
-    return [Helper isIphoneX]?83:49;
+    return [Helper isIphoneX] ? 83 : 49;
 }
 
 -(CGFloat)statusBarHeight

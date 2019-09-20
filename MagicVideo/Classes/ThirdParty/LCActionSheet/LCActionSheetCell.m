@@ -100,7 +100,7 @@
         detailLabel.textAlignment = NSTextAlignmentCenter;
         detailLabel.adjustsFontSizeToFitWidth = YES;
         detailLabel.textColor = KCOLOR(@"#999999");
-        detailLabel.font = KFONT(12);
+        detailLabel.font = Font_Size(12);
         [self.contentView addSubview:detailLabel];
         self.detailLabel = detailLabel;
         self.detailLabel.hidden = YES;

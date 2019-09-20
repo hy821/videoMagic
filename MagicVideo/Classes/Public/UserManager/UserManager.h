@@ -56,7 +56,7 @@
  **/
 -(id)dataStrForKey:(NSString*)key;
 
--(void)gotoLogin;
+//-(void)gotoLogin;
 
 /** 从某个vc去登录, 成功后返回这个vc*/
 - (void)gotoLoginFromVC:(UIViewController *)vcFrom;

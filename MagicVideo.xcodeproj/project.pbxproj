@@ -815,6 +815,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		602117872334DD1800AEAC9F /* SSRequest */ = {
+			isa = PBXGroup;
+			children = (
+				602806392331DC74000AFF4B /* SSRequest.h */,
+				602806402331DC74000AFF4B /* SSRequest.m */,
+			);
+			path = SSRequest;
+			sourceTree = "<group>";
+		};
 		6028058A2330F874000AFF4B /* OtherFile */ = {
 			isa = PBXGroup;
 			children = (
@@ -1095,14 +1104,13 @@
 		602805A62330F874000AFF4B /* Public */ = {
 			isa = PBXGroup;
 			children = (
-				60280BD923338768000AFF4B /* DB */,
+				602117872334DD1800AEAC9F /* SSRequest */,
 				6028063A2331DC74000AFF4B /* UserManager */,
+				60280BD923338768000AFF4B /* DB */,
 				602806382331DC74000AFF4B /* KSConst.h */,
 				6028063E2331DC74000AFF4B /* KSConst.m */,
 				6028063F2331DC74000AFF4B /* KSUrlManager.h */,
 				6028063D2331DC74000AFF4B /* MacroDefineConfig.h */,
-				602806392331DC74000AFF4B /* SSRequest.h */,
-				602806402331DC74000AFF4B /* SSRequest.m */,
 				6028060C2330FE4C000AFF4B /* MagicVideoPrefixHeader.pch */,
 			);
 			path = Public;
@@ -2691,7 +2699,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.51tv.faxian;
+				PRODUCT_BUNDLE_IDENTIFIER = com.video.magic.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2721,7 +2729,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.51tv.faxian;
+				PRODUCT_BUNDLE_IDENTIFIER = com.video.magic.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

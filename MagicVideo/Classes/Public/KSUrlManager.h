@@ -13,23 +13,13 @@
 #define ServerURL_Login              @"https://login.51tv.com/"
 #define ServerURL_Normal            @"https://api.51tv.com/"
 #define ServerURL_H5                  @"http://h5.ikuaishou.com/#/"
-#define PUBLIC_KEY_Login           @"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDeTIi5tHOFpNV7hVKMx6ZoTr1Mk89FYYIfMg8iiEyFiEnf8q06QI/cS8dZUJWZ7CSRmCN48OxVUgCMdfuOGOEV1cqi6HIavrVJi2/8mqS8cTS8ZCogGZHWcbJ0GWFjKng1mDA+Za7aIX/enGGwNwEVCQB9zUzQTcIwLolg2QL0VwIDAQAB"
-
-#define PUBLIC_KEY_Normal         @"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDRn8NDdOOlchhOM7AtgrL3wo8+8U3bgXwDdZeovMUYJFKBKBCPaVErwHS5AhGuhLbU4tIYDDQ6lkbxLrx9oQVB+zn/jXMwhzGndEugX2rWv1sgNNmNTj488dCAYeuwmlG6ht7T2NFuuNHS27pEQNxXPxuQd4BGv+B4dLpQnBlahQIDAQAB"
 
 /** 开发---服务器地址 */
-#define DevServerURL_Login            @"http://dev.login.51tv.com/"     //@"http://login.ks.quanyuer.com:8888/"
-#define DevServerURL_Normal          @"http://dev.api.51tv.com/"       //@"http://api.ks.quanyuer.com:8888/"
+#define DevServerURL_Login            @"http://47.99.87.119/"
+#define DevServerURL_Normal          @"http://47.99.87.119/"     
 #define DevServerURL_H5                @"http://h5.ks.quanyuer.com:8888/#/"
 
-#define DevPUBLIC_KEY_Login           @"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCaHX6vCr9x3KLQMmHIsPnVTh1UrD/dPPXPNk9sIfqDlBofUuylT2aEa0Z63oX54pnUkudfO87skgl+fzoHh9JAVhv0vpl69YhrqiYhg5+7W5DeNdDjYGb+eonaIHu94UF4cL1uWt+LSYy9xdkyknVLOehyJOg/sduvZ7NggHqveQIDAQAB"
-
-#define DevPUBLIC_KEY_Normal         @"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCYca51zjCcmC4s6V75H+TpdEI4BG9UzpOippjeTObFAYTLF7btxCmddtbJ9w7R9vsW+AQ6uqWqBLn8Fhxp2NfEPLsEZh5IeO1UyKffAC0FrvkVctay4JGbbrQ0w+Ju3a5Vc7oifx/fC47cVXRxpFOc1MMrSMYgLahUUxLVncAzjQIDAQAB"
-
-
-//---------Other-------------//
-#define VideoPlay_SEARCH_URL  @"https://m.baidu.com/from=1013755s/s?word="
-#define CKFLV_HeadUrl  @"http://39.107.218.201/ckflv/?url="   //ckflv解析//Free_Analyse  @"http://api.xiguajx.top/haha/?url="
+#define KEY_SKEY         @"bcb0c1736ab6eda5ad816fcc1204d885"
 
 //--------- H5_Url -----------//
 #define QQFansH5_Url     @"fansGroupPage"
@@ -37,6 +27,15 @@
 #define VIPFAQH5_Url     @"usualquestion"
 #define LotteryH5_Url     @"newlottery"
 #define SignRuleH5_Url     @"ActivityRules"
+
+
+//--------- 登录 ---------//
+#define WXLoginUrl  @"v1/user/wx/auth"
+
+
+
+
+
 
 //--------- 接口Url -----------//
 //FirstUrl_获取版本信息

@@ -17,6 +17,8 @@
 
 @interface ShortVideoListCell : UITableViewCell
 
+- (void)setDelegate:(id<ShortVideoListCellDelegate>)delegate withIndexPath:(NSIndexPath *)indexPath;
+
 //@property (nonatomic,strong) ProgramResultListModel *model;
 //@property (nonatomic,copy) void(^upDataModelBlock)(ProgramResultListModel *model);  //点过赞或踩之后更新数据
 //@property (nonatomic,copy) void(^showMoreShareViewBlock)(void);
@@ -26,7 +28,6 @@
 ////广告倒计时完 or 跳过 or 加载失败时, 通知去播放视频 isFinish: YES 今日播放成功   NO今日播放还未成功,下次还得播---暂时都成功
 //@property (nonatomic,copy) void(^advFinishToPlayVideoBlock)(BOOL isFinish);
 //
-//- (void)setDelegate:(id<ShortVideoListCellDelegate>)delegate withIndexPath:(NSIndexPath *)indexPath;
 //
 //- (void)showCountDownAdv;
 //

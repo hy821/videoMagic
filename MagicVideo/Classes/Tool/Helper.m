@@ -647,16 +647,7 @@ static FinishVideoBlock _block;
   }else
       return str;
 }
-//等比例长度
-+(CGFloat)returnUpHeight:(CGFloat)height
-{
-    return (height/667.0)*[UIScreen mainScreen].bounds.size.height;
-}
-+(CGFloat)returnUpWidth:(CGFloat)width
-{
-return (width/375.0)*[UIScreen mainScreen].bounds.size.width;
 
-}
 ///
 +(NSString *)changeNsnumber:(NSNumber *)number
 {
@@ -1716,6 +1707,11 @@ if([userDefault integerForKey:STAR_KEY])
 {
     return  CGRectEqualToRect([UIScreen mainScreen].bounds, CGRectMake(0, 0, 375, 812));
 }
++ (BOOL)isIphoneXRorXsMax
+{
+    return  CGRectEqualToRect([UIScreen mainScreen].bounds, CGRectMake(0, 0, 414, 896));
+}
+
 +(UIImage*)imageFromSdcache:(NSString*)url{
     
     UIImage *imageData =nil;

@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong) UIViewController *vcFrom;
 
+//微信登录成功, 绑定手机号
+@property (nonatomic,assign) BOOL isBindPhone;  //push进来
+
 @end
 
 NS_ASSUME_NONNULL_END

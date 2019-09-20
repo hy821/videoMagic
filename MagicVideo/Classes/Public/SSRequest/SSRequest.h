@@ -73,6 +73,7 @@ typedef NS_ENUM(NSUInteger, SSRefreshType) {
 //登录相关的POST请求
 - (void)POSTAboutLogin:(NSString *)URLString
   parameters:(NSMutableDictionary *)parameters
+            signString:(NSString *)signString
      success:(void (^)(SSRequest *request, id response))success
      failure:(void (^)(SSRequest *request, NSString *errorMsg))failure;
 

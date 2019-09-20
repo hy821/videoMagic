@@ -207,38 +207,36 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
     [USERDEFAULTS synchronize];
 }
 
--(void)gotoLogin {
-    LoginViewController * login = [[LoginViewController alloc]init];
-    KSBaseNavViewController  * nav = [[KSBaseNavViewController alloc]initWithRootViewController:login];
-    KSBaseNavViewController * selNav = g_App.tabBarVC.selectedViewController;
-    KSBaseViewController * baseView = (KSBaseViewController*)selNav.topViewController;
-    [baseView wxs_presentViewController:nav makeTransition:^(WXSTransitionProperty *transition) {
-        transition.animationType =  WXSTransitionAnimationTypeInsideThenPush;
-        transition.backGestureEnable = NO;
-        transition.backGestureType = WXSGestureTypePanRight;
-    }];
-}
+//-(void)gotoLogin {
+//    LoginViewController * login = [[LoginViewController alloc]init];
+//    KSBaseNavViewController  * nav = [[KSBaseNavViewController alloc]initWithRootViewController:login];
+//    KSBaseNavViewController * selNav = g_App.tabBarVC.selectedViewController;
+//    KSBaseViewController * baseView = (KSBaseViewController*)selNav.topViewController;
+//    [baseView wxs_presentViewController:nav makeTransition:^(WXSTransitionProperty *transition) {
+//        transition.animationType =  WXSTransitionAnimationTypeInsideThenPush;
+//        transition.backGestureEnable = NO;
+//        transition.backGestureType = WXSGestureTypePanRight;
+//    }];
+//}
 
 /** 从某个vc去登录, 成功后返回这个vc*/
 - (void)gotoLoginFromVC:(UIViewController *)vcFrom {
     LoginViewController * login = [[LoginViewController alloc]init];
-    login.vcFrom = vcFrom;
     login.hidesBottomBarWhenPushed = YES;
-    [vcFrom.navigationController pushViewController:login animated:YES];
+    if (vcFrom) {
+        login.vcFrom = vcFrom;
+        [vcFrom.navigationController pushViewController:login animated:YES];
+    }else {
+        [SelectVC pushViewController:login animated:YES];
+    }
+    
 }
 
 //是否是测试服
 //YES测试服
 //NO正式服
 -(BOOL)isDevStatus {
-    if ([USERDEFAULTS objectForKey:@"isDevStatusKey"]) {
-        NSString *isDev = [USERDEFAULTS objectForKey:@"isDevStatusKey"];
-        return [isDev boolValue];
-    }else {
-        [USERDEFAULTS setObject:@"1" forKey:@"isDevStatusKey"];
-        [USERDEFAULTS synchronize];
-        return YES;
-    }
+    return YES;
 }
 
 -(BOOL)isCK {
@@ -258,16 +256,6 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 //服务器地址, 登录类接口
 -(NSString*)serverAddressWithLogin {
     return [self isDevStatus] ? DevServerURL_Login : ServerURL_Login;
-}
-
-//非登录类 公钥
--(NSString*)publicKey {
-    return [self isDevStatus] ? DevPUBLIC_KEY_Normal: PUBLIC_KEY_Normal;
-}
-
-//登录类 公钥
--(NSString*)publicKeyWithLogin {
-    return [self isDevStatus] ? DevPUBLIC_KEY_Login : PUBLIC_KEY_Login;
 }
 
 //获取User-Agent

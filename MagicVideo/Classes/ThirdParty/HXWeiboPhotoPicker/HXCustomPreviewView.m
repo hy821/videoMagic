@@ -51,7 +51,7 @@
     [self addGestureRecognizer:_singleTapRecognizer];
     
 //    _focusBox = [self viewWithColor:MENU_COLOR];
-    _focusBox = [[UIImageView alloc]initWithImage:K_IMG(@"camera_focus")];
+    _focusBox = [[UIImageView alloc]initWithImage:Image_Named(@"camera_focus")];
     _focusBox.hidden = YES;
     _focusBox.frame = BOX_BOUNDS;
     [self addSubview:_focusBox];

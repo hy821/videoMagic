@@ -229,6 +229,20 @@
                            range:NSMakeRange(0,holderText.length)];
         _textField.attributedPlaceholder = placeholder;
         
+        UIToolbar * topView = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 40)];
+        [topView setBarStyle:0];
+        topView.backgroundColor = [UIColor whiteColor];
+        UIBarButtonItem * btnSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn.frame = CGRectMake(2, 5, 50, 25);
+        [btn addTarget:self action:@selector(dismissKeyBoard) forControlEvents:UIControlEventTouchUpInside];
+        [btn setTitleColor:DarkGray_Color forState:UIControlStateNormal];
+        [btn setTitle:@"完成"forState:UIControlStateNormal];
+        UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithCustomView:btn];
+        NSArray * buttonsArray = [NSArray arrayWithObjects:btnSpace,doneBtn,nil];
+        [topView setItems:buttonsArray];
+        [_textField setInputAccessoryView:topView];
+        
         switch (self.type) {
             case Normal_Type:
             {
@@ -254,6 +268,12 @@
                 break;
         }
     }return _textField;
+}
+
+- (void)dismissKeyBoard {
+    if(self.foldKeyBoardBlock) {
+        self.foldKeyBoardBlock();
+    }
 }
 
 -(UILabel *)headLab {
@@ -284,7 +304,7 @@
         [_timeBtn setTitleColor:KCOLOR(@"#ffffff") forState:UIControlStateNormal];
         [_timeBtn setTitleColor:KCOLOR(@"#ffffff") forState:UIControlStateSelected];
         _timeBtn.backgroundColor = Clear_Color;
-        _timeBtn.titleLabel.font = KFONT(12);
+        _timeBtn.titleLabel.font = Font_Size(12);
         _timeBtn.layer.cornerRadius = self.sizeH(12.f);
         _timeBtn.clipsToBounds = YES;
         _timeBtn.layer.borderColor = KCOLOR(@"#ffffff").CGColor;
@@ -301,7 +321,7 @@
         [_forgetPassWordBtn setTitleColor:KCOLOR(@"#E95727") forState:UIControlStateNormal];
         [_forgetPassWordBtn setTitleColor:KCOLOR(@"#E95727") forState:UIControlStateSelected];
         _forgetPassWordBtn.backgroundColor = White_Color;
-        _forgetPassWordBtn.titleLabel.font = KFONT(12);
+        _forgetPassWordBtn.titleLabel.font = Font_Size(12);
         _forgetPassWordBtn.layer.cornerRadius = self.sizeH(12.f);
         _forgetPassWordBtn.clipsToBounds = YES;
         _forgetPassWordBtn.layer.borderColor = KCOLOR(@"#E95727").CGColor;

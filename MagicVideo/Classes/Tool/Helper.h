@@ -75,9 +75,6 @@ typedef void(^FinishBlock)(BOOL isFinish,NSError * error);
 +(NSString*)getSomeDay:(NSInteger)index;
 //判断字段是否为NULL并返回相应的字符串
 +(NSString*)classIsNSNull:(id)str;
-//等比例长度及长度
-+(CGFloat)returnUpHeight:(CGFloat)height;
-+(CGFloat)returnUpWidth:(CGFloat)width;
 //不同屏幕不同尺寸
 +(UIFont*)returnUpFont:(CGFloat)screenWidth;
 //nsnumber转换
@@ -165,7 +162,8 @@ typedef void(^FinishBlock)(BOOL isFinish,NSError * error);
 
 +(NSAttributedString *)attributedStringWithStr:(NSString *)str andFont:(UIFont *)font andColorStr:(NSString *)colorStr andLineSpacing:(CGFloat) lineSpacing;
 +(NSString *)originImgUrlStr:(NSString *)str withSize:(CGFloat)size;
-+ (BOOL)isIphoneX;
++ (BOOL)isIphoneX;  //375:812
++ (BOOL)isIphoneXRorXsMax;  //414:896
 +(NSString*)originImageURL:(NSString*)str;
 +(void)saveCloseNowDate;
 +(BOOL)showNotiView;

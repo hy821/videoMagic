@@ -207,10 +207,10 @@
 -(UIButton*)setNavWithTitle:(NSString *)title Font:(CGFloat)font andTextColor:(NSString*)color andIsLeft:(BOOL)isLeft andTarget:(id)target andAction:(SEL)selector
 {
     UIButton * finishBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGFloat width = [Helper widthOfString:title font:KFONT(font) height:12]+10;
+    CGFloat width = [Helper widthOfString:title font:Font_Size(font) height:12]+10;
     finishBtn.frame = CGRectMake(0, 5,width, 55/2.0);
     [finishBtn setContentHorizontalAlignment:isLeft?UIControlContentHorizontalAlignmentLeft:UIControlContentHorizontalAlignmentRight];
-    finishBtn.titleLabel.font = KFONT(font);
+    finishBtn.titleLabel.font = Font_Size(font);
     [finishBtn setTitleColor:KCOLOR(color) forState:UIControlStateNormal];
     [finishBtn setTitleColor:KCOLOR(color) forState:UIControlStateSelected];
     [finishBtn setTitle:title forState:UIControlStateNormal];

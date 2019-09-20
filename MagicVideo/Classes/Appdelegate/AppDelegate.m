@@ -27,6 +27,7 @@
     self.tabBarVC = tabBar;
     
     [self configNavBar];
+    [self wxRegister];
     
 //    [self updateUserAgent];
     

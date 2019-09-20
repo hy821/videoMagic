@@ -14,7 +14,7 @@
 #import "LoginAlphaBtn.h"
 #import "WXApi.h"
 
-@interface LoginViewController()<WXApiDelegate>
+@interface LoginViewController()
 
 @property (nonatomic,weak) LoginTextField *phoneTF;
 @property (nonatomic,weak) LoginTextField *codeTF;
@@ -33,6 +33,9 @@
 }
 
 -(void)createUI {
+    if(self.isBindPhone) {
+        self.fd_interactivePopDisabled = YES;
+    }
     self.fd_prefersNavigationBarHidden = YES;
     UIImageView *bgIV = [[UIImageView alloc]initWithImage:Image_Named(@"loginBG")];
     bgIV.contentMode = UIViewContentModeScaleAspectFill;
@@ -67,6 +70,9 @@
     phoneTF.textChangeBlock = ^(NSString *text) {
         weakSelf.codeTF.mobileText = text;
     };
+    phoneTF.foldKeyBoardBlock = ^{
+        [weakSelf.view endEditing:YES];
+    };
     [self.view addSubview:phoneTF];
     self.phoneTF = phoneTF;
     [self.phoneTF mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -77,7 +83,9 @@
     }];
     
     LoginTextField *codeTF = [[LoginTextField alloc]initWithPlaceholder:@"请输入验证码" andStyle:GetCode_type];
-    
+    codeTF.foldKeyBoardBlock = ^{
+        [weakSelf.view endEditing:YES];
+    };
     codeTF.codeType = 2;
     [self.view addSubview:codeTF];
     self.codeTF = codeTF;
@@ -87,7 +95,7 @@
         make.width.height.equalTo(self.phoneTF);
     }];
     
-    LoginAlphaBtn *codeLoginBtn = [[LoginAlphaBtn alloc]initWithTitle:@"短信登录" andBtnImage:Image_Named(@"") andTarget:self andAction:@selector(codeLoginBtnAction)];
+    LoginAlphaBtn *codeLoginBtn = [[LoginAlphaBtn alloc]initWithTitle:self.isBindPhone ? @"绑定手机" : @"短信登录" andBtnImage:Image_Named(@"") andTarget:self andAction:@selector(codeLoginBtnAction)];
     [self.view addSubview:codeLoginBtn];
     self.codeLoginBtn = codeLoginBtn;
     [self.codeLoginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -97,7 +105,7 @@
         make.height.equalTo(self.sizeH(LoginAlphaBtnHeight));
     }];
     
-    LoginAlphaBtn *wxLoginBtn = [[LoginAlphaBtn alloc]initWithTitle:@"微信登录" andBtnImage:Image_Named(@"loginWXLogo") andTarget:self andAction:@selector(wxLoginBtnAction)];
+    LoginAlphaBtn *wxLoginBtn = [[LoginAlphaBtn alloc]initWithTitle:@"微信登录" andBtnImage:Image_Named(@"loginWXLogo") andTarget:self andAction:@selector(wechatLogin)];
     [self.view addSubview:wxLoginBtn];
     self.wxLoginBtn = wxLoginBtn;
     [self.wxLoginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -108,6 +116,7 @@
     }];
    
     self.wxLoginBtn.hidden = ![WXApi isWXAppInstalled];
+    self.wxLoginBtn.hidden = self.isBindPhone;
     
     UIButton * readBtn = [UIButton buttonWithTitle:@"《神奇视频注册协议》,《神奇视频隐私政策》" titleColor:White_Color bgColor:Clear_Color highlightedColor:White_Color];
     [readBtn.titleLabel setFont:Font_Size(12)];
@@ -127,6 +136,15 @@
     
 }
 
+- (void)wechatLogin {
+    if ([WXApi isWXAppInstalled]) {
+        SendAuthReq *req = [[SendAuthReq alloc] init];
+        req.scope = @"snsapi_userinfo";
+        req.state = @"iOSMagicVideoApp";
+        [WXApi sendReq:req];
+    }
+}
+
 - (void)protocolToWebViewAction {
     KSBaseWebViewController * web  = [[KSBaseWebViewController alloc]init];
     web.webType = WKType;
@@ -135,30 +153,8 @@
     [self.navigationController pushViewController:web animated:YES];
 }
 
-//wxLogin
-- (void)wxLoginBtnAction {
-    SSMBToast(@"微信登录", MainWindow);
-    
-    //构造SendAuthReq结构体
-    SendAuthReq* req =[[SendAuthReq alloc] init];
-    req.scope = @"snsapi_userinfo";
-//    req.state = @"";
-    //第三方向微信终端发送一个SendAuthReq消息结构
-    [WXApi sendReq:req];
-    
-}
 
-/*! @brief 发送一个sendReq后，收到微信的回应
- *
- * 收到一个来自微信的处理结果。调用一次sendReq后会收到onResp。
- * 可能收到的处理结果有SendMessageToWXResp、SendAuthResp等。
- * @param resp具体的回应内容，是自动释放的
- */
--(void) onResp:(BaseResp*)resp {
-    SSMBToast(@"微信登录Test", MainWindow);
-}
-
-//codeLogin
+//验证码登录 or 微信登录后绑定手机号登录
 - (void)codeLoginBtnAction {
     if(self.phoneTF.text.length !=11 ) {
         SSMBToast(@"请填写正确的手机号", MainWindow);
@@ -168,58 +164,80 @@
         SSMBToast(@"请输入验证码", MainWindow);
         return;
     }
-    
-    SSGifShow(MainWindow, @"加载中");
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        SSDissMissAllGifHud(MainWindow, YES);
-        SSMBToast(@"登录成功", MainWindow);
-        
-        if (self.vcFrom) {
-            [NOTIFICATION postNotificationName:LoginAndRefreshNoti object:nil];
-            [self.navigationController popToViewController:self.vcFrom animated:YES];
-        }else {
-            KSTabBarController * tabBar = [[KSTabBarController alloc]init];
-            [g_App restoreRootViewController:tabBar];
-        }
-    });
-    
+
 //    SSGifShow(MainWindow, @"加载中");
-//    NSDictionary *dic = @{@"mobile" : self.phoneTF.text,
-//                          @"code": self.codeTF.text
-//                          };
-//    [[SSRequest request] POSTAboutLogin:Login_MsgCodeUrl parameters:[dic mutableCopy] success:^(SSRequest *request, NSDictionary *response) {
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //        SSDissMissAllGifHud(MainWindow, YES);
 //        SSMBToast(@"登录成功", MainWindow);
-//        [[UserManager shareManager] saveUserDataWithDic:response[@"data"]];
 //
 //        if (self.vcFrom) {
 //            [NOTIFICATION postNotificationName:LoginAndRefreshNoti object:nil];
-//            if (self.isLoginToVIP) {
-//                [NOTIFICATION postNotificationName:LoginAndGoVIPNoti object:nil];
-//            }
 //            [self.navigationController popToViewController:self.vcFrom animated:YES];
 //        }else {
 //            KSTabBarController * tabBar = [[KSTabBarController alloc]init];
 //            [g_App restoreRootViewController:tabBar];
 //        }
-//
-//    } failure:^(SSRequest *request, NSString *errorMsg) {
-//        SSDissMissAllGifHud(MainWindow, YES);
-//        SSMBToast(errorMsg, MainWindow);
-//
-//    }];
+//    });
     
-    
-}
-
-- (void)backAction {
-    if (self.vcFrom) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }else {
-        [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.isBindPhone) { //微信登录后绑定手机号登录
+        
+        //    SSGifShow(MainWindow, @"加载中");
+        //    NSDictionary *dic = @{@"mobile" : self.phoneTF.text,
+        //                          @"code": self.codeTF.text
+        //                          };
+        //    [[SSRequest request] POSTAboutLogin:Login_MsgCodeUrl parameters:[dic mutableCopy] success:^(SSRequest *request, NSDictionary *response) {
+        //        SSDissMissAllGifHud(MainWindow, YES);
+        //        SSMBToast(@"登录成功", MainWindow);
+        //        [[UserManager shareManager] saveUserDataWithDic:response[@"data"]];
+        //
+        //        if (self.vcFrom) {
+        //            [NOTIFICATION postNotificationName:LoginAndRefreshNoti object:nil];
+        //            [self.navigationController popToViewController:self.vcFrom animated:YES];
+        //        }else {
+        //            KSTabBarController * tabBar = [[KSTabBarController alloc]init];
+        //            [g_App restoreRootViewController:tabBar];
+        //        }
+        //
+        //    } failure:^(SSRequest *request, NSString *errorMsg) {
+        //        SSDissMissAllGifHud(MainWindow, YES);
+        //        SSMBToast(errorMsg, MainWindow);
+        //
+        //    }];
+        
+    }else {  //验证码登录
+        
+        //    SSGifShow(MainWindow, @"加载中");
+        //    NSDictionary *dic = @{@"mobile" : self.phoneTF.text,
+        //                          @"code": self.codeTF.text
+        //                          };
+        //    [[SSRequest request] POSTAboutLogin:Login_MsgCodeUrl parameters:[dic mutableCopy] success:^(SSRequest *request, NSDictionary *response) {
+        //        SSDissMissAllGifHud(MainWindow, YES);
+        //        SSMBToast(@"登录成功", MainWindow);
+        //        [[UserManager shareManager] saveUserDataWithDic:response[@"data"]];
+        //
+        //        if (self.vcFrom) {
+        //            [NOTIFICATION postNotificationName:LoginAndRefreshNoti object:nil];
+        //            [self.navigationController popToViewController:self.vcFrom animated:YES];
+        //        }else {
+        //            KSTabBarController * tabBar = [[KSTabBarController alloc]init];
+        //            [g_App restoreRootViewController:tabBar];
+        //        }
+        //
+        //    } failure:^(SSRequest *request, NSString *errorMsg) {
+        //        SSDissMissAllGifHud(MainWindow, YES);
+        //        SSMBToast(errorMsg, MainWindow);
+        //
+        //    }];
+        
     }
 }
 
+- (void)backAction {
+    if(self.isBindPhone) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

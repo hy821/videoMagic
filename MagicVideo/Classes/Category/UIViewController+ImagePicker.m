@@ -136,8 +136,8 @@ UIAlertViewDelegate>
         imagePickerVc.cropRect = CGRectMake(0, (ScreenHeight-ScreenWidth)/2.0, ScreenWidth, ScreenWidth);
     }
     imagePickerVc.naviTitleColor = KCOLOR(@"#333333");
-    imagePickerVc.naviTitleFont = KFONT(17);
-    imagePickerVc.barItemTextFont = KFONT(15);
+    imagePickerVc.naviTitleFont = Font_Size(17);
+    imagePickerVc.barItemTextFont = Font_Size(15);
     imagePickerVc.barItemTextColor = KCOLOR(@"#333333");
     
 #pragma mark - 到这里为止
@@ -187,8 +187,8 @@ UIAlertViewDelegate>
     imagePickerVc.sortAscendingByModificationDate = YES;
     
     imagePickerVc.naviTitleColor = KCOLOR(@"#333333");
-    imagePickerVc.naviTitleFont = KFONT(17);
-    imagePickerVc.barItemTextFont = KFONT(15);
+    imagePickerVc.naviTitleFont = Font_Size(17);
+    imagePickerVc.barItemTextFont = Font_Size(15);
     imagePickerVc.barItemTextColor = KCOLOR(@"#333333");
   
 #pragma mark - 到这里为止

@@ -58,22 +58,13 @@ static SSRequest *ssrequest = nil;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        NSString *cerPath = [[NSBundle mainBundle] pathForResource:@"iOS_KS_trust_hosts" ofType:@"cer"];
-        NSData * certData =[NSData dataWithContentsOfFile:cerPath];
-        
         AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
-        // allowInvalidCertificates 是否允许无效证书（也就是自建的证书），默认为NO
-        // 如果是需要验证自建证书，需要设置为YES
-        //是否允许不信任的证书（证书无效、证书时间过期）通过验证 ，默认为NO.
-        //发布APP的话，尽量不要设置allowInvalidCertificates = YES;
-        //不要问为什么，这是允许无效证书，只是调试测试的时候使用，很可能无法通过审核
-        securityPolicy.allowInvalidCertificates = YES; //[USER_MANAGER isDevStatus];
-        //validatesDomainName 是否需要验证域名，默认为YES;
-        //假如证书的域名与你请求的域名不一致，需把该项设置为NO；如设成NO的话，即服务器使用其他可信任机构颁发的证书，也可以建立连接，这个非常危险，建议打开。
-        //置为NO，主要用于这种情况：客户端请求的是子域名，而证书上的是另外一个域名。因为SSL证书上的域名是独立的，假如证书上注册的域名是www.google.com，那么mail.google.com是无法验证通过的；当然，有钱可以注册通配符的域名*.google.com，但这个还是比较贵的。
-        //如置为NO，建议自己添加对应域名的校验逻辑。
-        securityPolicy.validatesDomainName =NO;    //是否需要验证域名，默认YES
-        securityPolicy.pinnedCertificates = [NSSet setWithObject:certData];
+        securityPolicy.allowInvalidCertificates = YES;
+
+//        NSString *cerPath = [[NSBundle mainBundle] pathForResource:@"iOS_KS_trust_hosts" ofType:@"cer"];
+//        NSData * certData =[NSData dataWithContentsOfFile:cerPath];
+//        securityPolicy.validatesDomainName =NO;    //是否需要验证域名，默认YES
+//        securityPolicy.pinnedCertificates = [NSSet setWithObject:certData];
         
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.securityPolicy = securityPolicy;
@@ -95,32 +86,30 @@ static SSRequest *ssrequest = nil;
     self.sessionManager.responseSerializer = JsonSerializer;
     
     NSString *requestUrlString = SSStr([USER_MANAGER serverAddress], URLString);
-    //local
-//    requestUrlString = SSStr(@"http://10.0.0.19:8082/", URLString);
 
     self.sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
     self.sessionManager.requestSerializer.timeoutInterval = 10.f;
     [self.sessionManager.requestSerializer setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     [self.sessionManager.requestSerializer setValue:[self getUserAgentStrWithUrlStr:URLString IsLogin:NO] forHTTPHeaderField:@"User-Agent"];
     
-    if ([URLString isEqualToString:HomeHotChannelUrl] || [URLString isEqualToString:DiscoverShortVideoUrl]) {
-        NSDictionary *advDic = [USER_MANAGER getAdvParamDicWithPositionID:kGDTPositionId_DiscoverAdvCell slotWidth:ScreenWidth slotHeight:self.sizeH(320)];
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:advDic options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *receiptStr = [jsonData base64EncodedStringWithOptions:0];
-        [self.sessionManager.requestSerializer setValue:receiptStr forHTTPHeaderField:@"Ads-Agent"];
-      
-    }else if ([URLString isEqualToString:SearchLinkingOrResultUrl]) {
-        NSDictionary *advDic = [USER_MANAGER getAdvParamDicWithPositionID:kGDTPositionId_SearchResultAdvCell slotWidth:ScreenWidth slotHeight:self.sizeH(80)];
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:advDic options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *receiptStr = [jsonData base64EncodedStringWithOptions:0];
-        [self.sessionManager.requestSerializer setValue:receiptStr forHTTPHeaderField:@"Ads-Agent"];
-    
-    }else if ([URLString isEqualToString:ShortVideoRecomListUrl]) {
-        NSDictionary *advDic = [USER_MANAGER getAdvParamDicWithPositionID:TTPositionId_ShortVideoPlayListFeed slotWidth:ScreenWidth slotHeight:self.sizeH(320)];
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:advDic options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *receiptStr = [jsonData base64EncodedStringWithOptions:0];
-        [self.sessionManager.requestSerializer setValue:receiptStr forHTTPHeaderField:@"Ads-Agent"];
-    }
+//    if ([URLString isEqualToString:HomeHotChannelUrl] || [URLString isEqualToString:DiscoverShortVideoUrl]) {
+//        NSDictionary *advDic = [USER_MANAGER getAdvParamDicWithPositionID:kGDTPositionId_DiscoverAdvCell slotWidth:ScreenWidth slotHeight:self.sizeH(320)];
+//        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:advDic options:NSJSONWritingPrettyPrinted error:nil];
+//        NSString *receiptStr = [jsonData base64EncodedStringWithOptions:0];
+//        [self.sessionManager.requestSerializer setValue:receiptStr forHTTPHeaderField:@"Ads-Agent"];
+//
+//    }else if ([URLString isEqualToString:SearchLinkingOrResultUrl]) {
+//        NSDictionary *advDic = [USER_MANAGER getAdvParamDicWithPositionID:kGDTPositionId_SearchResultAdvCell slotWidth:ScreenWidth slotHeight:self.sizeH(80)];
+//        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:advDic options:NSJSONWritingPrettyPrinted error:nil];
+//        NSString *receiptStr = [jsonData base64EncodedStringWithOptions:0];
+//        [self.sessionManager.requestSerializer setValue:receiptStr forHTTPHeaderField:@"Ads-Agent"];
+//
+//    }else if ([URLString isEqualToString:ShortVideoRecomListUrl]) {
+//        NSDictionary *advDic = [USER_MANAGER getAdvParamDicWithPositionID:TTPositionId_ShortVideoPlayListFeed slotWidth:ScreenWidth slotHeight:self.sizeH(320)];
+//        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:advDic options:NSJSONWritingPrettyPrinted error:nil];
+//        NSString *receiptStr = [jsonData base64EncodedStringWithOptions:0];
+//        [self.sessionManager.requestSerializer setValue:receiptStr forHTTPHeaderField:@"Ads-Agent"];
+//    }
     
     [self.sessionManager GET:requestUrlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         long long endTime = [Tool getCurrentTimeMillsNum];
@@ -210,12 +199,12 @@ static SSRequest *ssrequest = nil;
     [self.sessionManager.requestSerializer setValue:@"application/json;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     [self.sessionManager.requestSerializer setValue:[self getUserAgentStrWithUrlStr:URLString IsLogin:NO] forHTTPHeaderField:@"User-Agent"];
     
-    if ([URLString isEqualToString:ShortVideoRecomListUrl]) {
-        NSDictionary *advDic = [USER_MANAGER getAdvParamDicWithPositionID:TTPositionId_ShortVideoPlayListFeed slotWidth:ScreenWidth slotHeight:self.sizeH(320)];
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:advDic options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *receiptStr = [jsonData base64EncodedStringWithOptions:0];
-        [self.sessionManager.requestSerializer setValue:receiptStr forHTTPHeaderField:@"Ads-Agent"];
-    }
+//    if ([URLString isEqualToString:ShortVideoRecomListUrl]) {
+//        NSDictionary *advDic = [USER_MANAGER getAdvParamDicWithPositionID:TTPositionId_ShortVideoPlayListFeed slotWidth:ScreenWidth slotHeight:self.sizeH(320)];
+//        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:advDic options:NSJSONWritingPrettyPrinted error:nil];
+//        NSString *receiptStr = [jsonData base64EncodedStringWithOptions:0];
+//        [self.sessionManager.requestSerializer setValue:receiptStr forHTTPHeaderField:@"Ads-Agent"];
+//    }
     
     [self.sessionManager POST:requestUrlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -244,6 +233,7 @@ static SSRequest *ssrequest = nil;
 //登录类的POST请求
 - (void)POSTAboutLogin:(NSString *)URLString
   parameters:(NSMutableDictionary*)parameters
+            signString:(NSString *)signString
      success:(void (^)(SSRequest *request, id response))success
      failure:(void (^)(SSRequest *request, NSString *errorMsg))failure{
     
@@ -254,20 +244,13 @@ static SSRequest *ssrequest = nil;
     self.sessionManager.responseSerializer = JsonSerializer;
     
     NSString *requestUrlString = SSStr([USER_MANAGER serverAddressWithLogin], URLString);
-    //local
-    //    requestUrlString = SSStr(@"http://10.0.0.19:8082/", URLString);
-
+    
     self.sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
-    self.sessionManager.requestSerializer.timeoutInterval = 10.f;
+    self.sessionManager.requestSerializer.timeoutInterval = 30.f;
     [self.sessionManager.requestSerializer setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    [self.sessionManager.requestSerializer setValue:[self getUserAgentStrWithUrlStr:URLString IsLogin:YES] forHTTPHeaderField:@"User-Agent"];
+    [self.sessionManager.requestSerializer setValue:[Tool md5:signString] forHTTPHeaderField:@"sign"];
     
     [self.sessionManager POST:requestUrlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        long long endTime = [Tool getCurrentTimeMillsNum];
-        long long startTime = [responseObject[@"requestStartTime"] longLongValue];
-        long long durationTime = startTime - endTime;
-        [USERDEFAULTS setObject:[NSNumber numberWithLong:durationTime] forKey:LastRequestDurTime];
-        [USERDEFAULTS synchronize];
 
         if([responseObject[@"code"] integerValue] == 10000) {
             success(self,responseObject);

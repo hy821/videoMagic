@@ -31,4 +31,7 @@ typedef void(^TextChangeBlock)(NSString * text);
 -(NSString*)text;
 -(void)netErrorToDo;
 
+//点击完成 收起键盘
+@property (nonatomic,copy) void(^foldKeyBoardBlock)(void);
+
 @end

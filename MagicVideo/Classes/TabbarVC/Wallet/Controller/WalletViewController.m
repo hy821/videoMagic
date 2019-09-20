@@ -93,7 +93,7 @@
     
     UIButton * loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [loginBtn setTitle:@"去登录" forState:UIControlStateNormal];
-    loginBtn.titleLabel.font = KFONT(19);
+    loginBtn.titleLabel.font = Font_Size(19);
     [loginBtn setTitleColor:White_Color forState:UIControlStateNormal];
     [loginBtn setTitleColor:White_Color forState:UIControlStateSelected];
     [loginBtn setBackgroundColor:KCOLOR(@"#D9D919") forState:UIControlStateNormal];

@@ -173,34 +173,17 @@ static NSString * const cellHeader_ID = @"cellHeader_ID";
         _mainTableView.rowHeight = self.sizeH(34);
         _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         MineTableViewHeaderView *headerView = [[MineTableViewHeaderView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, self.sizeH(180))];
-//        WS()
+        WS()
         headerView.modifyMsgBlock = ^{
             if (IS_LOGIN) {
 //                ModifyMsgViewController *vc = [[ModifyMsgViewController alloc]init];
 //                vc.hidesBottomBarWhenPushed = YES;
 //                [weakSelf.navigationController pushViewController:vc animated:YES];
             }else {
-                [USER_MANAGER gotoLoginFromVC:self];
+                [USER_MANAGER gotoLoginFromVC:weakSelf];
             }
         };
-//        //VIP
-//        headerView.vipClickBlock = ^{
-//            [[BuryingPointManager shareManager] buryingPointWithEventID:BP_MineGoVipClick andParameters:@{}];
-//
-//            if (IS_LOGIN) {
-//                VIPViewController *vc = [[VIPViewController alloc]init];
-//                vc.fromType = 0;
-//                vc.hidesBottomBarWhenPushed = YES;
-//                [weakSelf.navigationController pushViewController:vc animated:YES];
-//            }else {
-//                LoginViewController * login = [[LoginViewController alloc]init];
-//                login.vcFrom = self;
-//                login.isLoginToVIP = YES;
-//                login.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:login animated:YES];
-//            }
-//        };
-        
+
         self.headerView = headerView;
         _mainTableView.tableHeaderView = self.headerView;
 

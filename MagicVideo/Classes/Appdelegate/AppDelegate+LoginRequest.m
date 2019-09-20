@@ -11,6 +11,8 @@
 #import "TZLocationManager.h"
 #import "PrivacyPermission.h"
 #import "WXApi.h"
+#import <AFNetworking/AFNetworking.h>
+#import "LoginViewController.h"
 
 @interface AppDelegate()<WXApiDelegate>
 
@@ -238,7 +240,7 @@
     self.splashAd = [[GDTSplashAd alloc] initWithAppId:kGDTMobSDKAppId placementId:model.positionCode];
     self.splashAd.delegate = self;
     self.splashAd.fetchDelay = 3;
-    
+ 
     UIImage *splashImage = [UIImage imageNamed:@"SplashNormal"];
     if (isIPhoneXSeries()) {
         splashImage = [UIImage imageNamed:@"SplashX"];
@@ -384,8 +386,72 @@
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-    [WXApi handleOpenURL:url delegate: self];
-    return YES;
+    return  [WXApi handleOpenURL:url delegate:self];
+}
+
+- (void)onResp:(BaseResp *)resp {
+//    WXSuccess           = 0,    /**< 成功    */
+//    WXErrCodeCommon     = -1,   /**< 普通错误类型    */
+//    WXErrCodeUserCancel = -2,   /**< 用户点击取消并返回    */
+//    WXErrCodeSentFail   = -3,   /**< 发送失败    */
+//    WXErrCodeAuthDeny   = -4,   /**< 授权失败    */
+//    WXErrCodeUnsupport  = -5,   /**< 微信不支持    */
+    if (resp.errCode != 0) {
+        return;
+    }
+    // 向微信请求授权后,得到响应结果
+    if ([resp isKindOfClass:[SendAuthResp class]]) {
+        SendAuthResp *temp = (SendAuthResp *)resp;
+        NSString *code = temp.code;
+        if (code && code.length>0) {
+//            LoginViewController *vc = [[LoginViewController alloc]init];
+//            vc.isBindPhone = YES;
+//            [SelectVC pushViewController:vc animated:YES];
+
+            SSGifShow(MainWindow, @"加载中");
+            NSDictionary *dic = @{
+                                  @"code" : code,
+                                  @"channel" : @"AppStore",
+                                  @"ts" : [Tool getCurrentTimeMillsString],
+                                  @"os" : @"2",
+                                  @"uid" : @"aaaaa"
+                                  };
+            NSString *sign = [NSString stringWithFormat:@"%@%@%@",code,[Tool getCurrentTimeMillsString],KEY_SKEY];
+            [[SSRequest request]POSTAboutLogin:WXLoginUrl parameters:dic.mutableCopy signString:sign success:^(SSRequest *request, id response) {
+
+                SSDissMissAllGifHud(MainWindow, YES);
+
+                //返回值判断, 是否绑定手机号
+
+//                if(绑定手机号了) {
+//                    直接保存用户信息, 登录
+//                }else {
+//                    跳 绑定手机号页面 (即 登录页面)
+//                }
+
+
+            } failure:^(SSRequest *request, NSString *errorMsg) {
+                SSDissMissAllGifHud(MainWindow, YES);
+                SSMBToast(errorMsg, MainWindow);
+            }];
+            
+        }
+    }
+}
+
+// 获取用户个人信息（UnionID机制）
+- (void)wechatLoginByRequestForUserInfo {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSString *accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:WX_ACCESS_TOKEN];
+    NSString *openID = [[NSUserDefaults standardUserDefaults] objectForKey:WX_OPEN_ID];
+    NSString *userUrlStr = [NSString stringWithFormat:@"%@/userinfo?access_token=%@&openid=%@", WX_BASE_URL, accessToken, openID];
+    // 请求用户数据
+    [manager GET:userUrlStr parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        SSLog(@"请求用户信息的response = %@", responseObject);
+        // NSMutableDictionary *userDict = [NSMutableDictionary dictionaryWithDictionary:responseObject];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        SSLog(@"获取用户信息时出错 = %@", error);
+    }];
 }
 
 @end
