@@ -238,7 +238,7 @@ static SSRequest *ssrequest = nil;
         }else if(RequestStateCode == 102) {  //验证码不正确
             failure(self,@"验证码错误");
         }else if(RequestStateCode == 101) {  //未登录
-            failure(self,@"未登录");
+            failure(self,@"登录失败");
         }else if(RequestStateCode == 500) {  //服务异常
             failure(self,@"服务异常");
         }else if(RequestStateCode == 103) {  //手机号不正确

@@ -1362,6 +1362,7 @@
 			children = (
 				602808D72331FD33000AFF4B /* ZFPlayerNotification.h */,
 				602808D82331FD33000AFF4B /* ZFPlayerGestureControl.m */,
+				602808E72331FD34000AFF4B /* ZFPlayerController.h */,
 				602808D92331FD33000AFF4B /* ZFPlayerController.m */,
 				602808DA2331FD33000AFF4B /* ZFFloatView.h */,
 				602808DB2331FD34000AFF4B /* ZFKVOController.h */,
@@ -1376,7 +1377,6 @@
 				602808E42331FD34000AFF4B /* ZFPlayerNotification.m */,
 				602808E52331FD34000AFF4B /* ZFFloatView.m */,
 				602808E62331FD34000AFF4B /* ZFPlayerMediaControl.h */,
-				602808E72331FD34000AFF4B /* ZFPlayerController.h */,
 				602808E82331FD34000AFF4B /* ZFPlayerView.m */,
 				602808E92331FD34000AFF4B /* ZFPlayerLogManager.h */,
 				602808EA2331FD34000AFF4B /* ZFOrientationObserver.h */,
