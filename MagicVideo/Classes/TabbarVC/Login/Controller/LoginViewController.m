@@ -48,8 +48,9 @@
     [backBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backBtn];
     [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(self.sizeH(43));
-        make.left.equalTo(self.view).offset(self.sizeW(15));
+        make.top.equalTo(self.view).offset(self.sizeH(40));
+        make.left.equalTo(self.view).offset(self.sizeW(5));
+        make.width.height.equalTo(self.sizeW(50));
     }];
     
     UIImageView *logoIV = [[UIImageView alloc]initWithImage:Image_Named(@"loginLogo")];
@@ -191,7 +192,6 @@
         [[UserManager shareManager] saveUserDataWithDic:dataDic[@"user"] andToken:dataDic[@"token"]];
 
         if (self.vcFrom) {
-            [NOTIFICATION postNotificationName:LoginAndRefreshNoti object:nil];
             [self.navigationController popToViewController:self.vcFrom animated:YES];
         }else {
             KSTabBarController * tabBar = [[KSTabBarController alloc]init];

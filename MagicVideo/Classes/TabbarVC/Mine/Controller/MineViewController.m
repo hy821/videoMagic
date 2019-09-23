@@ -9,6 +9,8 @@
 #import "MineViewController.h"
 #import "MineTableViewCell.h"
 #import "MineTableViewHeaderView.h"
+#import "ModifyMsgViewController.h"
+
 //#import "HistoryViewController.h"
 //#import "ErrorReportViewController.h"
 //#import "MsgCenterController.h"
@@ -52,6 +54,11 @@ static NSString * const cellHeader_ID = @"cellHeader_ID";
     [super viewDidLoad];
     self.fd_prefersNavigationBarHidden = YES;
     [self createUI];
+    [NOTIFICATION addObserver:self selector:@selector(refreshUserMsg) name:RefreshUserMsgNoti object:nil];
+}
+
+- (void)refreshUserMsg {
+    [self.headerView refresh];
 }
 
 - (void)createUI {
@@ -176,9 +183,9 @@ static NSString * const cellHeader_ID = @"cellHeader_ID";
         WS()
         headerView.modifyMsgBlock = ^{
             if (IS_LOGIN) {
-//                ModifyMsgViewController *vc = [[ModifyMsgViewController alloc]init];
-//                vc.hidesBottomBarWhenPushed = YES;
-//                [weakSelf.navigationController pushViewController:vc animated:YES];
+                ModifyMsgViewController *vc = [[ModifyMsgViewController alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [weakSelf.navigationController pushViewController:vc animated:YES];
             }else {
                 [USER_MANAGER gotoLoginFromVC:weakSelf];
             }

@@ -33,7 +33,6 @@
         self.nameLab.text = @"点击登录";
     }
     
-    
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {

@@ -45,7 +45,8 @@
 
 - (void)removeUserAllData;
 
-@property (nonatomic,assign) BOOL isLogin;
+// 判断是否登录
+-(BOOL)isLogin;
 
 -(NSInteger)getDragShowAdvCount;
 

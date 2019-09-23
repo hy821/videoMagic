@@ -247,10 +247,12 @@ static SSRequest *ssrequest = nil;
             failure(self,@"获取验证码间隔时间过短,请稍后重试");
         }else if(RequestStateCode == 105) {  //验证码发送失败
             failure(self,@"验证码获取失败");
+        }else if(RequestStateCode == 106) {  //该手机号已注册
+            failure(self,@"该手机号已注册");
         }else {
             failure(self,responseObject[@"message"]);
         }
-        
+
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         if(error.code == -1009) {

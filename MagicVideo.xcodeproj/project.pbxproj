@@ -13,6 +13,7 @@
 		602117942338747700AEAC9F /* VideoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117902338747600AEAC9F /* VideoDetailViewController.m */; };
 		602117952338747700AEAC9F /* LandscapeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117912338747600AEAC9F /* LandscapeViewController.m */; };
 		602117962338747700AEAC9F /* VideoDetailMsgController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117922338747600AEAC9F /* VideoDetailMsgController.m */; };
+		602117992338F9D000AEAC9F /* ModifyMsgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117982338F9D000AEAC9F /* ModifyMsgViewController.m */; };
 		602805AD2330F874000AFF4B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805A92330F874000AFF4B /* AppDelegate.m */; };
 		602805BD2330F917000AFF4B /* KSBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805AF2330F917000AFF4B /* KSBaseViewController.m */; };
 		602805BE2330F917000AFF4B /* KSBaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805B12330F917000AFF4B /* KSBaseWebViewController.m */; };
@@ -294,6 +295,8 @@
 		602117902338747600AEAC9F /* VideoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailViewController.m; sourceTree = "<group>"; };
 		602117912338747600AEAC9F /* LandscapeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapeViewController.m; sourceTree = "<group>"; };
 		602117922338747600AEAC9F /* VideoDetailMsgController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailMsgController.m; sourceTree = "<group>"; };
+		602117972338F9D000AEAC9F /* ModifyMsgViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyMsgViewController.h; sourceTree = "<group>"; };
+		602117982338F9D000AEAC9F /* ModifyMsgViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyMsgViewController.m; sourceTree = "<group>"; };
 		602805A82330F874000AFF4B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		602805A92330F874000AFF4B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		602805AE2330F916000AFF4B /* KSBaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSBaseWebViewController.h; sourceTree = "<group>"; };
@@ -1007,6 +1010,8 @@
 			children = (
 				6028067A2331F8A9000AFF4B /* MineViewController.h */,
 				6028067B2331F8A9000AFF4B /* MineViewController.m */,
+				602117972338F9D000AEAC9F /* ModifyMsgViewController.h */,
+				602117982338F9D000AEAC9F /* ModifyMsgViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2473,6 +2478,7 @@
 				60280A772331FD36000AFF4B /* TZProgressView.m in Sources */,
 				60280A832331FD36000AFF4B /* SSPhotoCell.m in Sources */,
 				60280AA02331FD36000AFF4B /* HXDatePhotoViewTransition.m in Sources */,
+				602117992338F9D000AEAC9F /* ModifyMsgViewController.m in Sources */,
 				60280A812331FD36000AFF4B /* SSphotoListCell.m in Sources */,
 				60280BFB233396F4000AFF4B /* FMDatabaseQueue.m in Sources */,
 				60280AAF2331FD36000AFF4B /* HJTabViewControllerPlugin_BottomInset.m in Sources */,

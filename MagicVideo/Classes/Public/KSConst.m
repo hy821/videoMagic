@@ -58,15 +58,12 @@ NSString *const Type = @"type";//型号
 /******************  通知Noti  ***************************/
 NSString *const AnonymousSuccessNoti = @"AnonymousSuccessNoti";  //注册成功,通知首页加载数据
 NSString *const PageViewScrollNoti = @"PageViewScrollNoti";
-NSString *const LOGIN_IN = @"LOGIN_IN";
-NSString *const LOGIN_OUT = @"LOGIN_OUT";
+NSString *const LOGIN_IN_Noti = @"LOGIN_IN_Noti";
+NSString *const LOGIN_OUT_Noti = @"LOGIN_OUT_Noti";
 NSString *const RefreshUserMsgNoti = @"RefreshUserMsgNoti";
 NSString *const TabBarRefresh = @"TabBarRefresh";
-NSString *const IAPSuccessNoti = @"IAPSuccessNoti";
 NSString *const SEARCH_HotWord_Noti = @"SEARCH_HotWord_Noti";
-NSString *const LoginAndRefreshNoti = @"LoginAndRefreshNoti";
 NSString *const FIRSTRegisterFailNoti = @"FIRSTRegisterFailNoti"; //首次注册失败, 通知首页显示按钮
-NSString *const LoginAndGoVIPNoti = @"LoginAndGoVIPNoti";
 NSString *const AdvCloseNoti = @"AdvCloseNoti";
 NSString *const WithdrawSuccessNoti = @"WithdrawSuccessNoti";  //提现成功,通知各页面刷新
 

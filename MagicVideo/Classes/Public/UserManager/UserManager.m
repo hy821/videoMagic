@@ -46,23 +46,17 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 
 - (instancetype)init {
     if (self = [super init]) {
-        _isLogin = NO;
     }return self;
 }
 
 // 判断是否登录
 -(BOOL)isLogin {
-    return NO;
-//    NSString *isLogin = [USERDEFAULTS objectForKey:isAnonymous];
-//    if (isLogin) {
-//        if([isLogin integerValue] == 1) {
-//            return NO;
-//        }else {
-//            return YES;
-//        }
-//    }else {
-//        return NO;
-//    }
+    NSString *token = [self getUserToken];
+    if(token && token.length>0) {
+        return YES;
+    }else {
+        return NO;
+    }
 }
 
 /**
@@ -85,6 +79,7 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 
         [USERDEFAULTS synchronize];
     
+    
 //    if ([dic[@"anonymous"] integerValue]==1) { //匿名注册 or 匿名登录 成功, 通知首页请求数据
 //        [NOTIFICATION postNotificationName:AnonymousSuccessNoti object:nil];
 //    }else {  //正常登录成功, 绑定个推别名
@@ -96,8 +91,11 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 //    [g_App getDragShowAdvCountMsg];
 //    [g_App getFullScreenAdvMsg];
     
+    //修改用户资料的地方, 发通知
     [NOTIFICATION postNotificationName:RefreshUserMsgNoti object:nil];
 
+    //Token == Login_in
+    [NOTIFICATION postNotificationName:LOGIN_IN_Noti object:nil];
 }
 
 - (void)removeUserAllData {
@@ -112,6 +110,11 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 //    [USERDEFAULTS removeObjectForKey:CREDENTIAL];
 
     [USERDEFAULTS synchronize];
+    
+    //修改用户资料的地方, 发通知
+    [NOTIFICATION postNotificationName:RefreshUserMsgNoti object:nil];
+    // removeAllData(Token) == Login_out
+    [NOTIFICATION postNotificationName:LOGIN_OUT_Noti object:nil];
 }
 
 //UserID

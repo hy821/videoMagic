@@ -25,8 +25,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [NOTIFICATION addObserver:self selector:@selector(refreshWhenLoginChange) name:LoginAndRefreshNoti object:nil];
-    [NOTIFICATION addObserver:self selector:@selector(refreshWhenLoginChange) name:LOGIN_OUT object:nil];
+    [NOTIFICATION addObserver:self selector:@selector(refreshWhenLoginChange) name:LOGIN_IN_Noti object:nil];
+    [NOTIFICATION addObserver:self selector:@selector(refreshWhenLoginChange) name:LOGIN_OUT_Noti object:nil];
     [self initUI];
    
 }

@@ -227,15 +227,12 @@ extern NSString * const Type;//型号
 /******************  通知Noti  ***************************/
 extern NSString *const AnonymousSuccessNoti;  //注册成功,通知首页加载数据
 extern NSString *const PageViewScrollNoti; //点击更多,跳转到对应pageView
-extern NSString *const LOGIN_IN;
-extern NSString *const LOGIN_OUT;
+extern NSString *const LOGIN_IN_Noti;
+extern NSString *const LOGIN_OUT_Noti;
 extern NSString *const RefreshUserMsgNoti;
 extern NSString *const TabBarRefresh;
-extern NSString *const IAPSuccessNoti;
 extern NSString *const SEARCH_HotWord_Noti;  //搜索热词通知, 更新topSearchView的placeHolder
-extern NSString *const LoginAndRefreshNoti;  //从某个页面进去了登录页面, 登录成功后, 通知进来的页面, 刷新
 extern NSString * const FIRSTRegisterFailNoti; //首次注册失败, 通知首页显示按钮
-extern NSString *const LoginAndGoVIPNoti;
 extern NSString *const AdvCloseNoti;
 extern NSString *const WithdrawSuccessNoti; //提现成功,通知各页面刷新
 
