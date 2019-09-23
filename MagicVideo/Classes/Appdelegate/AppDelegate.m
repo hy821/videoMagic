@@ -28,13 +28,13 @@
     
     [self configNavBar];
     [self wxRegister];
-    
+    [self checks];
+
 //    [self updateUserAgent];
     
     [self.window makeKeyAndVisible];
     
 //    [self getSplashAdvMsg];
-//    [self checks];
     
 
     // 开启网络监听

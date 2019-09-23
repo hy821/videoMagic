@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4DF0016E28C8DD84088FA052 /* libPods-MagicVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41449CD2C9390AC61FD4E740 /* libPods-MagicVideo.a */; };
+		60211789233520F100AEAC9F /* iOS_KS_trust_hosts.cer in Resources */ = {isa = PBXBuildFile; fileRef = 60211788233520F100AEAC9F /* iOS_KS_trust_hosts.cer */; };
+		602117932338747700AEAC9F /* VideoDetailCommentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6021178B2338747600AEAC9F /* VideoDetailCommentController.m */; };
+		602117942338747700AEAC9F /* VideoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117902338747600AEAC9F /* VideoDetailViewController.m */; };
+		602117952338747700AEAC9F /* LandscapeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117912338747600AEAC9F /* LandscapeViewController.m */; };
+		602117962338747700AEAC9F /* VideoDetailMsgController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117922338747600AEAC9F /* VideoDetailMsgController.m */; };
 		602805AD2330F874000AFF4B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805A92330F874000AFF4B /* AppDelegate.m */; };
 		602805BD2330F917000AFF4B /* KSBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805AF2330F917000AFF4B /* KSBaseViewController.m */; };
 		602805BE2330F917000AFF4B /* KSBaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805B12330F917000AFF4B /* KSBaseWebViewController.m */; };
@@ -280,6 +285,15 @@
 
 /* Begin PBXFileReference section */
 		41449CD2C9390AC61FD4E740 /* libPods-MagicVideo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MagicVideo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		60211788233520F100AEAC9F /* iOS_KS_trust_hosts.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = iOS_KS_trust_hosts.cer; sourceTree = "<group>"; };
+		6021178B2338747600AEAC9F /* VideoDetailCommentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailCommentController.m; sourceTree = "<group>"; };
+		6021178C2338747600AEAC9F /* LandscapeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandscapeViewController.h; sourceTree = "<group>"; };
+		6021178D2338747600AEAC9F /* VideoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDetailViewController.h; sourceTree = "<group>"; };
+		6021178E2338747600AEAC9F /* VideoDetailMsgController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDetailMsgController.h; sourceTree = "<group>"; };
+		6021178F2338747600AEAC9F /* VideoDetailCommentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDetailCommentController.h; sourceTree = "<group>"; };
+		602117902338747600AEAC9F /* VideoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailViewController.m; sourceTree = "<group>"; };
+		602117912338747600AEAC9F /* LandscapeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LandscapeViewController.m; sourceTree = "<group>"; };
+		602117922338747600AEAC9F /* VideoDetailMsgController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailMsgController.m; sourceTree = "<group>"; };
 		602805A82330F874000AFF4B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		602805A92330F874000AFF4B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		602805AE2330F916000AFF4B /* KSBaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSBaseWebViewController.h; sourceTree = "<group>"; };
@@ -824,9 +838,25 @@
 			path = SSRequest;
 			sourceTree = "<group>";
 		};
+		6021178A2338747600AEAC9F /* VideoDetail */ = {
+			isa = PBXGroup;
+			children = (
+				6021178D2338747600AEAC9F /* VideoDetailViewController.h */,
+				602117902338747600AEAC9F /* VideoDetailViewController.m */,
+				6021178E2338747600AEAC9F /* VideoDetailMsgController.h */,
+				602117922338747600AEAC9F /* VideoDetailMsgController.m */,
+				6021178F2338747600AEAC9F /* VideoDetailCommentController.h */,
+				6021178B2338747600AEAC9F /* VideoDetailCommentController.m */,
+				6021178C2338747600AEAC9F /* LandscapeViewController.h */,
+				602117912338747600AEAC9F /* LandscapeViewController.m */,
+			);
+			path = VideoDetail;
+			sourceTree = "<group>";
+		};
 		6028058A2330F874000AFF4B /* OtherFile */ = {
 			isa = PBXGroup;
 			children = (
+				60211788233520F100AEAC9F /* iOS_KS_trust_hosts.cer */,
 			);
 			path = OtherFile;
 			sourceTree = "<group>";
@@ -941,6 +971,7 @@
 		602805962330F874000AFF4B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				6021178A2338747600AEAC9F /* VideoDetail */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2232,6 +2263,7 @@
 				60280A472331FD36000AFF4B /* WSDatePickerView.xib in Resources */,
 				60BBAFA92330D5600034C719 /* Main.storyboard in Resources */,
 				60280AB52331FD36000AFF4B /* UMCommonLog.bundle in Resources */,
+				60211789233520F100AEAC9F /* iOS_KS_trust_hosts.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2355,6 +2387,7 @@
 				60280A672331FD36000AFF4B /* LCActionSheetViewController.m in Sources */,
 				60280A822331FD36000AFF4B /* SSPhotoBrowerViewController.m in Sources */,
 				60280AC72331FD36000AFF4B /* MJRefreshStateHeader.m in Sources */,
+				602117962338747700AEAC9F /* VideoDetailMsgController.m in Sources */,
 				60280AD22331FD36000AFF4B /* TYTabPagerView.m in Sources */,
 				60280AD12331FD36000AFF4B /* TYTabPagerBarLayout.m in Sources */,
 				60280A882331FD36000AFF4B /* HXPhoto3DTouchViewController.m in Sources */,
@@ -2462,6 +2495,7 @@
 				60280ABB2331FD36000AFF4B /* MJRefreshConst.m in Sources */,
 				60280BFC233396F4000AFF4B /* FMDatabaseAdditions.m in Sources */,
 				60280A8A2331FD36000AFF4B /* NSBundle+HXWeiboPhotoPicker.m in Sources */,
+				602117952338747700AEAC9F /* LandscapeViewController.m in Sources */,
 				602806602331DD46000AFF4B /* KSLayerAnimation.m in Sources */,
 				60280A4A2331FD36000AFF4B /* UIView+Extension.m in Sources */,
 				60280B242331FE8A000AFF4B /* UIViewController+ImagePicker.m in Sources */,
@@ -2484,6 +2518,7 @@
 				60280A7E2331FD36000AFF4B /* VPImageCropperViewController.m in Sources */,
 				60280A892331FD36000AFF4B /* HXDatePhotoPreviewBottomView.m in Sources */,
 				60280AA22331FD36000AFF4B /* HXAlbumModel.m in Sources */,
+				602117942338747700AEAC9F /* VideoDetailViewController.m in Sources */,
 				602806632331DD46000AFF4B /* MYHRocketHeader.m in Sources */,
 				60280A9E2331FD36000AFF4B /* NSDate+HXExtension.m in Sources */,
 				60280AD92331FD36000AFF4B /* MBProgressHUD+MJ.m in Sources */,
@@ -2495,6 +2530,7 @@
 				60280BFE233396F4000AFF4B /* FMDatabasePool.m in Sources */,
 				60280AE62331FD36000AFF4B /* WXSTransitionManager+TypeTool.m in Sources */,
 				60280A9F2331FD36000AFF4B /* HXCustomNavigationController.m in Sources */,
+				602117932338747700AEAC9F /* VideoDetailCommentController.m in Sources */,
 				6028065F2331DD46000AFF4B /* RSAUtil.m in Sources */,
 				60280AEC2331FD36000AFF4B /* WXSTransitionProperty.m in Sources */,
 				60280A6F2331FD36000AFF4B /* TZImageCropManager.m in Sources */,

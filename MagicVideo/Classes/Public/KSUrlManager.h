@@ -10,15 +10,16 @@
 #define KSUrlManager_h
 
 /** 正式---服务器地址 */
-#define ServerURL_Login              @"https://login.51tv.com/"
-#define ServerURL_Normal            @"https://api.51tv.com/"
-#define ServerURL_H5                  @"http://h5.ikuaishou.com/#/"
+#define ServerURL_Login              @"http://47.99.87.119/"
+#define ServerURL_Normal            @"http://47.99.87.119/"
+#define ServerURL_H5                  @"http://47.99.87.119/"
 
 /** 开发---服务器地址 */
 #define DevServerURL_Login            @"http://47.99.87.119/"
 #define DevServerURL_Normal          @"http://47.99.87.119/"     
-#define DevServerURL_H5                @"http://h5.ks.quanyuer.com:8888/#/"
+#define DevServerURL_H5                @"http://47.99.87.119/"
 
+//sign私钥
 #define KEY_SKEY         @"bcb0c1736ab6eda5ad816fcc1204d885"
 
 //--------- H5_Url -----------//
@@ -30,16 +31,20 @@
 
 
 //--------- 登录 ---------//
+//FirstUrl_获取版本信息, 通用:app启动时调用接口
+#define CheckVersionStateUrl @"v1/app/init"
+//用户微信登录
 #define WXLoginUrl  @"v1/user/wx/auth"
-
-
-
+//绑定手机号
+#define BindPhoneUrl @"v1/user/bindphone"
+//获取短信验证码
+#define GetPhoneCodeUrl                 @"v1/user/verfcode"
+//短信验证码 (登录及注册)
+#define CodeLoginRegisterUrl                 @"v1/user/login"
 
 
 
 //--------- 接口Url -----------//
-//FirstUrl_获取版本信息
-#define CheckVersionStateUrl @"ver/check/ios/1"
 
 //拖拽显示adv次数
 #define DragShowAdvCountUrl @"ads/media/count/1"
@@ -50,12 +55,8 @@
 #define AnonymousRegisterUrl   @"user/register/device/1"
 //匿名登录
 #define AnonymousLoginUrl       @"user/login/device/1"
-//获取验证码:  用户注册,短信登录
-#define RegisterOrLoginGetCodeUrl       @"mobile/security/code/1"
 //密码登录
 #define Login_PassWordUrl         @"user/login/mobile/1/1"
-//短信验证码登录
-#define Login_MsgCodeUrl                 @"user/login/mobile/2/1"
 //手机注册
 #define PhoneRegisterUrl       @"user/register/mobile/1"
 //重置密码

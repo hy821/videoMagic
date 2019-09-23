@@ -18,7 +18,6 @@ typedef void(^TextChangeBlock)(NSString * text);
 @property (nonatomic,strong) UIFont * textFont;
 @property (nonatomic,copy) TextLengthBlock checkBlock;
 @property (nonatomic,copy) TextChangeBlock textChangeBlock;
-@property (nonatomic,assign) NSInteger codeType;  //1注册获取验证码  2验证码登录获取验证码 3重置密码
 @property (nonatomic,copy) NSString * mobileText;
 @property (nonatomic,copy) void (^receieveBlock)(BOOL isAllow);
 @property (nonatomic,assign) BOOL isAllowTap;
@@ -33,5 +32,9 @@ typedef void(^TextChangeBlock)(NSString * text);
 
 //点击完成 收起键盘
 @property (nonatomic,copy) void(^foldKeyBoardBlock)(void);
+
+////暂时不用
+////1注册获取验证码  2验证码登录获取验证码 3重置密码
+//@property (nonatomic,assign) NSInteger codeType;
 
 @end

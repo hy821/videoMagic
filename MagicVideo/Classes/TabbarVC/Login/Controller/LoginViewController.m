@@ -86,7 +86,6 @@
     codeTF.foldKeyBoardBlock = ^{
         [weakSelf.view endEditing:YES];
     };
-    codeTF.codeType = 2;
     [self.view addSubview:codeTF];
     self.codeTF = codeTF;
     [self.codeTF mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -164,72 +163,45 @@
         SSMBToast(@"请输入验证码", MainWindow);
         return;
     }
-
-//    SSGifShow(MainWindow, @"加载中");
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        SSDissMissAllGifHud(MainWindow, YES);
-//        SSMBToast(@"登录成功", MainWindow);
-//
-//        if (self.vcFrom) {
-//            [NOTIFICATION postNotificationName:LoginAndRefreshNoti object:nil];
-//            [self.navigationController popToViewController:self.vcFrom animated:YES];
-//        }else {
-//            KSTabBarController * tabBar = [[KSTabBarController alloc]init];
-//            [g_App restoreRootViewController:tabBar];
-//        }
-//    });
     
-    if (self.isBindPhone) { //微信登录后绑定手机号登录
-        
-        //    SSGifShow(MainWindow, @"加载中");
-        //    NSDictionary *dic = @{@"mobile" : self.phoneTF.text,
-        //                          @"code": self.codeTF.text
-        //                          };
-        //    [[SSRequest request] POSTAboutLogin:Login_MsgCodeUrl parameters:[dic mutableCopy] success:^(SSRequest *request, NSDictionary *response) {
-        //        SSDissMissAllGifHud(MainWindow, YES);
-        //        SSMBToast(@"登录成功", MainWindow);
-        //        [[UserManager shareManager] saveUserDataWithDic:response[@"data"]];
-        //
-        //        if (self.vcFrom) {
-        //            [NOTIFICATION postNotificationName:LoginAndRefreshNoti object:nil];
-        //            [self.navigationController popToViewController:self.vcFrom animated:YES];
-        //        }else {
-        //            KSTabBarController * tabBar = [[KSTabBarController alloc]init];
-        //            [g_App restoreRootViewController:tabBar];
-        //        }
-        //
-        //    } failure:^(SSRequest *request, NSString *errorMsg) {
-        //        SSDissMissAllGifHud(MainWindow, YES);
-        //        SSMBToast(errorMsg, MainWindow);
-        //
-        //    }];
-        
-    }else {  //验证码登录
-        
-        //    SSGifShow(MainWindow, @"加载中");
-        //    NSDictionary *dic = @{@"mobile" : self.phoneTF.text,
-        //                          @"code": self.codeTF.text
-        //                          };
-        //    [[SSRequest request] POSTAboutLogin:Login_MsgCodeUrl parameters:[dic mutableCopy] success:^(SSRequest *request, NSDictionary *response) {
-        //        SSDissMissAllGifHud(MainWindow, YES);
-        //        SSMBToast(@"登录成功", MainWindow);
-        //        [[UserManager shareManager] saveUserDataWithDic:response[@"data"]];
-        //
-        //        if (self.vcFrom) {
-        //            [NOTIFICATION postNotificationName:LoginAndRefreshNoti object:nil];
-        //            [self.navigationController popToViewController:self.vcFrom animated:YES];
-        //        }else {
-        //            KSTabBarController * tabBar = [[KSTabBarController alloc]init];
-        //            [g_App restoreRootViewController:tabBar];
-        //        }
-        //
-        //    } failure:^(SSRequest *request, NSString *errorMsg) {
-        //        SSDissMissAllGifHud(MainWindow, YES);
-        //        SSMBToast(errorMsg, MainWindow);
-        //
-        //    }];
-        
+    int code = [self.codeTF.text intValue];
+    NSDictionary *dic;
+    if (self.isBindPhone) { //微信登录后绑定手机号
+        dic = @{@"phone" : self.phoneTF.text,
+                @"code": @(code),
+                @"channel" : [USER_MANAGER getAppPubChannel],
+                @"ts" : @([Tool getCurrentTimeSecsNum])
+                };
+    }else {  //验证码登录+注册
+        dic = @{@"phone" : self.phoneTF.text,
+                @"code": @(code),
+                @"channel" : [USER_MANAGER getAppPubChannel],
+                @"ts" : @([Tool getCurrentTimeSecsNum]),
+                @"os" : [USER_MANAGER getOSType],
+                @"uid" : [USER_MANAGER getIDFA]
+                };
     }
+    SSGifShow(MainWindow, @"加载中");
+    NSString *signStr = [NSString stringWithFormat:@"%@%@%@%@",self.phoneTF.text,self.codeTF.text,[Tool getCurrentTimeSecsString],KEY_SKEY];
+    [[SSRequest request] POSTAboutLogin: self.isBindPhone ? BindPhoneUrl : CodeLoginRegisterUrl parameters:[dic mutableCopy] signString:signStr success:^(SSRequest *request, NSDictionary *response) {
+        SSDissMissAllGifHud(MainWindow, YES);
+        SSMBToast(@"登录成功", MainWindow);
+        NSDictionary *dataDic = response[@"data"];
+    
+        [[UserManager shareManager] saveUserDataWithDic:dataDic[@"user"] andToken:dataDic[@"token"]];
+
+        if (self.vcFrom) {
+            [NOTIFICATION postNotificationName:LoginAndRefreshNoti object:nil];
+            [self.navigationController popToViewController:self.vcFrom animated:YES];
+        }else {
+            KSTabBarController * tabBar = [[KSTabBarController alloc]init];
+            [g_App restoreRootViewController:tabBar];
+        }
+        
+    } failure:^(SSRequest *request, NSString *errorMsg) {
+        SSDissMissAllGifHud(MainWindow, YES);
+        SSMBToast(errorMsg, MainWindow);
+    }];
 }
 
 - (void)backAction {

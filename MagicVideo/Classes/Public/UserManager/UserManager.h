@@ -15,7 +15,7 @@
 +(id)shareManager;
 
  //*  保存数据
-- (void)saveUserDataWithDic:(NSDictionary *)dic;
+- (void)saveUserDataWithDic:(NSDictionary *)dic andToken:(NSString *)token;
 
 // *  保存首页分类
 - (void)saveHomeCategoryWithDic:(NSDictionary *)dic;
@@ -29,26 +29,24 @@
 //USER_UserName
 -(NSString *)getUserName;
 
+//USER_PHONE
+-(NSString*)getUserPhone;
+
 /*修改头像 修改昵称*/
 -(void)reloadAvatar:(NSString *)imgUrl;
 
 -(void)reloadNickName:(NSString *)name;
 
-/**
- 保存绑定手机
- */
+/*保存绑定手机*/
 -(void)saveMobileWith:(NSString*)str;
--(NSString*)mobile;
--(NSString *)userToken;
+
+//获取USER_TOKEN
+-(NSString *)getUserToken;
 
 - (void)removeUserAllData;
 
 @property (nonatomic,assign) BOOL isLogin;
 
-/**是否是VIP*/
-@property (nonatomic,assign) BOOL isVIPUser;
-
--(NSInteger)getMaxDownloadCount;
 -(NSInteger)getDragShowAdvCount;
 
 /**
@@ -81,8 +79,11 @@
 //获取User-Agent
 - (NSString *)getUserAgent;
 
-//获取版本号
+//获取版本号 for request
 - (NSString *)getVersionStr;
+
+//获取操作系统 for request
+- (NSNumber *)getOSType;
 
 //获取SIM Type   联调移动电信
 - (NSString *)getSimType;
@@ -95,9 +96,6 @@
 
 //UserID
 - (NSString *)getUserID;
-
-// (单位毫秒)  当前时间 + (上次请求开始请求时的时间 - 上次请求成功时的时间)
-- (NSString *)getTimeForToken;
 
 //获取dpi 屏幕密度
 - (NSString*)getDpi;

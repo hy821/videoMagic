@@ -97,10 +97,10 @@ FILEMD5HASH_EXTERN CFStringRef FileMD5HashCreateWithPath(CFStringRef filePath,
 + (NSString*)getStringMonthAndDayFormDate:(NSDate*)date;
 + (NSString*)getShortStringTimeAndWeekFormDate:(NSDate*)date;
 
-//获取当前时间毫秒数 数字
-+ (long long)getCurrentTimeMillsNum;
-//获取当前时间毫秒数 字符串
-+ (NSString *)getCurrentTimeMillsString;
+//获取当前时间秒数 数字
++ (long long)getCurrentTimeSecsNum;
+//获取当前时间 秒数 字符串
++ (NSString *)getCurrentTimeSecsString;
 
 + (NSString *)dateStringForAdvClickCacheKey;
 

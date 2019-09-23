@@ -41,6 +41,8 @@
     UIImageView *videoIV = [[UIImageView alloc]init];
     videoIV.contentMode = UIViewContentModeScaleAspectFill;
     videoIV.clipsToBounds = YES;
+    videoIV.layer.cornerRadius = self.sizeW(8);
+    videoIV.layer.masksToBounds = YES;
     [self.contentView addSubview:videoIV];
     self.videoIV = videoIV;
     
@@ -49,15 +51,17 @@
     //Tempppppppppppppppppppppppppppppp
     
     [self.videoIV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.equalTo(self.contentView);
+        make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(self.sizeW(5), self.sizeW(12), self.sizeW(5), self.sizeW(12)));
     }];
     
     UIView *grayView = [[UIView alloc]init];
     grayView.backgroundColor = Black_Color;
     grayView.alpha = 0.3f;
+    grayView.layer.cornerRadius = self.sizeW(8);
+    grayView.layer.masksToBounds = YES;
     [self.videoIV addSubview:grayView];
     [grayView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.bottom.equalTo(self.contentView);
+        make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(self.sizeW(5), self.sizeW(12), self.sizeW(5), self.sizeW(12)));
     }];
     
     UILabel *titleLab = [UILabel labelWithTitle:@"" font:24 textColor:White_Color textAlignment:1];
@@ -67,7 +71,7 @@
     self.titleLab = titleLab;
     [self.titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.videoIV);
-        make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(self.sizeH(30), self.sizeH(20), self.sizeH(30), self.sizeH(20)));
+        make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(self.sizeH(50), self.sizeH(35), self.sizeH(50), self.sizeH(35)));
     }];
     
     UIView *lineTop = [[UIView alloc]init];

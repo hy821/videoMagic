@@ -417,16 +417,17 @@ done:
 }
 
 
-//获取当前时间毫秒数 数字
-+ (long long)getCurrentTimeMillsNum {
-    NSTimeInterval nowtime = [[NSDate date] timeIntervalSince1970]*1000;
+//获取当前时间秒数 数字
++ (long long)getCurrentTimeSecsNum {
+    NSTimeInterval nowtime = [[NSDate date] timeIntervalSince1970];
     long long theTime = [[NSNumber numberWithDouble:nowtime] longLongValue];
     return theTime;
 }
 
-//获取当前时间毫秒数 字符串
-+ (NSString *)getCurrentTimeMillsString {
-    NSTimeInterval nowtime = [[NSDate date] timeIntervalSince1970]*1000;
+//获取当前时间秒数 字符串
++ (NSString *)getCurrentTimeSecsString {
+//    NSTimeInterval nowtime = [[NSDate date] timeIntervalSince1970]*1000;  //毫秒*1000
+    NSTimeInterval nowtime = [[NSDate date] timeIntervalSince1970];
     long long theTime = [[NSNumber numberWithDouble:nowtime] longLongValue];
     NSString *curTime = [NSString stringWithFormat:@"%llu",theTime];
     return curTime;

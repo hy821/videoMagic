@@ -34,30 +34,35 @@
     }];
 }
 
-/*
+
 - (void)checks {
-    [[SSRequest request] GET:CheckVersionStateUrl parameters:nil success:^(SSRequest *request, id response) {
+    SSLog(@"%@",[USER_MANAGER getVersionStr]);
+    NSDictionary *dic = @{@"ver" : [USER_MANAGER getVersionStr],
+                          @"os" : [USER_MANAGER getOSType],
+                          @"channel" : [USER_MANAGER getAppPubChannel]
+                          };
+    [[SSRequest request] GET:CheckVersionStateUrl parameters:dic success:^(SSRequest *request, id response) {
 
         NSDictionary *dic = response[@"data"];
         if (dic) {
-            if ([dic[@"examine"] boolValue]) {
+            if ([dic[@"env"] isEqualToString:@"verfiy"]) {  //dev或prod verfiy审核
                 [USERDEFAULTS setObject:@"1" forKey:isCK];
             }else {
                 [USERDEFAULTS setObject:@"0" forKey:isCK];
             }
-        }else {
-            [USERDEFAULTS setObject:@"0" forKey:isCK];
         }
         [USERDEFAULTS synchronize];
-        
-        [self checksFinish];
+
+//        [self checksFinish];
       
     } failure:^(SSRequest *request, NSString *errorMsg) {
         SSMBToast(errorMsg, MainWindow);
-        [NOTIFICATION postNotificationName:FIRSTRegisterFailNoti object:nil];
+//        [NOTIFICATION postNotificationName:FIRSTRegisterFailNoti object:nil];
     }];
 }
 
+
+/*
 - (void)checksFinish
 {
     [self updateLocationMsg];
@@ -404,37 +409,40 @@
         SendAuthResp *temp = (SendAuthResp *)resp;
         NSString *code = temp.code;
         if (code && code.length>0) {
-//            LoginViewController *vc = [[LoginViewController alloc]init];
-//            vc.isBindPhone = YES;
-//            [SelectVC pushViewController:vc animated:YES];
-
             SSGifShow(MainWindow, @"加载中");
+            
             NSDictionary *dic = @{
                                   @"code" : code,
-                                  @"channel" : @"AppStore",
-                                  @"ts" : [Tool getCurrentTimeMillsString],
-                                  @"os" : @"2",
-                                  @"uid" : @"aaaaa"
+                                  @"channel" : [USER_MANAGER getAppPubChannel],
+                                  @"ts" : @([Tool getCurrentTimeSecsNum]),
+                                  @"os" : [USER_MANAGER getOSType],
+                                  @"uid" : [USER_MANAGER getIDFA]
                                   };
-            NSString *sign = [NSString stringWithFormat:@"%@%@%@",code,[Tool getCurrentTimeMillsString],KEY_SKEY];
+            NSString *sign = [NSString stringWithFormat:@"%@%@%@",code,[Tool getCurrentTimeSecsString],KEY_SKEY];
             [[SSRequest request]POSTAboutLogin:WXLoginUrl parameters:dic.mutableCopy signString:sign success:^(SSRequest *request, id response) {
-
+                
                 SSDissMissAllGifHud(MainWindow, YES);
-
-                //返回值判断, 是否绑定手机号
-
-//                if(绑定手机号了) {
-//                    直接保存用户信息, 登录
-//                }else {
-//                    跳 绑定手机号页面 (即 登录页面)
-//                }
-
+                
+                //根据返回值 判断, 是否绑定手机号
+                NSDictionary *dic = response[@"data"];
+                NSDictionary *userInfoDic = dic[@"user"];
+                //保存用户信息
+                [USER_MANAGER saveUserDataWithDic:userInfoDic andToken:dic[@"token"]];
+                NSString *phoneNum = userInfoDic[@"phone"];
+                if(phoneNum.length>0) {
+                    //登录成功
+                    [self restoreRootViewController:SelectVC];
+                }else {
+                    //绑定手机号
+                    LoginViewController *vc = [[LoginViewController alloc]init];
+                    vc.isBindPhone = YES;
+                    [SelectVC pushViewController:vc animated:YES];
+                }
 
             } failure:^(SSRequest *request, NSString *errorMsg) {
                 SSDissMissAllGifHud(MainWindow, YES);
                 SSMBToast(errorMsg, MainWindow);
             }];
-            
         }
     }
 }

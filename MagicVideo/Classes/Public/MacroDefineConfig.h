@@ -52,7 +52,7 @@
 //人物头像默认图
 #define img_placeHolderIcon [UIImage imageNamed:@"img_placeHolderIcon"]
 //图片占位图
-#define img_placeHolder [UIImage imageNamed:@"img_placeHolder"]
+#define img_placeHolder [UIImage imageNamed:@"img_user_bg"]
 //默认字体颜色
 #define color_defaultText [Tool colorConvertFromString:@"#545454"]  //淡灰色
 
@@ -160,9 +160,6 @@
 #define WX_REFRESH_TOKEN   @"refresh_token"
 #define WX_BASE_URL             @"https://api.weixin.qq.com/sns"
 #define WX_UNION_ID               @"unionid"
-
-
-
 
 // 过期提醒
 #define HZAddititonsDeprecated(instead) NS_DEPRECATED(1_0, 1_0, 2_0, 2_0, instead)

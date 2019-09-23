@@ -24,7 +24,7 @@
     _model = model;
     self.iconIV.image = Image_Named(model.imgName);
     self.nameLab.text = model.title;
-    self.line.hidden = [model.title containsString:@"联系我们"];
+    self.line.hidden = ([model.title containsString:@"联系我们"] ||  [model.title containsString:@"我的钱包"]);
     self.redPoint.hidden = !model.isShowRedPoint;
 }
 

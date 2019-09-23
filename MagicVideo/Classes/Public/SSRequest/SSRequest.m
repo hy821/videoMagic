@@ -90,7 +90,6 @@ static SSRequest *ssrequest = nil;
     self.sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
     self.sessionManager.requestSerializer.timeoutInterval = 10.f;
     [self.sessionManager.requestSerializer setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    [self.sessionManager.requestSerializer setValue:[self getUserAgentStrWithUrlStr:URLString IsLogin:NO] forHTTPHeaderField:@"User-Agent"];
     
 //    if ([URLString isEqualToString:HomeHotChannelUrl] || [URLString isEqualToString:DiscoverShortVideoUrl]) {
 //        NSDictionary *advDic = [USER_MANAGER getAdvParamDicWithPositionID:kGDTPositionId_DiscoverAdvCell slotWidth:ScreenWidth slotHeight:self.sizeH(320)];
@@ -112,13 +111,8 @@ static SSRequest *ssrequest = nil;
 //    }
     
     [self.sessionManager GET:requestUrlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        long long endTime = [Tool getCurrentTimeMillsNum];
-        long long startTime = [responseObject[@"requestStartTime"] longLongValue];
-        long long durationTime = startTime - endTime;
-        [USERDEFAULTS setObject:[NSNumber numberWithLong:durationTime] forKey:LastRequestDurTime];
-        [USERDEFAULTS synchronize];
 
-        if([responseObject[@"code"] integerValue] == 10000) {
+        if(RequestStateCode == completionCode) {
             success(self,responseObject);
         }else {
             failure(self,responseObject[@"message"]);
@@ -151,18 +145,10 @@ static SSRequest *ssrequest = nil;
     self.sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
     self.sessionManager.requestSerializer.timeoutInterval = 10.f;
     [self.sessionManager.requestSerializer setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    [self.sessionManager.requestSerializer setValue:[self getUserAgentStrWithUrlStr:URLString IsLogin:YES] forHTTPHeaderField:@"User-Agent"];
     
     [self.sessionManager GET:requestUrlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        long long endTime = [Tool getCurrentTimeMillsNum];
-        long long startTime = [responseObject[@"requestStartTime"] longLongValue];
-        long long durationTime = startTime - endTime;
-
-        [USERDEFAULTS setObject:[NSNumber numberWithLong:durationTime] forKey:LastRequestDurTime];
-        [USERDEFAULTS synchronize];
-        
-        if([responseObject[@"code"] integerValue] == 10000) {
+        if(RequestStateCode == completionCode) {
             success(self,responseObject);
         }else {
             failure(self,responseObject[@"message"]);
@@ -197,7 +183,6 @@ static SSRequest *ssrequest = nil;
         self.sessionManager.requestSerializer.timeoutInterval = 20.f;
     }
     [self.sessionManager.requestSerializer setValue:@"application/json;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    [self.sessionManager.requestSerializer setValue:[self getUserAgentStrWithUrlStr:URLString IsLogin:NO] forHTTPHeaderField:@"User-Agent"];
     
 //    if ([URLString isEqualToString:ShortVideoRecomListUrl]) {
 //        NSDictionary *advDic = [USER_MANAGER getAdvParamDicWithPositionID:TTPositionId_ShortVideoPlayListFeed slotWidth:ScreenWidth slotHeight:self.sizeH(320)];
@@ -208,14 +193,7 @@ static SSRequest *ssrequest = nil;
     
     [self.sessionManager POST:requestUrlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        long long endTime = [Tool getCurrentTimeMillsNum];
-        long long startTime = [responseObject[@"requestStartTime"] longLongValue];
-        long long durationTime = startTime - endTime;
-
-        [USERDEFAULTS setObject:[NSNumber numberWithLong:durationTime] forKey:LastRequestDurTime];
-        [USERDEFAULTS synchronize];
-        
-        if([responseObject[@"code"] integerValue] == 10000) {
+        if(RequestStateCode == completionCode) {
             success(self,responseObject);
         }else {
             failure(self,responseObject[@"message"]);
@@ -249,11 +227,26 @@ static SSRequest *ssrequest = nil;
     self.sessionManager.requestSerializer.timeoutInterval = 30.f;
     [self.sessionManager.requestSerializer setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     [self.sessionManager.requestSerializer setValue:[Tool md5:signString] forHTTPHeaderField:@"sign"];
+    [self.sessionManager.requestSerializer setValue:[USER_MANAGER getUserToken] forHTTPHeaderField:@"Token"];
     
     [self.sessionManager POST:requestUrlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-
-        if([responseObject[@"code"] integerValue] == 10000) {
+ 
+        if(RequestStateCode == completionCode) {
             success(self,responseObject);
+        }else if(RequestStateCode == 207) {  //微信登录错误
+            failure(self,@"微信登录失败");
+        }else if(RequestStateCode == 102) {  //验证码不正确
+            failure(self,@"验证码错误");
+        }else if(RequestStateCode == 101) {  //未登录
+            failure(self,@"未登录");
+        }else if(RequestStateCode == 500) {  //服务异常
+            failure(self,@"服务异常");
+        }else if(RequestStateCode == 103) {  //手机号不正确
+            failure(self,@"手机号不正确");
+        }else if(RequestStateCode == 104) {  //发送验证码间隔时间太短
+            failure(self,@"获取验证码间隔时间过短,请稍后重试");
+        }else if(RequestStateCode == 105) {  //验证码发送失败
+            failure(self,@"验证码获取失败");
         }else {
             failure(self,responseObject[@"message"]);
         }
@@ -354,16 +347,10 @@ static SSRequest *ssrequest = nil;
     self.sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
     self.sessionManager.requestSerializer.timeoutInterval = 10.f;
     [self.sessionManager.requestSerializer setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    [self.sessionManager.requestSerializer setValue:[self getUserAgentStrWithUrlStr:URLString IsLogin:NO] forHTTPHeaderField:@"User-Agent"];
     
     [self.sessionManager GET:URLString parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        long long endTime = [Tool getCurrentTimeMillsNum];
-        long long startTime = [responseObject[@"requestStartTime"] longLongValue];
-        long long durationTime = startTime - endTime;
-        [USERDEFAULTS setObject:[NSNumber numberWithLong:durationTime] forKey:LastRequestDurTime];
-        [USERDEFAULTS synchronize];
         
-        if([responseObject[@"code"] integerValue] == 10000) {
+        if(RequestStateCode == completionCode) {
             success(self,responseObject);
         }else {
             failure(self,responseObject[@"message"]);
@@ -453,34 +440,6 @@ static SSRequest *ssrequest = nil;
             }
         }];
     }
-}
-
-- (NSString *)getUserAgentStrWithUrlStr:(NSString *)urlStr IsLogin:(BOOL)isLogin {
-    
-//    __block NSString *webUA = @"";
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        webUA = [USER_MANAGER getUserAgent];
-//    });
-    
-    NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
-    NSString *ver = [infoDic objectForKey:@"CFBundleShortVersionString"];
-    //正确的: osTypeId:01
-    //改成osTypeId:02试试
-    NSString *ua = [NSString stringWithFormat:@"%@ ks2/%@ (agent:s;channel:%@;credential:%@;deviceId:%@;osTypeId:01;detailInfo:iOS;simTypeId:%@;netTypeId:%@;deviceTypeId:02;osVersion:%@;token:%@)",[USER_MANAGER getUserAgent],[USER_MANAGER getVersionStr],[USER_MANAGER getAppPubChannel],[USER_MANAGER getCredential],[USER_MANAGER getUUID],[USER_MANAGER getSimType],[USER_MANAGER getNetWorkType],ver,[self getTokenWithUrlStr:urlStr IsLogin:isLogin]];
-    return ua;
-}
-
-- (NSString *)getTokenWithUrlStr:(NSString *)urlStr IsLogin:(BOOL)isLogin {
-    NSString *userID = [USER_MANAGER getUserID];
-    if (userID && userID.length>8) {
-        userID = [NSString stringWithFormat:@"%@*%@#%@!%@$%@",[userID substringWithRange:NSMakeRange(0, 1)],[userID substringWithRange:NSMakeRange(1, 1)],[userID substringWithRange:NSMakeRange(2, 1)],[userID substringWithRange:NSMakeRange(4, 1)],[userID substringWithRange:NSMakeRange(7, 1)]];
-    }
-    
-    NSString *app_Version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSString *token = [NSString stringWithFormat:@"/%@-%@-%@-",urlStr,[USER_MANAGER getTimeForToken],app_Version];
-    NSString * md5Str = [Tool md5:SSStr(token, userID)];
-    NSString *rsaStr = [RSAUtil encryptString:SSStr(token, md5Str) publicKey: isLogin ? [USER_MANAGER publicKeyWithLogin] : [USER_MANAGER publicKey]];
-    return rsaStr;
 }
 
 -(void)MJRefreshStop:(UIScrollView*)scroll refreshType:(SSRefreshType)type

@@ -16,10 +16,11 @@
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 
 #import "ShortVideoListCell.h"
+#import "VideoDetailViewController.h"
 
 //#import "ShortVideoListAdvCell.h"
 //#import "ShortVideoFullScreenAdvCell.h"
-//#import "VideoDetailViewController.h"
+
 //#import "ShortVideoShareView.h"
 //#import "JQFMDB.h"
 //#import "ReportViewController.h"
@@ -27,7 +28,7 @@
 //#import <BUAdSDK/BUFullscreenVideoAd.h>
 //#import "GCDTimer.h"
 
-@interface HomeViewController ()<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
+@interface HomeViewController ()<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,ShortVideoListCellDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ZFPlayerController *player;
@@ -35,6 +36,7 @@
 
 @property (nonatomic, strong) NSMutableArray *urls;
 @property (nonatomic,strong) NSIndexPath *currentIndexPath;  //当前显示的Cell 无论是视频还是广告
+@property (nonatomic, strong) NSMutableArray *dataSource;
 
 
 @end
@@ -44,6 +46,16 @@
 static NSString *kIdentifier = @"kIdentifier";
 
 static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4";
+
+- (NSMutableArray *)dataSource {
+    if (!_dataSource) {
+        _dataSource = [NSMutableArray array];
+        
+        //Tmp
+        [_dataSource addObjectsFromArray:@[URL(TmpVideoUrl),URL(TmpVideoUrl),URL(TmpVideoUrl),URL(TmpVideoUrl),URL(TmpVideoUrl),URL(TmpVideoUrl)]];
+        
+    }return _dataSource;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -60,8 +72,11 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
     
     self.player.assetURLs = self.urls;
     [self.tableView reloadData];
-    _currentIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self playTheVideoAtIndexPath:_currentIndexPath autoPlayNext:NO];
+    WS()
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        weakSelf.currentIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [weakSelf playTheVideoAtIndexPath:weakSelf.currentIndexPath autoPlayNext:NO];
+    });
     
     @weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
@@ -89,7 +104,7 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
     
     //播放失败时, 自动播放下一个:   会导致播放失败时 无法上滑, 一上滑, 播放失败, 然后自动下一个.
     self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, id  _Nonnull error) {
-        @strongify(self)
+//        @strongify(self)
         SSMBToast(@"该视频被盗走了~", MainWindow);
 //        ProgramResultListModel *model = self.dataSource[self.currentIndexPath.row];
 //        if (model.urlFromRealUrl && model.idForModel) {
@@ -140,6 +155,23 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 //            }
         }
     }
+}
+
+- (void)requestDataWithAnimation:(BOOL)animate isFirst:(BOOL)isFirst {
+//    if (animate) {
+//        SSGifShow(MainWindow, @"");
+//    }
+//
+//    NSDictionary *dic = @{};
+//    [[SSRequest request]POST:ShortVideoRecomListUrl parameters:dic.mutableCopy success:^(SSRequest *request, id response) {
+//        if (animate) {SSDissMissAllGifHud(MainWindow, YES);}
+//
+//    } failure:^(SSRequest *request, NSString *errorMsg) {
+//        if (animate) {SSDissMissAllGifHud(MainWindow, YES);}
+//        SSMBToast(errorMsg, MainWindow);
+//        [self.tableView reloadData];
+//        [self.tableView.mj_footer endRefreshing];
+//    }];
 }
 
 #pragma mark - private method
@@ -230,6 +262,63 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    /// 如果正在播放的index和当前点击的index不同，则停止当前播放的index
+    if (self.player.playingIndexPath && self.player.playingIndexPath != indexPath) {
+        [self.player stopCurrentPlayingCell];
+        [self playTheVideoAtIndexPath:indexPath autoPlayNext:NO];
+        if (indexPath.row == 0) {  //第一个cell 在playTheVideoAtIndexPath方法里, 不scrollToTop且不播放
+            //滚动 toTop 并且播放   ------暂时不加了
+        }
+        return;
+    }
+    
+//    ProgramResultListModel *model = self.dataSource[indexPath.row];
+//    if (model.ad && model.ad.sspId && model.ad.sspType) {
+//        return;
+//    }else {
+        //更新正在播放的视频的时间
+//        [self updateHistorySaveTimeWithIndexPath:_currentIndexPath];
+        ShortVideoListCell *cell = (ShortVideoListCell*)[tableView cellForRowAtIndexPath:indexPath];
+        [cell setDelegate:self withIndexPath:indexPath];
+//        [cell showMaskView];
+
+//        ProgramResultListModel *mDetail = self.dataSource[indexPath.row];
+        // 到详情页 : 暂停时, 播放时, 播放失败时, showGDTAdv时
+        VideoDetailViewController *vc = [[VideoDetailViewController alloc]init];
+//        vc.model = mDetail;
+//        vc.vcType = (indexPath.row==0) ? VideoDetailTypeShort_WithPlayerAdv : VideoDetailTypeShort_WithPlayer;
+        vc.player = self.player;
+        
+//        @weakify(self)
+//        vc.detailVCPopCallback = ^{  // 详情页返回的回调
+//            @strongify(self)
+//            [self configPlayer];
+//            if (indexPath.row==0) {  //第一个Cell 判断要不要广告倒计时
+//                [cell hideMaskViewWithAdv:[USER_MANAGER isShowShortVideoDayOnceAdvWithShortVideoID:model.idForModel]];
+//            }else {
+//                [cell hideMaskViewWithAdv:NO];
+//            }
+//            [self playTheVideoAtIndexPath:_currentIndexPath autoPlayNext:NO];
+//
+//            //和进入后台后重新打开一个效果,继续计时
+//            [self appDidBecomeActiveNotification];
+//
+//            //重新加上通知
+//            [self addNotification];
+//        };
+//
+//        //和进入后台一个效果,暂停计时
+//        [self appWillEnterBackgroundNotification];
+    
+        //移除通知, 避免在详情页进入后台再打开App之后,通知继续计时
+        [NOTIFICATION removeObserver:self];
+    vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+//    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return self.sizeH(260);
 }
@@ -250,8 +339,7 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
         } else {
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
-//        _tableView.separatorColor = KCOLOR(@"#231F1F");
-        _tableView.backgroundColor = White_Color;
+        _tableView.backgroundColor = KCOLOR(@"ffffff");
         [[UITableView appearance] setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
         [[UITableView appearance] setSeparatorInset:UIEdgeInsetsZero];
         [[UITableViewCell appearance] setSeparatorInset:UIEdgeInsetsZero];
@@ -311,24 +399,114 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 //
 //        //Add---headerView
 //        UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, self.sizeH(50))];
-//        headerView.backgroundColor = KCOLOR(@"#231F1F");
+//        headerView.backgroundColor = KCOLOR(@"#ffffff");
 //        _tableView.tableHeaderView = headerView;
 //
 //        //Add---footerView
 //        UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, self.sizeH(100))];
-//        footerView.backgroundColor = KCOLOR(@"#231F1F");
+//        footerView.backgroundColor = KCOLOR(@"#ffffff");
 //        _tableView.tableFooterView = footerView;
-//
-//        //Add---Gesture
-//        UISwipeGestureRecognizer *recognizerUp = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
-//        [recognizerUp setDirection:(UISwipeGestureRecognizerDirectionUp)];
-//        [_tableView addGestureRecognizer:recognizerUp];
-//
-//        UISwipeGestureRecognizer *recognizerDown = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
-//        [recognizerDown setDirection:(UISwipeGestureRecognizerDirectionDown)];
-//        [_tableView addGestureRecognizer:recognizerDown];
-//
+
+        //Add---Gesture
+        UISwipeGestureRecognizer *recognizerUp = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
+        [recognizerUp setDirection:(UISwipeGestureRecognizerDirectionUp)];
+        [_tableView addGestureRecognizer:recognizerUp];
+
+        UISwipeGestureRecognizer *recognizerDown = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(handleSwipeFrom:)];
+        [recognizerDown setDirection:(UISwipeGestureRecognizerDirectionDown)];
+        [_tableView addGestureRecognizer:recognizerDown];
+
     }return _tableView;
+}
+
+- (void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer
+{
+    //    //视频播放情况 数据上报
+    //    if(self.player.currentTime > 0 && self.player.totalTime >0 && self.dataSource[self.currentIndexPath.row].keyWordId) {
+    //        [[BuryingPointManager shareManager] videoPlayMsgReportWithProgramId:self.dataSource[_player.playingIndexPath.row].idForModel andLabelId:self.dataSource[_player.playingIndexPath.row].keyWordId andPercentage:round(self.player.progress*100) andPlayTime:round(self.player.currentTime*1000)];
+    //    }
+    
+//    //滑动触发 更新数据库: 当前cell播放视频的时间
+//    [self updateHistorySaveTimeWithIndexPath:_currentIndexPath];
+    
+//    //保存当前播放视频曝光数据, 处理timer相关
+//    ProgramResultListModel *currentModel = _dataSource[_currentIndexPath.row];
+//    if (_currentIndexPath.row>0) {  //第一个不需要保存
+//        [self saveUserActivityWithModel:currentModel];
+//    }
+    
+    if(recognizer.direction == UISwipeGestureRecognizerDirectionUp) {   // Next One
+        NSInteger row = (_currentIndexPath.row+1 < self.dataSource.count) ? (_currentIndexPath.row+1) : _currentIndexPath.row;
+        if (_currentIndexPath.row+1 == self.dataSource.count) {
+            [self fakeFooterRefreshing];
+            _currentIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
+            return;
+        }
+        _currentIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    }
+    
+    if(recognizer.direction == UISwipeGestureRecognizerDirectionDown) {  // Last One
+        if(_currentIndexPath.row == 0) return;
+        NSInteger row = (_currentIndexPath.row-1 >= 0) ? (_currentIndexPath.row-1) : 0;
+        _currentIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    }
+    
+//    ProgramResultListModel *nextPlayModel = _dataSource[_currentIndexPath.row];
+//    if (nextPlayModel.ad && nextPlayModel.ad.sspId && nextPlayModel.ad.sspType) {
+//        if (nextPlayModel.ad.adType == ADTypeTT) {
+//            AdvVideoType type = nextPlayModel.ad.videoInfo.advVideoType;
+//            if (type == AdvVideoTypeDraw || type == AdvVideoTypeFeed) {
+//                _tableView.zf_playingIndexPath = nil;
+//                if (_player.currentPlayerManager.isPlaying) {
+//                    [_player.currentPlayerManager pause];
+//                }
+//            }
+//        }
+//    }
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        [_tableView scrollToRowAtIndexPath:_currentIndexPath atScrollPosition:(UITableViewScrollPositionMiddle) animated:NO];
+    }];
+    //播放
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self playTheVideoAtIndexPath:_currentIndexPath autoPlayNext:NO];
+    });
+    
+//    //重新计时
+//    [self startTimerWithModel:nextPlayModel];
+    
+//    //如果是全屏广告, 根据滑动方向, 让tableview滚动到下一个位置, 全屏广告播放完触发viewDidAppear 才会自动播放下一个
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        ProgramResultListModel *model = self.dataSource[_currentIndexPath.row];
+//        if (model.ad && model.ad.sspId && model.ad.sspType) {
+//            if (model.ad.adType == ADTypeTT) {
+//                AdvVideoType type = model.ad.videoInfo.advVideoType;
+//                if (type == AdvVideoTypeFullScreen || type == AdvVideoTypeReward) {  ////FullScreen & 激励
+//                    //滚动scrollview, 当广告播放结束, 才会触发下一个cell播放
+//                    CGFloat newY = _tableView.contentOffset.y;
+//                    if (recognizer.direction == UISwipeGestureRecognizerDirectionDown) {
+//                        newY = _tableView.contentOffset.y - (ScreenHeight/3);
+//                    }else if (recognizer.direction == UISwipeGestureRecognizerDirectionUp) {
+//                        newY = _tableView.contentOffset.y + (ScreenHeight/3);
+//                    }
+//                    [_tableView setContentOffset:CGPointMake(_tableView.contentOffset.x, newY) animated:YES];
+//                    _tableView.bouncesZoom = NO;
+//                }
+//            }
+//        }
+//    });
+
+}
+
+- (void)fakeFooterRefreshing {
+    if (_tableView.mj_footer.state == MJRefreshStateNoMoreData) {
+        SSMBToast(@"暂无更多内容~", MainWindow);
+        return;
+    }
+    if (!_tableView.mj_footer.isRefreshing && (_tableView.mj_footer.state != MJRefreshStateNoMoreData)) {
+        [_tableView.mj_footer beginRefreshing];
+        [self requestDataWithAnimation:NO isFirst:NO];
+    }
 }
 
 #pragma mark--DZ

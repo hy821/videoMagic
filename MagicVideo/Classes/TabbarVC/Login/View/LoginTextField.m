@@ -338,48 +338,23 @@
             SSMBToast(@"请填写正确的手机号", MainWindow);
             return;
         }
-
-        //"-1", "1"  手机登录
-        //"0", "1"  注册
-        NSDictionary *dic;
-        if (self.codeType == 1) {
-            dic = @{@"mobile" : self.mobileText,
-                    @"filter":@"0",
-                    @"action":@"1"
+    
+        NSDictionary *dic = @{@"phone" : self.mobileText,
+                    @"ts": @([Tool getCurrentTimeSecsNum])
                     };
-        }else if (self.codeType == 2) {
-            dic = @{@"mobile" : self.mobileText,
-                    @"filter":@"-1",
-                    @"action":@"1"
-                    };
-        }else if (self.codeType == 3) {
-            dic = @{@"mobile" : self.mobileText,
-                    @"filter":@"1",
-                    @"action":@"1"
-                    };
-        }else {
-            return;
-        }
-        
+     
+        NSString *signStr = [NSString stringWithFormat:@"%@%@%@",self.mobileText,[Tool getCurrentTimeSecsString],KEY_SKEY];
         SSGifShow(MainWindow, @"加载中");
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[SSRequest request] POSTAboutLogin:GetPhoneCodeUrl parameters:dic.mutableCopy signString:signStr success:^(SSRequest *request, NSDictionary *response) {
+
             SSDissMissAllGifHud(MainWindow, YES);
             [self timeStart];
             [self.textField becomeFirstResponder];
-            SSMBToast(@"验证码 1234", MainWindow);
-        });
-        
-//        [[SSRequest request] GETAboutLogin:RegisterOrLoginGetCodeUrl parameters:dic success:^(SSRequest *request, NSDictionary *response) {
-//
-//            SSDissMissAllGifHud(MainWindow, YES);
-//            [self timeStart];
-//            [self.textField becomeFirstResponder];
-//
-//        } failure:^(SSRequest *request, NSString *errorMsg) {
-//            SSDissMissAllGifHud(MainWindow, YES);
-//            SSMBToast(errorMsg, MainWindow);
-//
-//        }];
+
+        } failure:^(SSRequest *request, NSString *errorMsg) {
+            SSDissMissAllGifHud(MainWindow, YES);
+            SSMBToast(errorMsg, MainWindow);
+        }];
         
     }
 }

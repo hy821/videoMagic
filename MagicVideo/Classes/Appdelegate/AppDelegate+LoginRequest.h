@@ -10,11 +10,11 @@
 
 @interface AppDelegate (LoginRequest)
 
+- (void)checks;
 - (void)wxRegister;
 - (void)updateLocationMsg;
 
 /*
-- (void)checks;
 - (void)anonymousRegisterWithAnimation:(BOOL)isAnimation;
 - (void)anonymousLogin;
 - (void)getUserVipMsg;

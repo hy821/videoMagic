@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
 
-#define RequestStateCode ([response[@"code"] integerValue])
-static NSInteger const completionCode = 10000;
+#define RequestStateCode ([responseObject[@"code"] integerValue])
+
+static NSInteger const completionCode = 0;
 
 @class SSRequest;
 @protocol SSRequestDelegate <NSObject>

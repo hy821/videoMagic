@@ -15,12 +15,17 @@
 #import "sys/utsname.h"
 #import <AdSupport/AdSupport.h>
 #import "AppDelegate+LoginRequest.h"
-//#import "AppDelegate+GeTuiSDK.h"
 #import "MineViewController.h"
 #import "SimulateIDFA.h"
 
+#import "ZFPlayer.h"
+#import "ZFAVPlayerManager.h"
+
+//#import "AppDelegate+GeTuiSDK.h"
+
 @interface UserManager()
 @property (nonatomic,copy)  void(^comple)(void);
+
 @end
 
 @implementation UserManager
@@ -47,40 +52,45 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 
 // 判断是否登录
 -(BOOL)isLogin {
-    NSString *isLogin = [USERDEFAULTS objectForKey:isAnonymous];
-    if (isLogin) {
-        if([isLogin integerValue] == 1) {
-            return NO;
-        }else {
-            return YES;
-        }
-    }else {
-        return NO;
-    }
+    return NO;
+//    NSString *isLogin = [USERDEFAULTS objectForKey:isAnonymous];
+//    if (isLogin) {
+//        if([isLogin integerValue] == 1) {
+//            return NO;
+//        }else {
+//            return YES;
+//        }
+//    }else {
+//        return NO;
+//    }
 }
 
 /**
  *  保存数据
  */
-- (void)saveUserDataWithDic:(NSDictionary *)dic {
+- (void)saveUserDataWithDic:(NSDictionary *)dic andToken:(NSString*)token {
+    
+    if (token && token.length>0) {
+        [USERDEFAULTS setObject:token forKey:USER_TOKEN];
+    }
     [USERDEFAULTS setObject:dic forKey:USER_DATA];
-    [USERDEFAULTS setObject:dic[@"anonymous"] forKey:isAnonymous];
-    [USERDEFAULTS setObject:@"0" forKey:isVIPUser];
-    [USERDEFAULTS setObject:dic[@"createTime"] forKey:CREATE_Time];
-    [USERDEFAULTS setObject:dic[@"credential"] forKey:CREDENTIAL];
+    
     [USERDEFAULTS setObject:dic[@"nickName"] forKey:USER_NickName];
     [USERDEFAULTS setObject:dic[@"id"] forKey:USER_ID];
-    [USERDEFAULTS setObject:dic[@"portrait"] forKey:USER_ICON];
-    [USERDEFAULTS setObject:dic[@"userName"] forKey:USER_UserName];
-    [USERDEFAULTS setObject:@"3" forKey:MaxDownloadCount];
-    [USERDEFAULTS synchronize];
+    [USERDEFAULTS setObject:dic[@"iconUrl"] forKey:USER_ICON];
+    [USERDEFAULTS setObject:dic[@"phone"] forKey:USER_PHONE];
+    
+//    [USERDEFAULTS setObject:dic[@"credential"] forKey:CREDENTIAL];
+//    [USERDEFAULTS setObject:dic[@"userName"] forKey:USER_UserName];
+
+        [USERDEFAULTS synchronize];
     
 //    if ([dic[@"anonymous"] integerValue]==1) { //匿名注册 or 匿名登录 成功, 通知首页请求数据
 //        [NOTIFICATION postNotificationName:AnonymousSuccessNoti object:nil];
 //    }else {  //正常登录成功, 绑定个推别名
 //        [g_App bindGeTuiWithIsBind:YES];
 //    }
-//
+
 //    [g_App getUserVipMsg];
 //    [g_App getUserDownloadMsg];
 //    [g_App getDragShowAdvCountMsg];
@@ -91,17 +101,16 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 }
 
 - (void)removeUserAllData {
+    [USERDEFAULTS removeObjectForKey:USER_TOKEN];
     [USERDEFAULTS removeObjectForKey:USER_DATA];
-    [USERDEFAULTS removeObjectForKey:isAnonymous];
-    [USERDEFAULTS removeObjectForKey:isVIPUser];
-    [USERDEFAULTS removeObjectForKey:CREATE_Time];
-    [USERDEFAULTS removeObjectForKey:CREDENTIAL];
     [USERDEFAULTS removeObjectForKey:USER_NickName];
     [USERDEFAULTS removeObjectForKey:USER_ID];
     [USERDEFAULTS removeObjectForKey:USER_ICON];
-    [USERDEFAULTS removeObjectForKey:USER_UserName];
-    [USERDEFAULTS removeObjectForKey:MaxDownloadCount];
-    [USERDEFAULTS removeObjectForKey:DragShowAdvCount];
+    [USERDEFAULTS removeObjectForKey:USER_PHONE];
+
+//    [USERDEFAULTS removeObjectForKey:USER_UserName];
+//    [USERDEFAULTS removeObjectForKey:CREDENTIAL];
+
     [USERDEFAULTS synchronize];
 }
 
@@ -137,27 +146,12 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
     return str ? str : @"";
 }
 
--(NSInteger)getMaxDownloadCount {
-    NSString *str = [USERDEFAULTS objectForKey:MaxDownloadCount];
-    if (str) {
-        if ([str integerValue] > 0) {
-            return  [str integerValue];
-        }else {
-            return 3;
-        }
-    }else {
-        return 3;
-    }
+//获取USER_TOKEN
+-(NSString *)getUserToken {
+    NSString * str = [USERDEFAULTS objectForKey:USER_TOKEN];
+    return str ? str : @"";
 }
 
-/**
- * token
- **/
--(NSString *)userToken
-{
-    NSString * str = [USERDEFAULTS objectForKey:@"token"];
-    return str?str:@"";
-}
 /**
  * 头像url
  */
@@ -166,27 +160,22 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
     NSString * str = [USERDEFAULTS objectForKey:[Avatar copy]];
     return str?str:@"";
 }
-/**
- *  缓存的名字
- */
--(NSString *)CEUserName
-{
-    NSString * str = [USERDEFAULTS objectForKey:@"nickName"];
-    return str?[NSString stringWithFormat:@"%@",[USERDEFAULTS objectForKey:@"nickName"]]:@"";
-}
 
 /**
  * 用户手机
  */
--(NSString*)mobile
+-(NSString*)getUserPhone
 {
-    NSString * mobile = [USERDEFAULTS objectForKey:@"mobile"]?[USERDEFAULTS objectForKey:@"mobile"]:@"";
+    NSString * mobile = [USERDEFAULTS objectForKey:USER_PHONE] ? [USERDEFAULTS objectForKey:USER_PHONE] : @"";
     return mobile;
 }
 
+/**
+ 保存绑定手机
+ */
 -(void)saveMobileWith:(NSString *)str
 {
-    [USERDEFAULTS setObject:str forKey:[MOBILE copy]];
+    [USERDEFAULTS setObject:str forKey:USER_PHONE];
     [USERDEFAULTS synchronize];
 }
 
@@ -244,7 +233,7 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
     if (isIR) {
         return [isIR boolValue];
     }else {
-        return NO;
+        return YES;
     }
 }
 
@@ -275,6 +264,10 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 - (NSString *)getVersionStr {
     NSDictionary *infoDic = [[NSBundle mainBundle] infoDictionary];
     return infoDic[@"CFBundleShortVersionString"];
+}
+
+- (NSNumber *)getOSType {
+    return @(2);
 }
 
 //获取SIM Type   //  0:未知 1：中国移动 2: 中国联通 3: 中国电信
@@ -414,19 +407,6 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
     return cre ? cre : @"";
 }
 
-// (单位毫秒)  当前时间 + (上次请求开始请求时的时间 - 上次请求成功时的时间)
-- (NSString *)getTimeForToken {
-    
-    NSNumber *str = [USERDEFAULTS objectForKey:LastRequestDurTime];
-    long long lastTime = 0;
-    if (str) {
-        lastTime = [str longLongValue];
-    }
-    
-    NSString *timeStr = [NSString stringWithFormat:@"%llu",[Tool getCurrentTimeMillsNum] + lastTime];
-    return timeStr;
-}
-
 //获取dpi 屏幕密度
 - (NSString*)getDpi {
     if (IS_IPhonePlus) {
@@ -521,7 +501,7 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 
 //应用发布渠道
 - (NSString*)getAppPubChannel {
-    return @"appstore";
+    return @"AppStore";
 }
 
 /** 短视频交互: 赞 踩 */
@@ -788,7 +768,7 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 
 //短视频(推荐页第一个 or 详情页)广告:   NO:今天展示过了,不展示  YES:今天未展示, 展示
 - (BOOL)isShowShortVideoDayOnceAdvWithShortVideoID:(NSString*)svID {
-    if ([self isVIPUser] || (svID.length==0)) return NO;
+//    if (svID.length==0) return NO;
     
     NSString *todayDate = [Tool dateStringForAdvClickCacheKey];
     if([USERDEFAULTS objectForKey:ShortVideoAdvShowKey]) {
@@ -810,7 +790,7 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 
 //短视频当天展示过广告, 调用   点击跳过 or 倒计时完
 - (void)showShortVideoDayOnceAdvSuccessWithShortVideoID:(NSString *)svID {
-    if ([self isVIPUser] || (svID.length==0)) return;
+    if (svID.length==0) return;
     
     NSString *todayDate = [Tool dateStringForAdvClickCacheKey];
     

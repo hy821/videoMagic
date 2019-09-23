@@ -117,9 +117,10 @@ static NSString * const cellID = @"WatchPointCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //    SubjectListModel *m = self.dataArr[indexPath.row];
-//    WatchPointSubController *vc = [[WatchPointSubController alloc]init];
+    HomeViewController *vc = [[HomeViewController alloc]init];
 //    vc.model = m;
-//    [self.navigationController pushViewController:vc animated:YES];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - lazyLoad
@@ -130,9 +131,9 @@ static NSString * const cellID = @"WatchPointCell";
         _mainTableView.dataSource = self;
         _mainTableView.emptyDataSetSource = self;
         _mainTableView.emptyDataSetDelegate = self;
-        _mainTableView.backgroundColor = White_Color;
+        _mainTableView.backgroundColor = KCOLOR(@"#ffffff");
         [_mainTableView registerClass:[WatchPointCell class] forCellReuseIdentifier:cellID];
-        _mainTableView.rowHeight = self.sizeH(200);
+        _mainTableView.rowHeight = self.sizeH(240);
         _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         WS()
         _mainTableView.mj_header = [MYHRocketHeader headerWithRefreshingBlock:^{

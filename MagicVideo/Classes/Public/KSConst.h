@@ -175,17 +175,14 @@ typedef enum : NSUInteger {
 
 @interface KSConst : NSObject
 
+extern NSString * const USER_TOKEN;
 extern NSString * const USER_DATA;
-extern NSString * const isAnonymous;
 extern NSString * const isCK;
-extern NSString * const isVIPUser;
-extern NSString * const VIPExpireTime;
-extern NSString * const MaxDownloadCount;
 extern NSString * const DragShowAdvCount;
 extern NSString * const USER_NickName;
 extern NSString * const USER_ICON;
+extern NSString * const USER_PHONE;
 extern NSString * const USER_UserName;
-extern NSString * const CREATE_Time;
 extern NSString * const USER_ID;
 extern NSString * const LastRequestDurTime;
 extern NSString * const LocationLongitude; /** 定位---经度 */
@@ -198,7 +195,7 @@ extern NSString * const CanSeeVideoNoWifi; //允许使用流量看视频
 extern NSString * const FIRSTRegisterSuccess; //首次安装, 首次登录时, 没网, 记录是否注册成功
 
 
-extern NSString * const MOBILE;    //手机号码,注意为了避免用户隐私泄露，用户id改成了uuid，用户phone另外新增了字段phone表示，请大家注意，这里的userid其实应该是手机号
+
 extern NSString * const CODE; //验证码参数
 extern NSString * const QD;//渠道
 extern NSString * const TYPE;//验证码类型 1登录注册 3找回密码

@@ -10,21 +10,18 @@
 
 @implementation KSConst
 
+NSString *const USER_TOKEN = @"USER_TOKEN";
 NSString *const USER_DATA = @"USER_DATA";
 NSString *const USER_ID = @"USER_ID";
-NSString *const isAnonymous = @"isAnonymous";
+
 NSString *const isCK = @"isCK";
-NSString *const isVIPUser = @"isVIPUser";
-NSString *const VIPExpireTime = @"VIPExpireTime";
-NSString *const MaxDownloadCount = @"MaxDownloadCount";
 NSString *const DragShowAdvCount = @"DragShowAdvCount";
 NSString *const USER_NickName = @"USER_NickName";
 NSString *const USER_ICON = @"USER_ICON";
+NSString *const USER_PHONE = @"USER_PHONE;";
 NSString *const USER_UserName = @"USER_UserName";
-NSString *const CREATE_Time = @"CREATE_Time";
 NSString * const LocationLongitude = @"LocationLongitude";  /** 定位---经度 */
 NSString * const LocationLatitude = @"LocationLatitude";  /** 定位---纬度 */
-
 NSString *const LastRequestDurTime = @"LastRequestDurTime";  //拼接token用
 NSString *const CREDENTIAL = @"CREDENTIAL";  //证书,拼接token用
 NSString *const HomeCategoryVer = @"HomeCategoryVer"; //首页请求分类时传的版本
@@ -33,7 +30,6 @@ NSString *const CanSeeVideoNoWifi = @"CanSeeVideoNoWifi"; //允许使用流量�
 //--------->允许使用流量下载视频   LJDownloadAllowsCellularAccessKey
 NSString *const FIRSTRegisterSuccess = @"FIRSTRegisterSuccess"; //首次安装, 首次登录时, 没网, 记录是否注册成功
 
-NSString *const MOBILE = @"mobile";    //手机参数string
 NSString *const CODE = @"verifycode"; //验证码参数
 NSString *const QD = @"qd";//渠道
 NSString *const TYPE = @"type";//验证码类型 1登录注册 3找回密码

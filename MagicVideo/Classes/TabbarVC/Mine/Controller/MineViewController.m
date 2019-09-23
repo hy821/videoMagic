@@ -149,7 +149,7 @@ static NSString * const cellHeader_ID = @"cellHeader_ID";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section==1) {
-        UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, self.sizeH(30))];
+        UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, self.sizeH(10))];
         header.backgroundColor = KCOLOR(@"#f8f8f8");
         return header;
     }else {
@@ -158,7 +158,7 @@ static NSString * const cellHeader_ID = @"cellHeader_ID";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return (section==1) ? self.sizeH(8) : 0.01;
+    return (section==1) ? self.sizeH(10) : 0.01;
 }
 
 #pragma mark - lazyLoad
@@ -170,7 +170,7 @@ static NSString * const cellHeader_ID = @"cellHeader_ID";
         _mainTableView.bounces = NO;
         _mainTableView.backgroundColor = White_Color;
         [_mainTableView registerClass:[MineTableViewCell class] forCellReuseIdentifier:cellID];
-        _mainTableView.rowHeight = self.sizeH(34);
+        _mainTableView.rowHeight = self.sizeW(48);
         _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         MineTableViewHeaderView *headerView = [[MineTableViewHeaderView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, self.sizeH(180))];
         WS()
