@@ -14,6 +14,8 @@
 		602117952338747700AEAC9F /* LandscapeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117912338747600AEAC9F /* LandscapeViewController.m */; };
 		602117962338747700AEAC9F /* VideoDetailMsgController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117922338747600AEAC9F /* VideoDetailMsgController.m */; };
 		602117992338F9D000AEAC9F /* ModifyMsgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117982338F9D000AEAC9F /* ModifyMsgViewController.m */; };
+		6021179C2339C9C200AEAC9F /* WalletHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6021179B2339C9C200AEAC9F /* WalletHeaderView.m */; };
+		6021179F2339CD5100AEAC9F /* WalletDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6021179E2339CD5100AEAC9F /* WalletDetailCell.m */; };
 		602805AD2330F874000AFF4B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805A92330F874000AFF4B /* AppDelegate.m */; };
 		602805BD2330F917000AFF4B /* KSBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805AF2330F917000AFF4B /* KSBaseViewController.m */; };
 		602805BE2330F917000AFF4B /* KSBaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805B12330F917000AFF4B /* KSBaseWebViewController.m */; };
@@ -297,6 +299,10 @@
 		602117922338747600AEAC9F /* VideoDetailMsgController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailMsgController.m; sourceTree = "<group>"; };
 		602117972338F9D000AEAC9F /* ModifyMsgViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyMsgViewController.h; sourceTree = "<group>"; };
 		602117982338F9D000AEAC9F /* ModifyMsgViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyMsgViewController.m; sourceTree = "<group>"; };
+		6021179A2339C9C200AEAC9F /* WalletHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletHeaderView.h; sourceTree = "<group>"; };
+		6021179B2339C9C200AEAC9F /* WalletHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletHeaderView.m; sourceTree = "<group>"; };
+		6021179D2339CD5100AEAC9F /* WalletDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletDetailCell.h; sourceTree = "<group>"; };
+		6021179E2339CD5100AEAC9F /* WalletDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletDetailCell.m; sourceTree = "<group>"; };
 		602805A82330F874000AFF4B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		602805A92330F874000AFF4B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		602805AE2330F916000AFF4B /* KSBaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSBaseWebViewController.h; sourceTree = "<group>"; };
@@ -1063,6 +1069,10 @@
 		602805A02330F874000AFF4B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				6021179A2339C9C200AEAC9F /* WalletHeaderView.h */,
+				6021179B2339C9C200AEAC9F /* WalletHeaderView.m */,
+				6021179D2339CD5100AEAC9F /* WalletDetailCell.h */,
+				6021179E2339CD5100AEAC9F /* WalletDetailCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2364,6 +2374,7 @@
 				60280A592331FD36000AFF4B /* UIView+ZFFrame.m in Sources */,
 				60280B332331FE8A000AFF4B /* NSArray+Safe.m in Sources */,
 				60280B3A2331FEC1000AFF4B /* LoginViewController.m in Sources */,
+				6021179F2339CD5100AEAC9F /* WalletDetailCell.m in Sources */,
 				60280B202331FE8A000AFF4B /* UILabel+Category.m in Sources */,
 				60280A9C2331FD36000AFF4B /* HXPhotoView.m in Sources */,
 				60280A682331FD36000AFF4B /* LCActionSheetCell.m in Sources */,
@@ -2530,6 +2541,7 @@
 				60280AD92331FD36000AFF4B /* MBProgressHUD+MJ.m in Sources */,
 				60280A852331FD36000AFF4B /* UIViewController+HXExtension.m in Sources */,
 				60280B5123336F56000AFF4B /* MineTableViewCell.m in Sources */,
+				6021179C2339C9C200AEAC9F /* WalletHeaderView.m in Sources */,
 				60280ACD2331FD36000AFF4B /* MJRefreshComponent.m in Sources */,
 				60280ABF2331FD36000AFF4B /* UIView+MJExtension.m in Sources */,
 				60280A5E2331FD36000AFF4B /* ZFSliderView.m in Sources */,

@@ -179,6 +179,7 @@ static NSString * const cellHeader_ID = @"cellHeader_ID";
         [_mainTableView registerClass:[MineTableViewCell class] forCellReuseIdentifier:cellID];
         _mainTableView.rowHeight = self.sizeW(48);
         _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+      
         MineTableViewHeaderView *headerView = [[MineTableViewHeaderView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, self.sizeH(180))];
         WS()
         headerView.modifyMsgBlock = ^{
@@ -190,7 +191,7 @@ static NSString * const cellHeader_ID = @"cellHeader_ID";
                 [USER_MANAGER gotoLoginFromVC:weakSelf];
             }
         };
-
+        
         self.headerView = headerView;
         _mainTableView.tableHeaderView = self.headerView;
 

@@ -112,27 +112,18 @@ HXDatePhotoEditViewControllerDelegate>
         make.width.height.equalTo(self.sizeH(90));
     }];
     
-    UIView *line1 = [[UIView alloc]init];
-    line1.backgroundColor = KCOLOR(@"#F8F8F8");
-    [self.view addSubview:line1];
-    [line1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.iconIV.mas_bottom).offset(self.sizeH(50));
-        make.left.right.equalTo(self.view);
-        make.height.equalTo(0.7f);
-    }];
-    
-    UILabel *lab = [UILabel labelWithTitle:@"昵称" font:16 textColor:color_defaultText textAlignment:0];
+    UILabel *lab = [UILabel labelWithTitle:@"昵称" font:17 textColor:White_Color textAlignment:0];
     [self.view addSubview:lab];
     [lab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(self.sizeW(12));
-        make.top.equalTo(line1.mas_bottom).offset(self.sizeH(10));
+        make.top.equalTo(self.iconIV.mas_bottom).offset(self.sizeH(60));
         make.width.equalTo(self.sizeW(80));
         make.height.equalTo(self.sizeH(25));
     }];
     
     UITextField *inputTF = [[UITextField alloc]init];
     inputTF.delegate = self;
-    inputTF.font = Font_Size(15);
+    inputTF.font = Font_Size(17);
     inputTF.textColor = White_Color;
     inputTF.textAlignment = NSTextAlignmentLeft;
     inputTF.keyboardType = UIKeyboardTypeDefault;
@@ -164,8 +155,9 @@ HXDatePhotoEditViewControllerDelegate>
     [self.view addSubview:line2];
     [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(lab.mas_bottom).offset(self.sizeH(10));
-        make.left.right.equalTo(self.view);
-        make.height.equalTo(0.7f);
+        make.left.equalTo(self.view).offset(self.sizeW(12));
+        make.right.equalTo(self.view).offset(self.sizeW(-12));
+        make.height.equalTo(0.9f);
     }];
     
     UIButton *okBtn = [UIButton buttonWithTitle:@"退出登录" titleColor:White_Color bgColor:KCOLOR(@"#D96139") highlightedColor:White_Color];

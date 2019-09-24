@@ -9,17 +9,27 @@
 #import "WalletViewController.h"
 #import "UILabel+Category.h"
 #import "UIButton+Category.h"
+#import "WalletHeaderView.h"
+#import "WalletDetailCell.h"
 
-@interface WalletViewController ()
-
+@interface WalletViewController ()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic, strong) UITableView *mainTableView;
+@property (nonatomic, copy) NSMutableArray<NSArray *> *dataArray;
+@property (nonatomic, weak) WalletHeaderView *headerView;
 @property (nonatomic,strong) WalletUnLoginView *unLoginView;
 
 @end
 
 @implementation WalletViewController
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
+static NSString * const cellHeader_ID = @"WalletHeaderView_ID";
+
+- (NSMutableArray<NSArray *> *)dataArray {
+    if (!_dataArray) {
+        _dataArray = [NSMutableArray array];
+        NSArray *arr = @[@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",@""];
+        [_dataArray addObject:[arr copy]];
+    }return _dataArray;
 }
 
 - (void)viewDidLoad {
@@ -27,27 +37,111 @@
     
     [NOTIFICATION addObserver:self selector:@selector(refreshWhenLoginChange) name:LOGIN_IN_Noti object:nil];
     [NOTIFICATION addObserver:self selector:@selector(refreshWhenLoginChange) name:LOGIN_OUT_Noti object:nil];
-    [self initUI];
-   
+    [self initTableView];
+    [self refreshWhenLoginChange];
 }
 
-- (void)initUI {
+//登录状态改变时的UI处理
+- (void)refreshWhenLoginChange {
     if ([USER_MANAGER isLogin]) {
         self.fd_prefersNavigationBarHidden = YES;
-        
+        if(_unLoginView) {
+            _unLoginView.hidden = YES;
+            [self.view sendSubviewToBack:_unLoginView];
+        }
     }else {
+        self.fd_prefersNavigationBarHidden = NO;
         self.navigationItem.title = @"个人钱包";
-        [self.view addSubview:self.unLoginView];
-        [self.unLoginView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view).insets(UIEdgeInsetsMake([self contentOffset], 0, 0, 0));
-        }];
-        self.unLoginView.hidden = NO;
+        if(!_unLoginView) {
+            [self.view addSubview:self.unLoginView];
+            [self.unLoginView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(0, 0, 0, 0));
+            }];
+        }
+        _unLoginView.hidden = NO;
+        [self.view bringSubviewToFront:_unLoginView];
     }
 }
 
-//登录, 登出都刷新
-- (void)refreshWhenLoginChange {
-    [self initUI];
+- (void)initTableView {
+    [self.view addSubview:self.mainTableView];
+    [self.mainTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return self.dataArray.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.dataArray[section].count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    WalletDetailCell *cell = [WalletDetailCell cellForTableView:tableView];
+//    cell.model = self.dataArray[indexPath.section][indexPath.row];
+    return cell;
+}
+
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//
+//}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+//    if (section==1) {
+//        UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, self.sizeH(10))];
+//        header.backgroundColor = KCOLOR(@"#f8f8f8");
+//        return header;
+//    }else {
+//        return [[UIView alloc]init];
+//    }
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+//    return (section==1) ? self.sizeH(10) : 0.01;
+//}
+
+#pragma mark - lazyLoad
+- (UITableView *)mainTableView {
+    if (!_mainTableView) {
+        _mainTableView = [[UITableView alloc] initWithFrame:CGRectZero style:(UITableViewStylePlain)];
+        _mainTableView.delegate = self;
+        _mainTableView.dataSource = self;
+        _mainTableView.bounces = NO;
+        _mainTableView.backgroundColor = White_Color;
+        _mainTableView.rowHeight = self.sizeW(48);
+        _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        
+        WalletHeaderView *headerView = [[WalletHeaderView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenWidth+self.sizeW(20))];
+        WS()
+        headerView.withdrawBlock = ^{
+            if (IS_LOGIN) {
+//                ModifyMsgViewController *vc = [[ModifyMsgViewController alloc]init];
+//                vc.hidesBottomBarWhenPushed = YES;
+//                [weakSelf.navigationController pushViewController:vc animated:YES];
+            }else {
+                [USER_MANAGER gotoLoginFromVC:weakSelf];
+            }
+        };
+        headerView.barBtnClickBlock = ^(BOOL isRed) {
+            if (isRed) {
+                
+            }else {
+                
+            }
+        };
+        headerView.tipShowBlock = ^(BOOL isWithdraw) { 
+            if (isWithdraw) {
+                
+            }else {
+                
+            }
+        };
+        self.headerView = headerView;
+        _mainTableView.tableHeaderView = self.headerView;
+        
+    }return _mainTableView;
 }
 
 -(WalletUnLoginView *)unLoginView {
@@ -58,6 +152,10 @@
             [USER_MANAGER gotoLoginFromVC:weakSelf];
         };
     }return _unLoginView;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 @end
@@ -75,11 +173,12 @@
 }
 
 - (void)initUI {
+    self.backgroundColor = White_Color;
     UIImageView *iv = [[UIImageView alloc]initWithImage:Image_Named(@"wallet_not_login")];
     [self addSubview:iv];
     [iv mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
-        make.top.equalTo(self).offset(self.sizeH(76));
+        make.top.equalTo(self).offset(self.sizeH(76)+[self contentOffset]);
     }];
     UILabel *lab = [UILabel labelWithTitle:@"您当前未登录账户，无法进行钱包操作，登录后方可进行操作" font:18 textColor:color_defaultText textAlignment:1];
     lab.numberOfLines = 0;
