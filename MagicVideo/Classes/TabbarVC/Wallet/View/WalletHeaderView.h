@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy) void(^barBtnClickBlock)(BOOL isRed);
 @property (nonatomic,copy) void(^tipShowBlock)(BOOL isWithdraw); //提现规则or金币规则
 
+//刷新UI
+-(void)refreshMsg;
+
 @end
 
 NS_ASSUME_NONNULL_END

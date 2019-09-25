@@ -59,6 +59,12 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
     }
 }
 
+// 判断是否绑定手机号(微信登录但未绑定手机号)
+-(BOOL)isBindPhone {
+    NSString *phone = [self getUserPhone];
+    return (phone.length>0);
+}
+
 /**
  *  保存数据
  */

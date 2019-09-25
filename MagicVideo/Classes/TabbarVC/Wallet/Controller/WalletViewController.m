@@ -7,43 +7,106 @@
 //
 
 #import "WalletViewController.h"
+#import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 #import "UILabel+Category.h"
 #import "UIButton+Category.h"
 #import "WalletHeaderView.h"
 #import "WalletDetailCell.h"
 
-@interface WalletViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface WalletViewController ()<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 @property (nonatomic, strong) UITableView *mainTableView;
-@property (nonatomic, copy) NSMutableArray<NSArray *> *dataArray;
+@property (nonatomic, copy) NSMutableArray<NSArray *> *dataArrayRed;
+@property (nonatomic, copy) NSMutableArray<NSArray *> *dataArrayMoney;
 @property (nonatomic, weak) WalletHeaderView *headerView;
 @property (nonatomic,strong) WalletUnLoginView *unLoginView;
-
+@property (nonatomic,assign) BOOL isRedDetail; //红包明细 or 提现
 @end
 
 @implementation WalletViewController
 
 static NSString * const cellHeader_ID = @"WalletHeaderView_ID";
 
-- (NSMutableArray<NSArray *> *)dataArray {
-    if (!_dataArray) {
-        _dataArray = [NSMutableArray array];
-        NSArray *arr = @[@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",@""];
-        [_dataArray addObject:[arr copy]];
-    }return _dataArray;
+
+- (NSMutableArray<NSArray *> *)dataArrayRed {
+    if (!_dataArrayRed) {
+        _dataArrayRed = [NSMutableArray array];
+    }return _dataArrayRed;
+}
+
+- (NSMutableArray<NSArray *> *)dataArrayMoney {
+    if (!_dataArrayMoney) {
+        _dataArrayMoney = [NSMutableArray array];
+    }return _dataArrayMoney;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.isRedDetail = YES;
+    [self initTableView];
+    [self refreshWhenLoginChange];
+    
+    [self loadDateWithAnimation:YES];
     
     [NOTIFICATION addObserver:self selector:@selector(refreshWhenLoginChange) name:LOGIN_IN_Noti object:nil];
     [NOTIFICATION addObserver:self selector:@selector(refreshWhenLoginChange) name:LOGIN_OUT_Noti object:nil];
-    [self initTableView];
-    [self refreshWhenLoginChange];
+    [NOTIFICATION addObserver:self selector:@selector(refreshWhenLoginChange) name:RefreshUserMsgNoti object:nil];
+    
+    
 }
 
-//登录状态改变时的UI处理
+
+- (void)loadDateWithAnimation:(BOOL)isAnimation {
+    if (isAnimation) {SSGifShow(MainWindow, @"加载中");}
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (isAnimation) {SSDissMissAllGifHud(MainWindow, YES);}
+        self.isNetError = SSNetNormal_state;
+        [self.mainTableView reloadEmptyDataSet];
+    });
+    
+//    NSDictionary *dic = @{
+//                          @"<#xxx#>" : <#xxx#>,
+//                          @"size" : @(PageCount_Normal)
+//                          };
+//    [[SSRequest request]POST:<#Url#> parameters:dic.mutableCopy success:^(SSRequest *request, id response) {
+//
+//        if (isAnimation) {SSDissMissAllGifHud(MainWindow, YES);}
+//
+//        self.isNetError = SSNetNormal_state;
+//        [self.mainTableView.mj_header endRefreshing];
+//
+//        if(self.page == 1 && (self.dataArr.count>0)) {
+//            [self.dataArr removeAllObjects];
+//        }
+//
+//        NSArray *arr = [SubjectListModel mj_objectArrayWithKeyValuesArray:response[@"data"]];
+//
+//        [self.dataArr addObjectsFromArray:arr];
+//
+//        if (arr.count<PageCount_Normal) {
+//            [self.mainTableView.mj_footer endRefreshingWithNoMoreData];
+//        }else {
+//            [self.mainTableView.mj_footer endRefreshing];
+//        }
+//
+//        [self.mainTableView reloadData];
+//
+//    } failure:^(SSRequest *request, NSString *errorMsg) {
+//        if (isAnimation) {SSDissMissAllGifHud(MainWindow, YES);}
+//        SSMBToast(errorMsg, MainWindow);
+//        self.isNetError = SSNetError_state;
+//        [self.mainTableView reloadData];
+//        [self.mainTableView.mj_header endRefreshing];
+//        [self.mainTableView.mj_footer endRefreshing];
+//    }];
+}
+
+//登录状态改变时 or 用户资料改变时(用户名) 的UI处理
 - (void)refreshWhenLoginChange {
     if ([USER_MANAGER isLogin]) {
+        //用户资料改变时(用户名) UI更新
+        [self.headerView refreshMsg];
+        
         self.fd_prefersNavigationBarHidden = YES;
         if(_unLoginView) {
             _unLoginView.hidden = YES;
@@ -71,11 +134,11 @@ static NSString * const cellHeader_ID = @"WalletHeaderView_ID";
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.dataArray.count;
+    return self.isRedDetail ? self.dataArrayRed.count : self.dataArrayMoney.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.dataArray[section].count;
+    return self.isRedDetail ? self.dataArrayRed[section].count : self.dataArrayMoney[section].count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -108,12 +171,13 @@ static NSString * const cellHeader_ID = @"WalletHeaderView_ID";
         _mainTableView = [[UITableView alloc] initWithFrame:CGRectZero style:(UITableViewStylePlain)];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
-        _mainTableView.bounces = NO;
+        _mainTableView.emptyDataSetDelegate = self;
+        _mainTableView.emptyDataSetSource = self;
         _mainTableView.backgroundColor = White_Color;
         _mainTableView.rowHeight = self.sizeW(48);
         _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        
-        WalletHeaderView *headerView = [[WalletHeaderView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenWidth+self.sizeW(20))];
+        _mainTableView.bounces = NO;
+        WalletHeaderView *headerView = [[WalletHeaderView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenWidth)];
         WS()
         headerView.withdrawBlock = ^{
             if (IS_LOGIN) {
@@ -154,14 +218,77 @@ static NSString * const cellHeader_ID = @"WalletHeaderView_ID";
     }return _unLoginView;
 }
 
+#pragma mark--DZ
+-(UIImage*)imageForEmptyDataSet:(UIScrollView *)scrollView {
+    if(self.isNetError==SSNetLoading_state)return nil;
+    return self.isNetError == SSNetNormal_state ? Image_Named(@"netError") : Image_Named(@"netError");
+}
+
+-(NSAttributedString*)titleForEmptyDataSet:(UIScrollView *)scrollView {
+    if(self.isNetError==SSNetLoading_state)return nil;
+    NSString *text = self.isNetError==SSNetError_state?@"网络请求失败": self.isRedDetail ? @"您暂时还没有红包记录哦" : @"您暂时还没有提现记录哦";
+    NSDictionary *attribute = self.isNetError?@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: KCOLOR(@"#333333")}:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: KCOLOR(@"#999999")};
+    return [[NSAttributedString alloc] initWithString:text attributes:attribute];
+}
+
+// 返回详情文字
+- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView {
+    if(self.isNetError==SSNetNormal_state && self.isRedDetail) {
+        NSString *text = @"快来 看视频 抢红包吧";
+        NSRange ran = [text rangeOfString:@"看视频"];
+        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:text];
+        [attrString addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0f],NSForegroundColorAttributeName:KCOLOR(@"#999999")} range:NSMakeRange(0, text.length)];
+        [attrString addAttributes:@{NSForegroundColorAttributeName:Red_Color,NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleSingle]} range:ran];
+        return attrString;
+    }
+    
+    if(self.isNetError!=SSNetError_state)return nil;
+    NSString *text = @"加载失败,点击重试";
+    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: KCOLOR(@"#999999")};
+    return [[NSAttributedString alloc] initWithString:text attributes:attribute];
+}
+
+-(UIImage*)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state
+{
+    if(self.isNetError!=SSNetError_state)return nil;
+    return Image_Named(@"reload");
+}
+
+-(BOOL)emptyDataSetShouldAllowScroll:(UIScrollView *)scrollView {
+    return YES;
+}
+
+- (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view {
+    if(self.isRedDetail) {  //跳去 看视频
+        SSMBToast(@"跳去看视频", MainWindow);
+        return;
+    }
+    
+    self.isNetError = SSNetLoading_state;
+    //    [self.mainTableView reloadEmptyDataSet];
+    //    [self loadDateWithAnimation:YES];
+}
+
+- (BOOL)emptyDataSetShouldDisplay:(UIScrollView *)scrollView {
+    if(self.isRedDetail) {
+        return (self.dataArrayRed.count==0);
+    }else {
+        return (self.dataArrayMoney.count==0);
+    }
+}
+
+- (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView {
+    return self.sizeW(135);
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 @end
 
-@interface WalletUnLoginView()
 
+@interface WalletUnLoginView()
 @end
 
 @implementation WalletUnLoginView
@@ -207,7 +334,6 @@ static NSString * const cellHeader_ID = @"WalletHeaderView_ID";
         make.width.equalTo(self.sizeH(142));
         make.height.equalTo(self.sizeH(42));
     }];
-    
 }
 
 - (void)loginBtnClick {

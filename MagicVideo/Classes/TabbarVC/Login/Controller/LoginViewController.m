@@ -156,10 +156,12 @@
 
 //验证码登录 or 微信登录后绑定手机号登录
 - (void)codeLoginBtnAction {
-    if(self.phoneTF.text.length !=11 ) {
+    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", RegextestMobile];
+    if(![regextestmobile evaluateWithObject:self.phoneTF.text]){
         SSMBToast(@"请填写正确的手机号", MainWindow);
         return;
     }
+    
     if(self.codeTF.text.length == 0) {
         SSMBToast(@"请输入验证码", MainWindow);
         return;

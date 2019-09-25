@@ -144,7 +144,7 @@
 #define MStrongSelf(type)  __strong typeof(type) type = weak##type;
 
 /** 手机正则 */
-#define RegextestMobile       @"^1([3|5|7|8|])[0-9]{9}$"
+#define RegextestMobile       @"^1(3[0-9]|4[579]|5[0-35-9]|7[01356]|8[0-9])\\d{8}$"
 /** 密码正则 */
 #define RegextestPassword     @"^[@A-Za-z0-9!#$%^&*.~_(){},?:;]{6,20}$"
 /** 验证码 */

@@ -24,6 +24,11 @@
 
 @implementation WalletHeaderView
 
+//刷新UI
+-(void)refreshMsg {
+    self.nickNameLab.text = [USER_MANAGER getUserNickName];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self= [super initWithFrame:frame]) {
         [self createUI];
@@ -114,7 +119,7 @@
     [self addSubview:getGoldBtn];
     [getGoldBtn addTarget:self action:@selector(getGoldAction) forControlEvents:UIControlEventTouchUpInside];
     [getGoldBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cardBgView.mas_centerY).offset(self.sizeW(18));
+        make.top.equalTo(cardBgView.mas_centerY).offset(self.sizeW(25));
         make.width.equalTo(ScreenWidth*2/3);
         make.height.equalTo(self.sizeW(48));
         make.centerX.equalTo(cardBgView);

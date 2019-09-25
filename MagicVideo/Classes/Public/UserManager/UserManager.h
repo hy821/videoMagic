@@ -47,6 +47,8 @@
 
 // 判断是否登录
 -(BOOL)isLogin;
+// 判断是否绑定手机号(微信登录但未绑定手机号)
+-(BOOL)isBindPhone;
 
 -(NSInteger)getDragShowAdvCount;
 

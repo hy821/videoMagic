@@ -434,6 +434,7 @@
                     [self restoreRootViewController:SelectVC];
                 }else {
                     //绑定手机号
+                    SSMBToast(@"请绑定手机号", MainWindow);
                     LoginViewController *vc = [[LoginViewController alloc]init];
                     vc.isBindPhone = YES;
                     [SelectVC pushViewController:vc animated:YES];

@@ -16,6 +16,8 @@
 		602117992338F9D000AEAC9F /* ModifyMsgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117982338F9D000AEAC9F /* ModifyMsgViewController.m */; };
 		6021179C2339C9C200AEAC9F /* WalletHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6021179B2339C9C200AEAC9F /* WalletHeaderView.m */; };
 		6021179F2339CD5100AEAC9F /* WalletDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6021179E2339CD5100AEAC9F /* WalletDetailCell.m */; };
+		602117A2233A335D00AEAC9F /* VideoMsgCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117A1233A335D00AEAC9F /* VideoMsgCell.m */; };
+		602117A5233A4AA900AEAC9F /* VideoRecomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117A4233A4AA900AEAC9F /* VideoRecomCell.m */; };
 		602805AD2330F874000AFF4B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805A92330F874000AFF4B /* AppDelegate.m */; };
 		602805BD2330F917000AFF4B /* KSBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805AF2330F917000AFF4B /* KSBaseViewController.m */; };
 		602805BE2330F917000AFF4B /* KSBaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805B12330F917000AFF4B /* KSBaseWebViewController.m */; };
@@ -303,6 +305,10 @@
 		6021179B2339C9C200AEAC9F /* WalletHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletHeaderView.m; sourceTree = "<group>"; };
 		6021179D2339CD5100AEAC9F /* WalletDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WalletDetailCell.h; sourceTree = "<group>"; };
 		6021179E2339CD5100AEAC9F /* WalletDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletDetailCell.m; sourceTree = "<group>"; };
+		602117A0233A335D00AEAC9F /* VideoMsgCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoMsgCell.h; sourceTree = "<group>"; };
+		602117A1233A335D00AEAC9F /* VideoMsgCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoMsgCell.m; sourceTree = "<group>"; };
+		602117A3233A4AA900AEAC9F /* VideoRecomCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoRecomCell.h; sourceTree = "<group>"; };
+		602117A4233A4AA900AEAC9F /* VideoRecomCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoRecomCell.m; sourceTree = "<group>"; };
 		602805A82330F874000AFF4B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		602805A92330F874000AFF4B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		602805AE2330F916000AFF4B /* KSBaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSBaseWebViewController.h; sourceTree = "<group>"; };
@@ -997,6 +1003,10 @@
 		602805982330F874000AFF4B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				602117A0233A335D00AEAC9F /* VideoMsgCell.h */,
+				602117A1233A335D00AEAC9F /* VideoMsgCell.m */,
+				602117A3233A4AA900AEAC9F /* VideoRecomCell.h */,
+				602117A4233A4AA900AEAC9F /* VideoRecomCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1677,13 +1687,13 @@
 			children = (
 				602809A52331FD35000AFF4B /* HJTabViewController+ViewController.h */,
 				602809A62331FD35000AFF4B /* HJTabViewController.h */,
+				602809AD2331FD35000AFF4B /* HJTabViewController.m */,
 				602809A72331FD35000AFF4B /* HJTabViewControllerPlugin_TabViewBar.h */,
 				602809A82331FD35000AFF4B /* HJTabViewBar.h */,
 				602809A92331FD35000AFF4B /* HJTabViewControllerPlugin_Base.h */,
 				602809AA2331FD35000AFF4B /* HJTabViewControllerPlugin_BottomInset.h */,
 				602809AB2331FD35000AFF4B /* KSScrollView.h */,
 				602809AC2331FD35000AFF4B /* HJTabViewControllerPlugin_HeaderScroll.m */,
-				602809AD2331FD35000AFF4B /* HJTabViewController.m */,
 				602809AE2331FD35000AFF4B /* HJTabViewController+ViewController.m */,
 				602809AF2331FD35000AFF4B /* HJTabViewController+Private.h */,
 				602809B02331FD35000AFF4B /* HJTabViewControllerPlugin_TabViewBar.m */,
@@ -2475,6 +2485,7 @@
 				60280B262331FE8A000AFF4B /* UIButton+BackgroundColor.m in Sources */,
 				60280AE12331FD36000AFF4B /* WXSTransitionManager+BrickAnimation.m in Sources */,
 				60280B362331FE8A000AFF4B /* UIControl+recurClick.m in Sources */,
+				602117A2233A335D00AEAC9F /* VideoMsgCell.m in Sources */,
 				60280B4023321F87000AFF4B /* ShortVideoListCell.m in Sources */,
 				60280B2E2331FE8A000AFF4B /* NSMutableArray+Safe.m in Sources */,
 				6028067C2331F8A9000AFF4B /* MineViewController.m in Sources */,
@@ -2494,6 +2505,7 @@
 				60280BFB233396F4000AFF4B /* FMDatabaseQueue.m in Sources */,
 				60280AAF2331FD36000AFF4B /* HJTabViewControllerPlugin_BottomInset.m in Sources */,
 				60280AA42331FD36000AFF4B /* HXCustomPreviewView.m in Sources */,
+				602117A5233A4AA900AEAC9F /* VideoRecomCell.m in Sources */,
 				60280A4D2331FD36000AFF4B /* ZFOrientationObserver.m in Sources */,
 				60280A912331FD36000AFF4B /* HXPhotoCustomNavigationBar.m in Sources */,
 				60280A972331FD36000AFF4B /* HXDatePhotoViewPresentTransition.m in Sources */,

@@ -10,9 +10,9 @@
 
 @interface VideoDetailMsgController : UITableViewController
 
-////加载数据 刷新UI,  model为空时: 网络请求失败 或者 网络请求成功,返回model为空(下架)
-//- (void)loadDataWithCommonModel:(VDCommonModel*)model isOff:(BOOL)isOff;
-//
+//加载数据 刷新UI,  model为空时: 网络请求失败 或者 网络请求成功,返回model为空(下架)
+- (void)loadDataWithCommonModel:(id*)model isOff:(BOOL)isOff;
+
 //@property (nonatomic,copy) void(^loadDataBlock)(void); //数据为空时, 点击emptyDataSet 请求数据
 //
 //@property (nonatomic,copy) void(^updateDataWhenChangeSourceBlock)(VDCommonModel *model); //切换数据源时,更新外面数据

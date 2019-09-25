@@ -138,26 +138,15 @@
     switch (self.type) {
         case Normal_Type:
         {
-            if(textField.text.length == 12) {
-                if(self.checkBlock) {
-                    self.checkBlock(textField.text);
-                }
-            }
-            if(textField.text.length>12) {
-                textField.text = [textField.text substringWithRange:NSMakeRange(0, 12)];
+            if(textField.text.length>11) {
+                textField.text = [textField.text substringWithRange:NSMakeRange(0, 11)];
             }
         }
             break;
         case GetCode_type:
         {
-            if(textField.text.length == 8) {
-                if(self.checkBlock){
-                    self.checkBlock(textField.text);
-                }
-            }
-            
-            if(textField.text.length>8) {
-                textField.text = [textField.text substringWithRange:NSMakeRange(0, 8)];
+            if(textField.text.length>6) {
+                textField.text = [textField.text substringWithRange:NSMakeRange(0, 6)];
             }
         }
             break;
@@ -186,25 +175,8 @@
     }
 }
 
-- (void)setMobileText:(NSString *)mobileText
-{
+- (void)setMobileText:(NSString *)mobileText {
     _mobileText = mobileText;
-    
-//    // 如果验证码按钮 显示 获取验证码,  再根据手机号是否正确 , 改变颜色,  这里只改变颜色
-//    if([self.timeBtn.currentTitle isEqualToString:@"获取验证码"]) {
-//        NSString *MOBILE = @"^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$";
-//        NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
-//        if([regextestmobile evaluateWithObject:self.mobileText]) {  //手机号正确
-//            [self.timeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//            UIColor *topleftColor = KCOLOR(@"#ffffff");
-//            UIColor *bottomrightColor = KCOLOR(@"#ffffff");
-//            UIImage *bgImg = [UIImage gradientColorImageFromColors:@[topleftColor, bottomrightColor] gradientType:GradientTypeUpleftToLowright imgSize:CGSizeMake(self.sizeW(110), self.sizeH(38))];
-//            [self.timeBtn setBackgroundImage:bgImg forState:UIControlStateNormal];
-//        }else {
-//            [self.timeBtn setBackgroundImage:Image_Named(@"circle") forState:UIControlStateNormal];
-//            [self.timeBtn setTitleColor:KCOLOR(@"#E95727") forState:UIControlStateNormal];
-//        }
-//    }
 }
 
 - (void)forgetPasswordAction {
@@ -332,8 +304,7 @@
 
 -(void)startAnimation:(UIButton*)sender {
     if([self.timeBtn.currentTitle isEqualToString:@"获取验证码"]){
-        NSString *MOBILE = @"^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$";
-        NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
+        NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", RegextestMobile];
         if(![regextestmobile evaluateWithObject:self.mobileText]){
             SSMBToast(@"请填写正确的手机号", MainWindow);
             return;
@@ -374,14 +345,6 @@
     if(self.currentIndex == 1) {
         self.timeBtn.userInteractionEnabled = YES;
         [self.timeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
-        
-//        NSString *MOBILE = @"^((13[0-9])|(14[0-9])|(15[0-9])|(17[0-9])|(18[0-9]))//d{8}$";
-//        NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
-//        if([regextestmobile evaluateWithObject:self.mobileText]){  //手机号正确
-//
-//        }else {
-//
-//        }
         
         if(self.timer) {
             [self.timer invalidate];

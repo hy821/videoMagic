@@ -330,6 +330,8 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
         [_tableView registerClass:[ShortVideoListCell class] forCellReuseIdentifier:kIdentifier];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        _tableView.emptyDataSetDelegate = self;
+        _tableView.emptyDataSetSource = self;
         _tableView.scrollEnabled = NO;
         //Add---
         _tableView.decelerationRate = UIScrollViewDecelerationRateFast;

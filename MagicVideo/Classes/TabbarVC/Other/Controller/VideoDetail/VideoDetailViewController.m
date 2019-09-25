@@ -50,7 +50,6 @@
 @property (nonatomic,strong) NSMutableArray * vcArr;
 @property (nonatomic, weak) UIImageView *topContainerView;
 @property (nonatomic, weak) UIButton *backBtn;
-@property (nonatomic, weak) UIButton *moreBtn;  //右上角
 @property (nonatomic,strong) UIButton *playBtn;
 
 //@property (nonatomic,weak) EndCoverView *endCoverView;  //短视频观看结束的重播View
@@ -150,16 +149,15 @@
     self.tabDataSource = self;
     self.tabDelegate = self;
     
-    HJDefaultTabViewBar *tabViewBar = [HJDefaultTabViewBar new];
-    tabViewBar.delegate = self;
-    tabViewBar.mj_size = CGSizeMake(ScreenWidth, VDTabHeight);
-    self.tabViewBar = tabViewBar;
-    HJTabViewControllerPlugin_TabViewBar *tabViewBarPlugin = [[HJTabViewControllerPlugin_TabViewBar alloc] initWithTabViewBar:tabViewBar delegate:nil];
-    self.tabViewBarPlugin = tabViewBarPlugin;
-    [self enablePlugin:self.tabViewBarPlugin];
+//    HJDefaultTabViewBar *tabViewBar = [HJDefaultTabViewBar new];
+//    tabViewBar.delegate = self;
+//    tabViewBar.mj_size = CGSizeMake(ScreenWidth, VDTabHeight);
+//    self.tabViewBar = tabViewBar;
+//    HJTabViewControllerPlugin_TabViewBar *tabViewBarPlugin = [[HJTabViewControllerPlugin_TabViewBar alloc] initWithTabViewBar:tabViewBar delegate:nil];
+//    self.tabViewBarPlugin = tabViewBarPlugin;
+//    [self enablePlugin:self.tabViewBarPlugin];
     
     [self initUI];
-    [self refreshPlayerWithIsChangeEpisode:NO];
     
 //    [self initPlayer];
 //
@@ -170,6 +168,117 @@
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWhenLoginNoti) name:LoginAndRefreshNoti object:nil];
 }
 
+- (void)initUI {
+    UIImageView * topContainerView = [[UIImageView alloc]init];
+    topContainerView.clipsToBounds = YES;
+    topContainerView.contentMode = UIViewContentModeScaleAspectFill;
+    topContainerView.userInteractionEnabled = YES;
+    [self.view addSubview:topContainerView];
+    self.topContainerView = topContainerView;
+    [self.topContainerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset([self statusBarHeight]);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(VDTopViewH);
+    }];
+    
+    self.topContainerView.image = Image_Named(@"img_user_bg");
+    
+    UIButton *backBtn = [UIButton buttonWithImage:Image_Named(@"back_nav") selectedImage:Image_Named(@"back_nav")];
+    [backBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.topContainerView addSubview:backBtn];
+    self.backBtn = backBtn;
+    [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.topContainerView).offset(self.sizeW(12));
+        make.left.equalTo(self.topContainerView).offset(self.sizeW(12));
+    }];
+    
+    UIButton *playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [playBtn setImage:[UIImage imageNamed:@"playLogo"] forState:UIControlStateNormal];
+    //    [playBtn addTarget:self action:@selector(playClick) forControlEvents:UIControlEventTouchUpInside];
+    playBtn.uxy_acceptEventInterval = 2.f;
+    [self.topContainerView addSubview:playBtn];
+    self.playBtn = playBtn;
+    
+    [self.playBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.topContainerView);
+    }];
+    
+    //    EndCoverView *endCoverView = [[EndCoverView alloc]init];
+    //    endCoverView.hidden = YES;
+    //    [self.topContainerView addSubview:endCoverView];
+    //    self.endCoverView = endCoverView;
+    //    WS()
+    //    self.endCoverView.replayBlock = ^{
+    //        SS()
+    //        if(strongSelf.videoPlayType == VideoPlayType_NoSource) {
+    //            [strongSelf playAction];
+    //        }else {
+    //            __block NSMutableArray *labArr = [NSMutableArray array];
+    //            [strongSelf.modelCommon.categoryResults enumerateObjectsUsingBlock:^(ZFilterModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    //                [labArr addObject:obj.idForModel];
+    //            }];
+    //            NSDictionary *bp_dic = @{PROGRAM_ID : strongSelf.modelCommon.idForModel,
+    //                                     LABEL_ID : [labArr componentsJoinedByString:@","],
+    //                                     SOURCE_ID : (strongSelf.modelCommon.mediaSourceResultList.count>0) ? strongSelf.modelCommon.mediaSourceResultList.firstObject.idForModel : @""
+    //                                     };
+    //            [[BuryingPointManager shareManager] buryingPointWithEventID:BP_ShortDetailReplay andParameters:bp_dic];
+    //
+    //            strongSelf.endCoverView.hidden = YES;
+    //            strongSelf.player.currentPlayerManager.seekTime = 0;
+    //            [strongSelf.player.currentPlayerManager prepareToPlay];
+    //            [strongSelf.player.currentPlayerManager play];
+    //            [strongSelf upBackBtnUI];
+    //        }
+    //    };
+    //    //倒计时结束, 播放下一个视频, 相当于点击了猜你喜欢
+    //    self.endCoverView.countDownNextBlock = ^{
+    //        SS();
+    //        strongSelf.endCoverView.hidden = YES;
+    //        strongSelf.vcType = VideoDetailTypeShort_NoPlayer;
+    //        if (strongSelf.likeDataArray.count>0) {
+    //            //如果正在播放 停止播放
+    //            if (strongSelf.player) {
+    //                [strongSelf.player stop];
+    //            }
+    //
+    //            strongSelf.autoPlayNextForBuryPoint = YES;
+    //            ProgramResultListModel *m = strongSelf.likeDataArray.firstObject;
+    //            strongSelf.model = m;
+    //            [strongSelf firstLoadWithHud:YES];
+    //
+    //        }else {  //没有猜你喜欢, 重播
+    //            strongSelf.player.currentPlayerManager.seekTime = 0;
+    //            [strongSelf.player.currentPlayerManager prepareToPlay];
+    //            [strongSelf.player.currentPlayerManager play];
+    //        }
+    //    };
+    //    [self.endCoverView mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.edges.equalTo(self.topContainerView);
+    //    }];
+    //
+}
+//
+////更新播放相关: 第一次数据请求结束 or 切换剧集后
+//- (void)refreshPlayerWithIsChangeEpisode:(BOOL)isChange {
+//    if (!isChange) {  //非切换剧集
+        //        //切换剧集的话,不用清空评论, 这里是非切换剧集, 就是切换影片, 所以清空评论
+        //        VideoDetailCommentController * right = (VideoDetailCommentController*)self.vcArr[1];
+        //        [right reloadEmptyDataWhenChangeVideo];
+//
+//        //UIEdgeInsetsMake 在原先的rect上内切出另一个rect出来，-为变大，+为变小
+//        [self.topContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.view).offset([self statusBarHeight]);
+//            make.left.right.equalTo(self.view);
+//            make.height.equalTo(VDTopViewH);
+//        }];
+//        [self upBackBtnUI];
+//    }
+//
+//    VideoDetailMsgController *vc = self.vcArr.firstObject;
+//    [vc loadDataWithCommonModel:nil isOff:nil];
+//
+//}
+//
 //- (void)initPlayer {
 //    if (self.vcType == VideoDetailTypeShort_WithPlayer || self.vcType == VideoDetailTypeShort_WithPlayerAdv) {
 //        if (self.player) {
@@ -221,7 +330,7 @@
 //            if (!self.endCoverView.isHidden) {
 //                [self.topContainerView bringSubviewToFront:self.endCoverView];
 //            }
-//            [self upBackAndMoreBtnUI];
+//            [self upBackBtnUI];
 //        }
 //    };
 //
@@ -229,18 +338,18 @@
 //        self.player.playerDidToEnd = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset) {
 //            @strongify(self)
 //            [self shortVideoPlayEnd];
-//            [self upBackAndMoreBtnUI];
+//            [self upBackBtnUI];
 //        };
 //        self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, id  _Nonnull error) {
 //            @strongify(self)
-//            [self upBackAndMoreBtnUI];
+//            [self upBackBtnUI];
 //
 //            if (self.modelCommon.realUrl.length > 0) {
 //                [USER_MANAGER reportPlayFailLogWithProgramID:self.pi andVideoUrl:self.modelCommon.realUrl];
 //            }
 //        };
 //    }
-//    [self upBackAndMoreBtnUI];
+//    [self upBackBtnUI];
 //}
 //
 //#pragma mark - 首次请求数据
@@ -275,57 +384,6 @@
 //    });
 //}
 //
-////更新播放相关: 第一次数据请求结束 or 切换剧集后
-- (void)refreshPlayerWithIsChangeEpisode:(BOOL)isChange {
-    if (!isChange) {  //非切换剧集
-//        //切换剧集的话,不用清空评论, 这里是非切换剧集, 就是切换影片, 所以清空评论
-//        VideoDetailCommentController * right = (VideoDetailCommentController*)self.vcArr[1];
-//        [right reloadEmptyDataWhenChangeVideo];
-
-//        //无数据时的占位处理
-//        if (self.modelCommon && self.modelCommon.videoType != VideoType_UnKnow)
-//        {
-            [self layoutContainerViewWithEdgeInsets:UIEdgeInsetsMake(VDTopViewH, 0, 0, 0)];
-            [self.topContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.left.right.equalTo(self.view);
-                make.height.equalTo(VDTopViewH);
-            }];
-            self.tabViewBar.mj_size = CGSizeMake(ScreenWidth, VDTabHeight);
-        self.topContainerView.image = img_placeHolder;
-
-//            [self enablePlugin:self.tabViewBarPlugin];
-
-//        }else {
-        
-//            //UIEdgeInsetsMake 在原先的rect上内切出另一个rect出来，-为变大，+为变小
-//            [self layoutContainerViewWithEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-//            [self.topContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//                make.top.left.right.equalTo(self.view);
-//                make.height.equalTo(0);
-//            }];
-//
-//            //简介+评论 TabBar处理一下
-//            self.tabViewBar.mj_h = 0;
-////            [self removePlugin:self.tabViewBarPlugin];
-//        }
-
-//        [self.topContainerView sd_setImageWithURL:URL(self.modelCommon.poster.url) placeholderImage:nil options:SDWebImageRetryFailed];
-//    }
-
-//    if (self.vcType == VideoDetailTypeShort_WithPlayerAdv || self.vcType == VideoDetailTypeShort_NoPlayer) {
-//        if ([USER_MANAGER isShowShortVideoDayOnceAdvWithShortVideoID:self.model.idForModel]) {
-//            [self showCountDownAdv];
-//        }else {
-//            [self shortVideoPlay];
-//        }
-//    }else {
-//        [self shortVideoPlay];
-//    }
-
-//    [self upBackAndMoreBtnUI];
-    }
-}
-//
 //- (void)shortVideoPlay {
 //    if (self.vcType == VideoDetailTypeShort_WithPlayer || self.vcType == VideoDetailTypeShort_WithPlayerAdv) {
 //        if ([self.player.currentPlayerManager isPlaying]) {
@@ -354,7 +412,7 @@
 //        [self shortVideoPlayEnd];
 //    }
 //
-//    [self upBackAndMoreBtnUI];
+//    [self upBackBtnUI];
 //}
 //
 ////播放器--->播放短视频前的网络监测
@@ -495,7 +553,7 @@
 //        self.endCoverView.hidden = NO;
 //        [self.endCoverView startCountDownWithModel:m];
 //        [self.topContainerView bringSubviewToFront:self.endCoverView];
-//        [self upBackAndMoreBtnUI];
+//        [self upBackBtnUI];
 //    }else {  //没有猜你喜欢, 重播
 //        [self.player.currentPlayerManager prepareToPlay];
 //        [self.player.currentPlayerManager play];
@@ -738,102 +796,7 @@
 //        dispatch_group_leave(_group);
 //    }];
 //}
-
-- (void)initUI {
-    UIImageView * topContainerView = [[UIImageView alloc]init];
-    topContainerView.clipsToBounds = YES;
-    topContainerView.contentMode = UIViewContentModeScaleAspectFill;
-    topContainerView.userInteractionEnabled = YES;
-    [self.view addSubview:topContainerView];
-    self.topContainerView = topContainerView;
-    self.topContainerView.clipsToBounds = YES;
-    [self.topContainerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.view);
-        make.height.equalTo(VDTopViewH);
-    }];
-    
-    UIButton *backBtn = [UIButton buttonWithImage:Image_Named(@"backWhite") selectedImage:Image_Named(@"backWhite")];
-    [backBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.topContainerView addSubview:backBtn];
-    self.backBtn = backBtn;
-    [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topContainerView).offset([self contentOffset]-44);
-        make.left.equalTo(self.topContainerView).offset(self.sizeW(12));
-    }];
-    UIButton *moreBtn = [UIButton buttonWithImage:Image_Named(@"ic_detail_share") selectedImage:Image_Named(@"ic_detail_share")];
-//    [moreBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.topContainerView addSubview:moreBtn];
-    self.moreBtn = moreBtn;
-    [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.backBtn);
-        make.right.equalTo(self.topContainerView).offset(self.sizeW(-12));
-    }];
-    
-    UIButton *playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [playBtn setImage:[UIImage imageNamed:@"playLogo"] forState:UIControlStateNormal];
-//    [playBtn addTarget:self action:@selector(playClick) forControlEvents:UIControlEventTouchUpInside];
-    playBtn.uxy_acceptEventInterval = 2.f;
-    [self.topContainerView addSubview:playBtn];
-    self.playBtn = playBtn;
-    
-    [self.playBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self.topContainerView);
-    }];
-    
-//    EndCoverView *endCoverView = [[EndCoverView alloc]init];
-//    endCoverView.hidden = YES;
-//    [self.topContainerView addSubview:endCoverView];
-//    self.endCoverView = endCoverView;
-//    WS()
-//    self.endCoverView.replayBlock = ^{
-//        SS()
-//        if(strongSelf.videoPlayType == VideoPlayType_NoSource) {
-//            [strongSelf playAction];
-//        }else {
-//            __block NSMutableArray *labArr = [NSMutableArray array];
-//            [strongSelf.modelCommon.categoryResults enumerateObjectsUsingBlock:^(ZFilterModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//                [labArr addObject:obj.idForModel];
-//            }];
-//            NSDictionary *bp_dic = @{PROGRAM_ID : strongSelf.modelCommon.idForModel,
-//                                     LABEL_ID : [labArr componentsJoinedByString:@","],
-//                                     SOURCE_ID : (strongSelf.modelCommon.mediaSourceResultList.count>0) ? strongSelf.modelCommon.mediaSourceResultList.firstObject.idForModel : @""
-//                                     };
-//            [[BuryingPointManager shareManager] buryingPointWithEventID:BP_ShortDetailReplay andParameters:bp_dic];
 //
-//            strongSelf.endCoverView.hidden = YES;
-//            strongSelf.player.currentPlayerManager.seekTime = 0;
-//            [strongSelf.player.currentPlayerManager prepareToPlay];
-//            [strongSelf.player.currentPlayerManager play];
-//            [strongSelf upBackAndMoreBtnUI];
-//        }
-//    };
-//    //倒计时结束, 播放下一个视频, 相当于点击了猜你喜欢
-//    self.endCoverView.countDownNextBlock = ^{
-//        SS();
-//        strongSelf.endCoverView.hidden = YES;
-//        strongSelf.vcType = VideoDetailTypeShort_NoPlayer;
-//        if (strongSelf.likeDataArray.count>0) {
-//            //如果正在播放 停止播放
-//            if (strongSelf.player) {
-//                [strongSelf.player stop];
-//            }
-//
-//            strongSelf.autoPlayNextForBuryPoint = YES;
-//            ProgramResultListModel *m = strongSelf.likeDataArray.firstObject;
-//            strongSelf.model = m;
-//            [strongSelf firstLoadWithHud:YES];
-//
-//        }else {  //没有猜你喜欢, 重播
-//            strongSelf.player.currentPlayerManager.seekTime = 0;
-//            [strongSelf.player.currentPlayerManager prepareToPlay];
-//            [strongSelf.player.currentPlayerManager play];
-//        }
-//    };
-//    [self.endCoverView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self.topContainerView);
-//    }];
-//
-}
 //
 //#pragma mark - 播放按钮事件
 //- (void)playClick {
@@ -1028,7 +991,8 @@
 }
 
 - (UIEdgeInsets)containerInsetsForTabViewController:(HJTabViewController *)tabViewController {
-    return UIEdgeInsetsMake(CGRectGetMaxY(self.navigationController.navigationBar.frame), 0, 0, 0);
+    return UIEdgeInsetsMake([self statusBarHeight]+VDTopViewH, 0, 0, 0);
+//    return UIEdgeInsetsMake(CGRectGetMaxY(self.navigationController.navigationBar.frame), 0, 0, 0);
 }
 
 -(void)tabViewController:(HJTabViewController *)tabViewController scrollViewWillScrollFromIndex:(NSInteger)index {
@@ -1049,9 +1013,8 @@
 //    }
 }
 
-- (void)upBackAndMoreBtnUI {
+- (void)upBackBtnUI {
     [self.topContainerView bringSubviewToFront:self.backBtn];
-    [self.topContainerView bringSubviewToFront:self.moreBtn];
 }
 
 ////GDT_Adv   Interstitial  长片点击播放时, 获取播放结束展示的插屏广告
@@ -1245,7 +1208,7 @@
 //    }];
 //    [self.topContainerView bringSubviewToFront:self.expressView];
 //    [self.topContainerView bringSubviewToFront:self.countDownView];
-//    [self upBackAndMoreBtnUI];
+//    [self upBackBtnUI];
 //    [self.countDownView startWithCount:5];
 //}
 //
