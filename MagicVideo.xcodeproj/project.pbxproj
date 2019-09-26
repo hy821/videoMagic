@@ -868,6 +868,13 @@
 			path = VideoDetail;
 			sourceTree = "<group>";
 		};
+		602117A6233C655300AEAC9F /* Player */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
 		6028058A2330F874000AFF4B /* OtherFile */ = {
 			isa = PBXGroup;
 			children = (
@@ -1160,6 +1167,7 @@
 		602805A62330F874000AFF4B /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				602117A6233C655300AEAC9F /* Player */,
 				602117872334DD1800AEAC9F /* SSRequest */,
 				6028063A2331DC74000AFF4B /* UserManager */,
 				60280BD923338768000AFF4B /* DB */,
