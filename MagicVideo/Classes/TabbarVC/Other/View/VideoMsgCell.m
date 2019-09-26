@@ -83,7 +83,7 @@
     [self.videoNameLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.iconIV);
         make.right.equalTo(self.contentView).offset(self.sizeW(-10));
-        make.top.equalTo(self.iconIV.mas_bottom).offset(self.sizeW(14));
+        make.top.equalTo(self.iconIV.mas_bottom).offset(self.sizeW(10));
     }];
 
     [self.viewCountLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -114,7 +114,7 @@
         make.width.equalTo(widthOfBtn);
         make.height.equalTo(self.sizeW(40));
         make.left.equalTo(self.contentView).offset(self.sizeW(10));
-        make.top.equalTo(self.viewCountLab.mas_bottom).offset(self.sizeW(8));
+        make.top.equalTo(self.viewCountLab.mas_bottom).offset(self.sizeW(12));
     }];
     
     HorizenButton *collectBtn = [[HorizenButton alloc]init];
@@ -164,17 +164,19 @@
     }];
     
     UIView *line = [[UIView alloc]init];
-    line.backgroundColor = [UIColor darkGrayColor];
+    line.backgroundColor = LightGray_Color;
     [self.contentView addSubview:line];
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self.contentView);
-        make.height.equalTo(0.7f);
+        make.height.equalTo(0.6f);
     }];
     
     _upNameLab.text = @"百变影院";
     _upDescLab.text = @"精彩大片视频曝光，敬请关注。";
-    _videoNameLab.text = @"一部好莱坞顶级科幻动作电影 简直是一场视觉的饕餮盛宴 极度震撼";
     _viewCountLab.text = @"2万次观看";
+    
+    _videoNameLab.text = @"一部好莱坞顶级科幻动作电影 简直是一场视觉的饕餮盛宴 极度震撼";
+    [UILabel changeLineSpaceForLabel:_videoNameLab WithSpace:5];
 }
 
 - (void)toolBtnAction:(HorizenButton *)sender {

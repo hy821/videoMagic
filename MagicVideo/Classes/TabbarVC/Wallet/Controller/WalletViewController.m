@@ -278,7 +278,7 @@ static NSString * const cellHeader_ID = @"WalletHeaderView_ID";
 }
 
 - (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView {
-    return self.sizeW(135);
+    return self.sizeW(170);
 }
 
 - (void)dealloc {

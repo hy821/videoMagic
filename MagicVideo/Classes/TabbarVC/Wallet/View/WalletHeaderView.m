@@ -39,7 +39,7 @@
     self.backgroundColor = White_Color;
 
     UIImageView *bg = [[UIImageView alloc]init];
-    bg.contentMode = UIViewContentModeScaleAspectFit;
+    bg.contentMode = UIViewContentModeScaleAspectFill;
     bg.image = Image_Named(@"walletBg");
     [self addSubview:bg];
     [bg mas_makeConstraints:^(MASConstraintMaker *make) {
