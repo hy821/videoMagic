@@ -43,7 +43,7 @@
 
 static NSString *kIdentifier = @"kIdentifier";
 
-static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4";
+static NSString *TmpVideoUrl = @"http:\/\/tb-video.bdstatic.com\/videocp\/12045395_f9f87b84aaf4ff1fee62742f2d39687f.mp4";
 
 - (NSMutableArray *)dataSource {
     if (!_dataSource) {
@@ -275,41 +275,44 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 //    }else {
         //更新正在播放的视频的时间
 //        [self updateHistorySaveTimeWithIndexPath:_currentIndexPath];
+    
         ShortVideoListCell *cell = (ShortVideoListCell*)[tableView cellForRowAtIndexPath:indexPath];
         [cell setDelegate:self withIndexPath:indexPath];
 
+    
 //        ProgramResultListModel *mDetail = self.dataSource[indexPath.row];
+    
+    
         // 到详情页 : 暂停时, 播放时, 播放失败时, showGDTAdv时
         VideoDetailViewController *vc = [[VideoDetailViewController alloc]init];
+
 //        vc.model = mDetail;
-//        vc.vcType = (indexPath.row==0) ? VideoDetailTypeShort_WithPlayerAdv : VideoDetailTypeShort_WithPlayer;
-        vc.player = [SSPlayer manager].player;
-        
-//        @weakify(self)
-//        vc.detailVCPopCallback = ^{  // 详情页返回的回调
-//            @strongify(self)
-//            [self configPlayer];
-//            if (indexPath.row==0) {  //第一个Cell 判断要不要广告倒计时
-//                [cell hideMaskViewWithAdv:[USER_MANAGER isShowShortVideoDayOnceAdvWithShortVideoID:model.idForModel]];
-//            }else {
-//                [cell hideMaskViewWithAdv:NO];
-//            }
-//            [self playTheVideoAtIndexPath:_currentIndexPath autoPlayNext:NO];
-//
-//            //和进入后台后重新打开一个效果,继续计时
-//            [self appDidBecomeActiveNotification];
-//
-//            //重新加上通知
-//            [self addNotification];
-//        };
-//
-//        //和进入后台一个效果,暂停计时
-//        [self appWillEnterBackgroundNotification];
     
-        //移除通知, 避免在详情页进入后台再打开App之后,通知继续计时
-        [NOTIFICATION removeObserver:self];
+        @weakify(self)
+    vc.detailVCPopCallback = ^(BOOL isChangeVideo) {   // 详情页返回的回调
+        @strongify(self)
+        [self configPlayer];
+        [[SSPlayer manager].player updateScrollViewPlayerToCell];
+
+        if (isChangeVideo) {
+            [self playTheVideoAtIndexPath:self.currentIndexPath autoPlayNext:NO];
+        }else {
+        
+        }
+        
+//        if (indexPath.row==0) {  //第一个Cell 判断要不要广告倒计时
+//            [cell hideMaskViewWithAdv:[USER_MANAGER isShowShortVideoDayOnceAdvWithShortVideoID:model.idForModel]];
+//        }else {
+//            [cell hideMaskViewWithAdv:NO];
+//        }
+//        //和进入后台后重新打开一个效果,继续计时
+//        [self appDidBecomeActiveNotification];
+//        //重新加上通知
+//        [self addNotification];
+    };
+
     vc.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:vc animated:YES];
 //    }
 }
 

@@ -24,12 +24,17 @@ typedef enum : NSUInteger {
 //@property (nonatomic,strong) WatchHistoryCacheModel *modelHistory;  //观看历史进来的
 //@property (nonatomic,strong) DailyPopOutModel *modelFromDailyPopOut;  //每日弹框进来的,和轮播图类似 model里已处理
 
-@property (nonatomic,assign) VideoDetailType vcType;  //进入详情页的, 如果是短视频List页带player的一定要赋值, 其他的无所谓
-@property (nonatomic, strong) ZFPlayerController *player;
 
-//ZF block
-@property (nonatomic, copy) void(^detailVCPopCallback)(void);
-@property (nonatomic, copy) void(^detailVCPlayCallback)(void);  //带进来的视频, 点击重播的回调 or 播放完广告开始播放视频
+//@property (nonatomic,assign) VideoDetailType vcType;  //进入详情页的, 如果是短视频List页带player的一定要赋值, 其他的无所谓
+//@property (nonatomic, strong) ZFPlayerController *player;
+
+//返回列表页
+//isChangeVideo:
+//        NO 列表页cell继续播放,
+//        YES:换视频了,更新player播放原来列表页cell上的视频
+@property (nonatomic, copy) void(^detailVCPopCallback)(BOOL isChangeVideo);
+
+//@property (nonatomic, copy) void(^detailVCPlayCallback)(void);  //带进来的视频, 点击重播的回调 or 播放完广告开始播放视频
 //@property (nonatomic, copy) void(^detailVCPlayOverCallback)(void);  //Add---
 
 @end

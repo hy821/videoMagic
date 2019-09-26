@@ -51,6 +51,7 @@
 @property (nonatomic, weak) UIImageView *topContainerView;
 @property (nonatomic, weak) UIButton *backBtn;
 @property (nonatomic,strong) UIButton *playBtn;
+@property (nonatomic,assign) BOOL isChangeVideo; //是否切换视频了
 
 //@property (nonatomic,weak) EndCoverView *endCoverView;  //短视频观看结束的重播View
 //@property (nonatomic,copy) NSString *pi;
@@ -65,8 +66,9 @@
 //
 //@property (nonatomic,assign) VideoPlayType videoPlayType;
 //@property (nonatomic,copy) NSString *urlPlay;  //播放Url
+
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
-//
+
 ////定时器 ---短视频 更新缓存播放时间
 //@property (nonatomic,strong) NSTimer *timer;
 ////当前播放的长视频对应的MediaTipResultModel
@@ -159,8 +161,10 @@
     
     [self initUI];
     
-//    [self initPlayer];
-//
+    [[SSPlayer manager].player updateNoramlPlayerWithContainerView:self.topContainerView];
+    [self configPlayer];
+    [self upBackBtnUI];
+
 //    BOOL isHud = (self.vcType == VideoDetailTypeShort_WithPlayer || self.vcType == VideoDetailTypeShort_WithPlayerAdv);
 //    [self firstLoadWithHud:!isHud];
 //
@@ -257,7 +261,7 @@
     //    }];
     //
 }
-//
+
 ////更新播放相关: 第一次数据请求结束 or 切换剧集后
 //- (void)refreshPlayerWithIsChangeEpisode:(BOOL)isChange {
 //    if (!isChange) {  //非切换剧集
@@ -278,80 +282,39 @@
 //    [vc loadDataWithCommonModel:nil isOff:nil];
 //
 //}
-//
-//- (void)initPlayer {
-//    if (self.vcType == VideoDetailTypeShort_WithPlayer || self.vcType == VideoDetailTypeShort_WithPlayerAdv) {
-//        if (self.player) {
-//            switch (self.player.currentPlayerManager.playState) {
-//                case ZFPlayerPlayStatePlaying:
-//                {
-//                    [self.player updateNoramlPlayerWithContainerView:self.topContainerView];
-//                }
-//                    break;
-//                case ZFPlayerPlayStatePaused:
-//                    {
-//                        [self.player updateNoramlPlayerWithContainerView:self.topContainerView];
-//                        [self.player.currentPlayerManager pause];
-//                        [self.player.currentPlayerManager setSeekTime:self.player.currentTime];
-//                    }
-//                    break;
-//                case ZFPlayerPlayStatePlayStopped:
-//                case ZFPlayerPlayStatePlayFailed:
-//                case ZFPlayerPlayStateUnknown:
-//                {
-//                    // 初始化播放器
-//                    self.player = [ZFPlayerController playerWithPlayerManager:[[ZFAVPlayerManager alloc] init] containerView:self.topContainerView];
-//                    self.player.controlView = self.controlView;
-//                }
-//                    break;
-//                default:
-//                    break;
-//            }
-//
-//        }else {  //播放广告时进入详情页的, 传进来的player是nil, 需要初始化
-//            // 初始化播放器
-//            self.player = [ZFPlayerController playerWithPlayerManager:[[ZFAVPlayerManager alloc] init] containerView:self.topContainerView];
-//            self.player.controlView = self.controlView;
-//        }
-//    }else {
-//        // 初始化播放器
-//        self.player = [ZFPlayerController playerWithPlayerManager:[[ZFAVPlayerManager alloc] init] containerView:self.topContainerView];
-//        self.player.controlView = self.controlView;
-//    }
-//
-//    @weakify(self)
-//    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-//        @strongify(self)
-//        [self setNeedsStatusBarAppearanceUpdate];
-//    };
-//    self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-//        @strongify(self)
-//        if (!isFullScreen) {
-//            if (!self.endCoverView.isHidden) {
-//                [self.topContainerView bringSubviewToFront:self.endCoverView];
-//            }
-//            [self upBackBtnUI];
-//        }
-//    };
-//
-//    if(self.videoType == VideoType_Short) {
-//        self.player.playerDidToEnd = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset) {
-//            @strongify(self)
-//            [self shortVideoPlayEnd];
-//            [self upBackBtnUI];
-//        };
-//        self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, id  _Nonnull error) {
-//            @strongify(self)
-//            [self upBackBtnUI];
-//
-//            if (self.modelCommon.realUrl.length > 0) {
-//                [USER_MANAGER reportPlayFailLogWithProgramID:self.pi andVideoUrl:self.modelCommon.realUrl];
-//            }
-//        };
-//    }
-//    [self upBackBtnUI];
-//}
-//
+
+//配置player播放结束,播放失败等相关
+- (void)configPlayer {
+    ZFPlayerController *player = [SSPlayer manager].player;
+    @weakify(self)
+    player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+        @strongify(self)
+        [self setNeedsStatusBarAppearanceUpdate];
+    };
+    player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+        @strongify(self)
+        if (!isFullScreen) {
+            //            if (!self.endCoverView.isHidden) {
+            //                [self.topContainerView bringSubviewToFront:self.endCoverView];
+            //            }
+            [self upBackBtnUI];
+        }
+    };
+    
+    player.playerDidToEnd = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset) {
+        @strongify(self)
+        //        [self shortVideoPlayEnd];
+        [self upBackBtnUI];
+    };
+    player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, id  _Nonnull error) {
+        @strongify(self)
+        [self upBackBtnUI];
+        //        if (self.modelCommon.realUrl.length > 0) {
+        //            [USER_MANAGER reportPlayFailLogWithProgramID:self.pi andVideoUrl:self.modelCommon.realUrl];
+        //        }
+    };
+}
+
 //#pragma mark - 首次请求数据
 //- (void)firstLoadWithHud:(BOOL)isShowHud {
 //    _group = dispatch_group_create();
@@ -1329,23 +1292,19 @@
 }
 
 - (void)dealloc {
-    //    //来自短视频列表页, 返回短视频列表页时,  之前放在viewDidDisappear里, 当push到别的页面时, 也会触发,所以放在dealloc里
-    //    if (self.detailVCPopCallback) {
-    //        if (self.vcType != VideoDetailTypeLong) {  //切换短视频后, 会变成NoPlayer类型, 所以!= VideoDetailTypeLong即可
-    //            self.detailVCPopCallback();
-    //        }
-    //    }
-    //
-    //    [[NSNotificationCenter defaultCenter]removeObserver:self];
-    //    [[JQFMDB shareDatabase] close];
-    //    if (_timer) {
-    //        [_timer invalidate];
-    //        _timer = nil;
-    //    }
-    //    if (self.player) {
-    //        [self.player.currentPlayerManager stop];
-    //        self.player = nil;
-    //    }
+    //来自短视频列表页, 返回短视频列表页时,  之前放在viewDidDisappear里, 当push到别的页面时, 也会触发,所以放在dealloc里
+    if (self.detailVCPopCallback) {
+        self.detailVCPopCallback(self.isChangeVideo);
+    }
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    
+//    [[JQFMDB shareDatabase] close];
+//    if (_timer) {
+//        [_timer invalidate];
+//        _timer = nil;
+//    }
+    
     SSLog(@"  VideoDetailViewController  视频详情页Dealloc, timer销毁, 关闭数据库");
 }
 
