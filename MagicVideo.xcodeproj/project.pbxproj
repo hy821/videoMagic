@@ -18,6 +18,7 @@
 		6021179F2339CD5100AEAC9F /* WalletDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6021179E2339CD5100AEAC9F /* WalletDetailCell.m */; };
 		602117A2233A335D00AEAC9F /* VideoMsgCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117A1233A335D00AEAC9F /* VideoMsgCell.m */; };
 		602117A5233A4AA900AEAC9F /* VideoRecomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117A4233A4AA900AEAC9F /* VideoRecomCell.m */; };
+		602117A9233C69A300AEAC9F /* SSPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 602117A8233C69A200AEAC9F /* SSPlayer.m */; };
 		602805AD2330F874000AFF4B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805A92330F874000AFF4B /* AppDelegate.m */; };
 		602805BD2330F917000AFF4B /* KSBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805AF2330F917000AFF4B /* KSBaseViewController.m */; };
 		602805BE2330F917000AFF4B /* KSBaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 602805B12330F917000AFF4B /* KSBaseWebViewController.m */; };
@@ -309,6 +310,8 @@
 		602117A1233A335D00AEAC9F /* VideoMsgCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoMsgCell.m; sourceTree = "<group>"; };
 		602117A3233A4AA900AEAC9F /* VideoRecomCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoRecomCell.h; sourceTree = "<group>"; };
 		602117A4233A4AA900AEAC9F /* VideoRecomCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoRecomCell.m; sourceTree = "<group>"; };
+		602117A7233C69A200AEAC9F /* SSPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSPlayer.h; sourceTree = "<group>"; };
+		602117A8233C69A200AEAC9F /* SSPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSPlayer.m; sourceTree = "<group>"; };
 		602805A82330F874000AFF4B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		602805A92330F874000AFF4B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		602805AE2330F916000AFF4B /* KSBaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSBaseWebViewController.h; sourceTree = "<group>"; };
@@ -871,6 +874,8 @@
 		602117A6233C655300AEAC9F /* Player */ = {
 			isa = PBXGroup;
 			children = (
+				602117A7233C69A200AEAC9F /* SSPlayer.h */,
+				602117A8233C69A200AEAC9F /* SSPlayer.m */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -2538,6 +2543,7 @@
 				60280B242331FE8A000AFF4B /* UIViewController+ImagePicker.m in Sources */,
 				602805C22330F917000AFF4B /* KSTabBarController.m in Sources */,
 				60280AC52331FD36000AFF4B /* MJRefreshAutoNormalFooter.m in Sources */,
+				602117A9233C69A300AEAC9F /* SSPlayer.m in Sources */,
 				60280B2D2331FE8A000AFF4B /* UIImage+ZipSizeAndLength.m in Sources */,
 				60280A862331FD36000AFF4B /* HXPhotoConfiguration.m in Sources */,
 				60280AB02331FD36000AFF4B /* HJTabViewControllerPlugin_Base.m in Sources */,

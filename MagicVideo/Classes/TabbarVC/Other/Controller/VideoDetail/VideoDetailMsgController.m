@@ -69,6 +69,7 @@
             [self.tableView.mj_footer endRefreshingWithNoMoreData];
             self.isLoadingRecom = NO;
         }else {
+            [self.tableView.mj_footer endRefreshing];
             [self.recomDataArray addObjectsFromArray:arr];
             
             //reloadData 不会挑动
@@ -222,7 +223,7 @@
     self.tableView.estimatedSectionHeaderHeight = 0;
     self.tableView.estimatedSectionFooterHeight = 0;
     WS()
-    self.tableView.mj_footer = [MJRefreshFooter footerWithRefreshingBlock:^{
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         if (self.isLoadingRecom) {return;}
         weakSelf.pageRecom++;
         [weakSelf loadRecomDataWithAnimation:NO];

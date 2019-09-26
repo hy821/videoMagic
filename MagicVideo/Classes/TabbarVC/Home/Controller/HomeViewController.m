@@ -13,8 +13,6 @@
 #import "UIButton+Category.h"
 #import "UINavigationController+WXSTransition.h"
 
-#import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
-
 #import "ShortVideoListCell.h"
 #import "VideoDetailViewController.h"
 
@@ -28,7 +26,7 @@
 //#import <BUAdSDK/BUFullscreenVideoAd.h>
 //#import "GCDTimer.h"
 
-@interface HomeViewController ()<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,ShortVideoListCellDelegate>
+@interface HomeViewController ()<UITableViewDelegate,UITableViewDataSource,ShortVideoListCellDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ZFPlayerController *player;
@@ -243,7 +241,6 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
     self.fd_prefersNavigationBarHidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
-    [self.tableView reloadEmptyDataSet];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -330,8 +327,6 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
         [_tableView registerClass:[ShortVideoListCell class] forCellReuseIdentifier:kIdentifier];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.emptyDataSetDelegate = self;
-        _tableView.emptyDataSetSource = self;
         _tableView.scrollEnabled = NO;
         //Add---
         _tableView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -510,47 +505,6 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
         [self requestDataWithAnimation:NO isFirst:NO];
     }
 }
-
-#pragma mark--DZ
--(UIImage*)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    if(self.isNetError==SSNetLoading_state)return nil;
-    return self.isNetError == SSNetNormal_state ? Image_Named(@"netError") : Image_Named(@"netError");
-}
-
--(NSAttributedString*)titleForEmptyDataSet:(UIScrollView *)scrollView {
-    if(self.isNetError==SSNetLoading_state)return nil;
-    NSString *text = self.isNetError==SSNetError_state?@"网络请求失败":@"暂无数据";
-    NSDictionary *attribute = self.isNetError?@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f], NSForegroundColorAttributeName: KCOLOR(@"#333333")}:@{NSFontAttributeName: [UIFont systemFontOfSize:18.0f], NSForegroundColorAttributeName: KCOLOR(@"#999999")};
-    return [[NSAttributedString alloc] initWithString:text attributes:attribute];
-}
-
-// 返回详情文字
-- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView {
-    if(self.isNetError!=SSNetError_state)return nil;
-    NSString *text = @"加载失败,点击重试";
-    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:12.0f], NSForegroundColorAttributeName: KCOLOR(@"#999999")};
-    return [[NSAttributedString alloc] initWithString:text attributes:attribute];
-}
-
--(UIImage*)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state
-{
-    if(self.isNetError!=SSNetError_state)return nil;
-    return Image_Named(@"reload");
-}
-
--(BOOL)emptyDataSetShouldAllowScroll:(UIScrollView *)scrollView {
-    return YES;
-}
-
-- (void)emptyDataSet:(UIScrollView *)scrollView didTapView:(UIView *)view {
-    self.isNetError = SSNetLoading_state;
-//    [self.mainTableView reloadEmptyDataSet];
-//    [self loadDateWithAnimation:YES];
-}
-
-//- (BOOL)emptyDataSetShouldDisplay:(UIScrollView *)scrollView {
-//    return (self.dataArr.count==0);
-//}
 
 - (ZFPlayerControlView *)controlView {
     if (!_controlView) {
