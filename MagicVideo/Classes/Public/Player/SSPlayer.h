@@ -17,11 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SSPlayer : NSObject
 
-@property (nonatomic, strong) ZFPlayerController *player;
-
 + (instancetype)manager;
 
-
+@property (nonatomic, strong) ZFPlayerController *player;
 
 @end
 

@@ -37,6 +37,7 @@
 #import "UIView+Layout.h"
 #import "HudCenter.h"
 #import "SSRequest.h"
+#import "SSPlayer.h"
 #import "UserManager.h"
 #import "Helper.h"
 #import "WRNavigationBar.h"

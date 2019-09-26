@@ -29,7 +29,7 @@
 @interface HomeViewController ()<UITableViewDelegate,UITableViewDataSource,ShortVideoListCellDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) ZFPlayerController *player;
+
 @property (nonatomic, strong) ZFPlayerControlView *controlView;
 
 @property (nonatomic, strong) NSMutableArray *urls;
@@ -60,15 +60,14 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
     [self initUI];
     ZFAVPlayerManager *playerManager = [[ZFAVPlayerManager alloc] init];
     // player的tag值必须在cell里设置
-    self.player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:playerManager containerViewTag:100];
-    self.player.controlView = self.controlView;
-    self.player.playerDisapperaPercent = 0.8; // 0.8是消失80%时候
-    self.player.WWANAutoPlay = YES; // 移动网络依然自动播放
+    [SSPlayer manager].player = [ZFPlayerController playerWithScrollView:self.tableView playerManager:playerManager containerViewTag:100];
+    [SSPlayer manager].player.controlView = self.controlView;
+    [SSPlayer manager].player.playerDisapperaPercent = 0.8; // 0.8是消失80%时候
+    [SSPlayer manager].player.WWANAutoPlay = YES; // 移动网络依然自动播放
     self.urls = [NSMutableArray array];
-
     [self.urls addObjectsFromArray:@[URL(TmpVideoUrl),URL(TmpVideoUrl),URL(TmpVideoUrl),URL(TmpVideoUrl),URL(TmpVideoUrl),URL(TmpVideoUrl)]];
     
-    self.player.assetURLs = self.urls;
+    [SSPlayer manager].player.assetURLs = self.urls;
     [self.tableView reloadData];
     WS()
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -77,7 +76,7 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
     });
     
     @weakify(self)
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
+    [SSPlayer manager].player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @strongify(self)
         [self setNeedsStatusBarAppearanceUpdate];
         [UIViewController attemptRotationToDeviceOrientation];
@@ -95,13 +94,13 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 - (void)configPlayer {
     //播放完时, 自动播放下一个
     @weakify(self)
-    self.player.playerDidToEnd = ^(id  _Nonnull asset) {
+    [SSPlayer manager].player.playerDidToEnd = ^(id  _Nonnull asset) {
         @strongify(self)
         [self playEndOrFailed];
     };
     
     //播放失败时, 自动播放下一个:   会导致播放失败时 无法上滑, 一上滑, 播放失败, 然后自动下一个.
-    self.player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, id  _Nonnull error) {
+    [SSPlayer manager].player.playerPlayFailed = ^(id<ZFPlayerMediaPlayback>  _Nonnull asset, id  _Nonnull error) {
 //        @strongify(self)
         SSMBToast(@"该视频被盗走了~", MainWindow);
 //        ProgramResultListModel *model = self.dataSource[self.currentIndexPath.row];
@@ -114,16 +113,15 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 }
 
 - (void)playEndOrFailed {
-    if (self.player.isFullScreen) {  //如果全屏,退出全屏
-        [self.player enterFullScreen:NO animated:YES];
+    if ([SSPlayer manager].player.isFullScreen) {  //如果全屏,退出全屏
+        [[SSPlayer manager].player enterFullScreen:NO animated:YES];
     }
     
 //    //更新播放完的视频的时间
-//    self.player.currentPlayerManager.seekTime = 0;
-//    [self updateHistorySaveTimeWithIndexPath:_player.playingIndexPath];
+//    [SSPlayer manager].player.currentPlayerManager.seekTime = 0;
+//    [self updateHistorySaveTimeWithIndexPath:[SSPlayer manager].player.playingIndexPath];
     
-    
-    NSInteger currentRow = _player.playingIndexPath.row;
+    NSInteger currentRow = [SSPlayer manager].player.playingIndexPath.row;
     if (currentRow+2 <= self.urls.count) {  //还有下一个
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentRow+1 inSection:0];
         [self playTheVideoAtIndexPath:indexPath autoPlayNext:YES];
@@ -142,14 +140,14 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 
     }else {
         if (_tableView.mj_footer.state == MJRefreshStateNoMoreData) {
-            [self.player stopCurrentPlayingCell];
+            [[SSPlayer manager].player stopCurrentPlayingCell];
             SSMBToast(@"暂无更多内容~", MainWindow);
         }else {
 //            if (!self.tableView.mj_footer.isRefreshing) {
 //                [self.tableView.mj_footer beginRefreshing];
 //                [self requestDataWithAnimation:NO isFirst:NO];
 //            }else {
-//                [self.player stopCurrentPlayingCell];
+//                [[SSPlayer manager].player stopCurrentPlayingCell];
 //            }
         }
     }
@@ -185,7 +183,7 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 //
 //        if (model.ad.adType == ADTypeTT) {
 //            //停止当前视频播放
-//            [self.player stopCurrentPlayingCell];
+//            [[SSPlayer manager].player stopCurrentPlayingCell];
 //
 //            AdvVideoType type = model.ad.videoInfo.advVideoType;
 //            if (type == AdvVideoTypeDraw || type == AdvVideoTypeFeed) {
@@ -210,7 +208,7 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 //    //Add--- 判断是不是第一个cell, 判断是播放还是显示cell上的GDT Adv
 //    if (indexPath.row==0) {  //第一个视频,判断要不要广告倒计时  不播放
 //        if ([USER_MANAGER isShowShortVideoDayOnceAdvWithShortVideoID:self.dataSource.firstObject.idForModel]) {
-//            [self.player stopCurrentPlayingCell];
+//            [[SSPlayer manager].player stopCurrentPlayingCell];
 //            return;
 //        }
 //    }
@@ -221,7 +219,7 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 //    }
     
     @weakify(self)
-    [self.player playTheIndexPath:indexPath scrollToTop:YES completionHandler:^{
+    [[SSPlayer manager].player playTheIndexPath:indexPath scrollToTop:YES completionHandler:^{
         @strongify(self)
         
 //        //查看是否有观看历史
@@ -262,8 +260,8 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     /// 如果正在播放的index和当前点击的index不同，则停止当前播放的index
-    if (self.player.playingIndexPath && self.player.playingIndexPath != indexPath) {
-        [self.player stopCurrentPlayingCell];
+    if ([SSPlayer manager].player.playingIndexPath && [SSPlayer manager].player.playingIndexPath != indexPath) {
+        [[SSPlayer manager].player stopCurrentPlayingCell];
         [self playTheVideoAtIndexPath:indexPath autoPlayNext:NO];
         if (indexPath.row == 0) {  //第一个cell 在playTheVideoAtIndexPath方法里, 不scrollToTop且不播放
             //滚动 toTop 并且播放   ------暂时不加了
@@ -279,14 +277,13 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 //        [self updateHistorySaveTimeWithIndexPath:_currentIndexPath];
         ShortVideoListCell *cell = (ShortVideoListCell*)[tableView cellForRowAtIndexPath:indexPath];
         [cell setDelegate:self withIndexPath:indexPath];
-//        [cell showMaskView];
 
 //        ProgramResultListModel *mDetail = self.dataSource[indexPath.row];
         // 到详情页 : 暂停时, 播放时, 播放失败时, showGDTAdv时
         VideoDetailViewController *vc = [[VideoDetailViewController alloc]init];
 //        vc.model = mDetail;
 //        vc.vcType = (indexPath.row==0) ? VideoDetailTypeShort_WithPlayerAdv : VideoDetailTypeShort_WithPlayer;
-        vc.player = self.player;
+        vc.player = [SSPlayer manager].player;
         
 //        @weakify(self)
 //        vc.detailVCPopCallback = ^{  // 详情页返回的回调
@@ -419,8 +416,8 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 - (void)handleSwipeFrom:(UISwipeGestureRecognizer *)recognizer
 {
     //    //视频播放情况 数据上报
-    //    if(self.player.currentTime > 0 && self.player.totalTime >0 && self.dataSource[self.currentIndexPath.row].keyWordId) {
-    //        [[BuryingPointManager shareManager] videoPlayMsgReportWithProgramId:self.dataSource[_player.playingIndexPath.row].idForModel andLabelId:self.dataSource[_player.playingIndexPath.row].keyWordId andPercentage:round(self.player.progress*100) andPlayTime:round(self.player.currentTime*1000)];
+    //    if([SSPlayer manager].player.currentTime > 0 && [SSPlayer manager].player.totalTime >0 && self.dataSource[self.currentIndexPath.row].keyWordId) {
+    //        [[BuryingPointManager shareManager] videoPlayMsgReportWithProgramId:self.dataSource[[SSPlayer manager].player.playingIndexPath.row].idForModel andLabelId:self.dataSource[[SSPlayer manager].player.playingIndexPath.row].keyWordId andPercentage:round([SSPlayer manager].player.progress*100) andPlayTime:round([SSPlayer manager].player.currentTime*1000)];
     //    }
     
 //    //滑动触发 更新数据库: 当前cell播放视频的时间
@@ -454,19 +451,19 @@ static NSString *TmpVideoUrl = @"http://movies.ks.quanyuer.com/11c09ghjjcb00.mp4
 //            AdvVideoType type = nextPlayModel.ad.videoInfo.advVideoType;
 //            if (type == AdvVideoTypeDraw || type == AdvVideoTypeFeed) {
 //                _tableView.zf_playingIndexPath = nil;
-//                if (_player.currentPlayerManager.isPlaying) {
-//                    [_player.currentPlayerManager pause];
+//                if ([SSPlayer manager].player.currentPlayerManager.isPlaying) {
+//                    [[SSPlayer manager].player.currentPlayerManager pause];
 //                }
 //            }
 //        }
 //    }
     
     [UIView animateWithDuration:0.3 animations:^{
-        [_tableView scrollToRowAtIndexPath:_currentIndexPath atScrollPosition:(UITableViewScrollPositionMiddle) animated:NO];
+        [self.tableView scrollToRowAtIndexPath:self.currentIndexPath atScrollPosition:(UITableViewScrollPositionMiddle) animated:NO];
     }];
     //播放
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self playTheVideoAtIndexPath:_currentIndexPath autoPlayNext:NO];
+        [self playTheVideoAtIndexPath:self.currentIndexPath autoPlayNext:NO];
     });
     
 //    //重新计时
