@@ -67,8 +67,6 @@
 //@property (nonatomic,assign) VideoPlayType videoPlayType;
 //@property (nonatomic,copy) NSString *urlPlay;  //播放Url
 
-@property (nonatomic, strong) ZFPlayerControlView *controlView;
-
 ////定时器 ---短视频 更新缓存播放时间
 //@property (nonatomic,strong) NSTimer *timer;
 ////当前播放的长视频对应的MediaTipResultModel
@@ -101,26 +99,13 @@
 //    }
 //}
 
-//- (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:animated];
-//    self.player.viewControllerDisappear = NO;
-//
-//    //如果正在播, 开启Timer
-//    if (self.player.currentPlayerManager.isPlaying) {
-//        if (!_timer || !_timer.isValid) {
-//            NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(checkTimeAction) userInfo:nil repeats:YES];
-//            _timer = timer;
-//            [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-//        }
-//    }
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated {
-//    [super viewWillDisappear:animated];
-//    self.player.viewControllerDisappear = YES;
-//
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [SSPlayer manager].player.viewControllerDisappear = YES;
+    
 //    //如果是短视频, 正在播, 保存一下时间
-//    if (self.player.currentPlayerManager.isPlaying && self.modelCommon.videoType == VideoType_Short) {
+//    if ([SSPlayer manager].player.currentPlayerManager.isPlaying) {
 //        [self checkTimeAction];
 //    }
 //
@@ -129,8 +114,22 @@
 //        [_timer invalidate];
 //        _timer = nil;
 //    }
-//}
-//
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [SSPlayer manager].player.viewControllerDisappear = NO;
+
+//    //如果正在播, 开启Timer
+//    if (self.player.currentPlayerManager.isPlaying) {
+//        if (!_timer || !_timer.isValid) {
+//            NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(checkTimeAction) userInfo:nil repeats:YES];
+//            _timer = timer;
+//            [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+//        }
+//    }
+}
+
 //- (void)viewDidDisappear:(BOOL)animated {
 //    if (self.modelCommon) {
 //        NSDictionary *dic = @{PROGRAM_ID : self.modelCommon.idForModel,
@@ -160,11 +159,8 @@
 //    [self enablePlugin:self.tabViewBarPlugin];
     
     [self initUI];
-    
-    [[SSPlayer manager].player updateNoramlPlayerWithContainerView:self.topContainerView];
-    [self configPlayer];
-    [self upBackBtnUI];
-
+    [self initPlayer];
+ 
 //    BOOL isHud = (self.vcType == VideoDetailTypeShort_WithPlayer || self.vcType == VideoDetailTypeShort_WithPlayerAdv);
 //    [self firstLoadWithHud:!isHud];
 //
@@ -260,6 +256,27 @@
     //        make.edges.equalTo(self.topContainerView);
     //    }];
     //
+}
+
+- (void)initPlayer {
+    switch (self.vcType) {
+        case VideoDetailType_NoPlayer:
+        {
+            [[SSPlayer manager] playerWithContainerView:self.topContainerView];
+        }
+            break;
+        case VideoDetailType_WithPlayer:
+        {
+            [[SSPlayer manager].player updateNoramlPlayerWithContainerView:self.topContainerView];
+        }
+            break;
+        default:
+            break;
+    }
+    
+    [self configPlayer];
+    [self upBackBtnUI];
+
 }
 
 ////更新播放相关: 第一次数据请求结束 or 切换剧集后
@@ -881,14 +898,6 @@
 //    [[BuryingPointManager shareManager] buryingPointWithEventID:bpID andParameters:dic];
 //}
 
-- (ZFPlayerControlView *)controlView {
-    if (!_controlView) {
-        _controlView = [ZFPlayerControlView new];
-        _controlView.fastViewAnimated = YES;
-        _controlView.fullScreenOnly = YES;
-    }return _controlView;
-}
-
 -(NSMutableArray  *)vcArr {
     if(_vcArr == nil) {
         _vcArr = @[].mutableCopy;
@@ -1295,7 +1304,12 @@
     //来自短视频列表页, 返回短视频列表页时,  之前放在viewDidDisappear里, 当push到别的页面时, 也会触发,所以放在dealloc里
     if (self.detailVCPopCallback) {
         self.detailVCPopCallback(self.isChangeVideo);
+    }else {
+        
     }
+    
+    // 推送 or 轮播图等直接进入详情页的情况 (非列表页进入详情页), 暂停player
+    
     
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     

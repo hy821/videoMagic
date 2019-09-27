@@ -470,7 +470,8 @@
 - (UIButton *)playBtn {
     if (!_playBtn) {
         _playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_playBtn setImage:[UIImage imageNamed:@"new_allPlay_44x44_"] forState:UIControlStateNormal];
+        [_playBtn setImage:[UIImage imageNamed:@"ic_videoCellPlay"] forState:UIControlStateNormal];
+        [_playBtn setImage:[UIImage imageNamed:@"ic_videoCellPlay"] forState:UIControlStateHighlighted];
         [_playBtn addTarget:self action:@selector(playBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }return _playBtn;
 }
@@ -503,7 +504,7 @@
     if (!_coverImageView) {
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.userInteractionEnabled = YES;
-        _coverImageView.tag = 100;
+        _coverImageView.tag = 12321;
         _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
         _coverImageView.clipsToBounds = YES;
     }return _coverImageView;

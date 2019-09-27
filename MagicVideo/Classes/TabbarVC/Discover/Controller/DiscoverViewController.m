@@ -132,6 +132,7 @@ static NSString * const cellID = @"WatchPointCell";
         _mainTableView.emptyDataSetSource = self;
         _mainTableView.emptyDataSetDelegate = self;
         _mainTableView.backgroundColor = KCOLOR(@"#ffffff");
+        _mainTableView.showsVerticalScrollIndicator = NO;
         [_mainTableView registerClass:[WatchPointCell class] forCellReuseIdentifier:cellID];
         _mainTableView.rowHeight = self.sizeH(240);
         _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;

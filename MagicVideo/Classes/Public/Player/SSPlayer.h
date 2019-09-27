@@ -20,6 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)manager;
 
 @property (nonatomic, strong) ZFPlayerController *player;
+@property (nonatomic, strong) ZFPlayerControlView *controlView;
+
+/** 列表页player初始化 */
+- (void)playerWithScrollView:(UIScrollView *)scrollView;
+
+/** 详情页player初始化 */
+- (void)playerWithContainerView:(nonnull UIView *)containerView;
 
 @end
 
