@@ -8,7 +8,7 @@ target ‘MagicVideo’ do
     pod 'DZNEmptyDataSet'
     pod 'Masonry', '~> 1.0.2'
     pod 'MJExtension'
-    pod 'Reachability', '~> 3.2'
+    pod 'RealReachability'
     pod 'M80AttributedLabel', '~> 1.6.3'
     pod 'zhPopupController', '~> 0.1.8'
 

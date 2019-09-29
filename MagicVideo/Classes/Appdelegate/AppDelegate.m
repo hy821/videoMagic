@@ -10,6 +10,7 @@
 #import "AppDelegate+LoginRequest.h"
 #import <WebKit/WebKit.h>
 #import "UIImage+Extension.h"
+#import "RealReachability.h"
 
 @interface AppDelegate ()
 
@@ -38,7 +39,7 @@
     
 
     // 开启网络监听
-//    [[Reachability reachabilityForInternetConnection] startNotifier];
+//    [GLobalRealReachability startNotifier];
 
 //    //设置下载默认值
 //    [self setDefaultVaule];
