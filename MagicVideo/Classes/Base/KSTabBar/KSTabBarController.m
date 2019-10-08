@@ -12,7 +12,6 @@
 #import "KSTabBar.h"
 #import "KSLayerAnimation.h"
 #import "LoginViewController.h"
-#import "UINavigationController+WXSTransition.h"
 
 #import "HomeViewController.h"
 #import "DiscoverViewController.h"
@@ -93,14 +92,7 @@
 
 -(void)gotoLogin {
     LoginViewController * login = [[LoginViewController alloc]init];
-    KSBaseNavViewController  * nav = [[KSBaseNavViewController alloc]initWithRootViewController:login];
-    KSBaseNavViewController  * selNav = SelectVC;
-    KSBaseViewController * baseView = (KSBaseViewController*)selNav.topViewController;
-    [baseView wxs_presentViewController:nav makeTransition:^(WXSTransitionProperty *transition) {
-        transition.animationType =  WXSTransitionAnimationTypeInsideThenPush;
-        transition.backGestureEnable = NO;
-        transition.backGestureType = WXSGestureTypePanRight;
-    }];
+    [SelectVC pushViewController:login animated:YES];
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item {

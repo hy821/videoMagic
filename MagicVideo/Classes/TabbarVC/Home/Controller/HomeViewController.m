@@ -8,8 +8,6 @@
 
 #import "HomeViewController.h"
 #import "UIButton+Category.h"
-#import "UINavigationController+WXSTransition.h"
-
 #import "ShortVideoListCell.h"
 #import "VideoDetailViewController.h"
 

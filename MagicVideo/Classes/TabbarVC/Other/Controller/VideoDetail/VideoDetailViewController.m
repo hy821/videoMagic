@@ -20,8 +20,6 @@
 #import "ZFPlayer.h"
 #import "ZFAVPlayerManager.h"
 #import "JQFMDB.h"
-#import "UINavigationController+WXSTransition.h"
-
 
 #import "VideoDetailMsgController.h"
 #import "VideoDetailCommentController.h"

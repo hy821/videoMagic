@@ -27,7 +27,6 @@
 #pragma mark--导航栏按钮纯文字
 -(UIButton*)setNavWithTitle:(NSString *)title Font:(CGFloat)font andTextColor:(NSString*)color andIsLeft:(BOOL)isLeft andTarget:(id)target andAction:(SEL)selector;
 -(void)gotoLogin;
--(void)gotoLoginWithComplete:(void(^)(void))complete;
 
 //-(void)checkPay;setNavButtonImageName
 //-(void)shareWithModel:(id)model;

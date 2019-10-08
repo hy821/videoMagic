@@ -7,7 +7,6 @@
 //
 
 #import "KSBaseViewController.h"
-#import "UINavigationController+WXSTransition.h"
 #import "KSBaseNavViewController.h"
 
 #import "UIBarButtonItem+Extension.h"
@@ -238,30 +237,10 @@
 }
 
 #pragma mark--登录
--(void)gotoLogin
-{
+-(void)gotoLogin {
     LoginViewController * login = [[LoginViewController alloc]init];
-    KSBaseNavViewController * nav = [[KSBaseNavViewController alloc]initWithRootViewController:login];
-    [self wxs_presentViewController:nav makeTransition:^(WXSTransitionProperty *transition) {
-        transition.animationType =  WXSTransitionAnimationTypeInsideThenPush;
-        transition.backGestureEnable = NO;
-        transition.backGestureType = WXSGestureTypePanRight;
-    }];
-}
-
--(void)gotoLoginWithComplete:(void(^)(void))complete {
-    LoginViewController * login = [[LoginViewController alloc]init];
-    KSBaseNavViewController * nav = [[KSBaseNavViewController alloc]initWithRootViewController:login];
-    [self wxs_presentViewController:nav makeTransition:^(WXSTransitionProperty *transition) {
-        transition.animationType =  WXSTransitionAnimationTypeInsideThenPush;
-        transition.backGestureEnable = NO;
-        transition.backGestureType = WXSGestureTypePanRight;
-    } completion:^{
-        if(complete)
-        {
-            complete();
-        }
-    }];
+    login.hidesBottomBarWhenPushed = YES;
+    [SelectVC pushViewController:login animated:YES];
 }
 
 -(void)endRefreshPulling:(UIScrollView *)scrollView {

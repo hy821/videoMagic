@@ -8,7 +8,6 @@
 #import "AFNetworkReachabilityManager.h"
 #import "LoginViewController.h"
 #import "LEEAlert.h"
-#import "UINavigationController+WXSTransition.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
@@ -217,7 +216,7 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
 //    }];
 //}
 
-/** 从某个vc去登录, 成功后返回这个vc*/
+/* 从某个vc去登录, 成功后返回这个vc*/
 - (void)gotoLoginFromVC:(UIViewController *)vcFrom {
     LoginViewController * login = [[LoginViewController alloc]init];
     login.hidesBottomBarWhenPushed = YES;
@@ -227,7 +226,6 @@ NSString *const DailyPopOutKey = @"DailyPopOutKey";
     }else {
         [SelectVC pushViewController:login animated:YES];
     }
-    
 }
 
 //是否是测试服
