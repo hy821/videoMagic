@@ -253,6 +253,7 @@
 		60BBAFB12330D5630034C719 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BBAFB02330D5630034C719 /* main.m */; };
 		60BBAFBB2330D5640034C719 /* MagicVideoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BBAFBA2330D5640034C719 /* MagicVideoTests.m */; };
 		60BBAFC62330D5640034C719 /* MagicVideoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BBAFC52330D5640034C719 /* MagicVideoUITests.m */; };
+		60DAD140234C7F2E00751C32 /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 60DAD13E234C7F2E00751C32 /* UIViewController+Utils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -758,6 +759,8 @@
 		60BBAFC12330D5640034C719 /* MagicVideoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MagicVideoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60BBAFC52330D5640034C719 /* MagicVideoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MagicVideoUITests.m; sourceTree = "<group>"; };
 		60BBAFC72330D5640034C719 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60DAD13E234C7F2E00751C32 /* UIViewController+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Utils.m"; sourceTree = "<group>"; };
+		60DAD13F234C7F2E00751C32 /* UIViewController+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utils.h"; sourceTree = "<group>"; };
 		8EF68C23FA13971CF07998DD /* Pods-MagicVideo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MagicVideo.release.xcconfig"; path = "Pods/Target Support Files/Pods-MagicVideo/Pods-MagicVideo.release.xcconfig"; sourceTree = "<group>"; };
 		B7055C17372A684F65F57F18 /* Pods-MagicVideo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MagicVideo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MagicVideo/Pods-MagicVideo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1087,6 +1090,8 @@
 		602805A52330F874000AFF4B /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				60DAD13F234C7F2E00751C32 /* UIViewController+Utils.h */,
+				60DAD13E234C7F2E00751C32 /* UIViewController+Utils.m */,
 				60280AF92331FE89000AFF4B /* ButtonCategory */,
 				60280AF62331FE88000AFF4B /* NSObject+BaseObject.h */,
 				60280AEE2331FE88000AFF4B /* NSObject+BaseObject.m */,
@@ -2458,6 +2463,7 @@
 				60280AD92331FD36000AFF4B /* MBProgressHUD+MJ.m in Sources */,
 				60280A852331FD36000AFF4B /* UIViewController+HXExtension.m in Sources */,
 				60280B5123336F56000AFF4B /* MineTableViewCell.m in Sources */,
+				60DAD140234C7F2E00751C32 /* UIViewController+Utils.m in Sources */,
 				6021179C2339C9C200AEAC9F /* WalletHeaderView.m in Sources */,
 				60280ACD2331FD36000AFF4B /* MJRefreshComponent.m in Sources */,
 				60280ABF2331FD36000AFF4B /* UIView+MJExtension.m in Sources */,

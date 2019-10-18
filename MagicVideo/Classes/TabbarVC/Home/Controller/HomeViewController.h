@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HomeViewController : KSBaseViewController
 
-//专题页
-
+//专题页进来,显示返回按钮
+@property (nonatomic,assign) BOOL isShowBack;
 
 @end
 

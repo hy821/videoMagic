@@ -112,7 +112,7 @@
 
 -(void)setNoNavBarBackBtn {
     UIButton * backBtn = [[UIButton alloc]init];
-    [backBtn setImage:Image_Named(@"back_black") forState:UIControlStateNormal];
+    [backBtn setImage:Image_Named(@"back_nav") forState:UIControlStateNormal];
     [backBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [backBtn setContentVerticalAlignment:UIControlContentVerticalAlignmentTop];
     [backBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];

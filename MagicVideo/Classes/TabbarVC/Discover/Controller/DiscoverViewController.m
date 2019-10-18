@@ -118,7 +118,7 @@ static NSString * const cellID = @"WatchPointCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //    SubjectListModel *m = self.dataArr[indexPath.row];
     HomeViewController *vc = [[HomeViewController alloc]init];
-//    vc.model = m;
+    vc.isShowBack = YES;
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }

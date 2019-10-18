@@ -50,20 +50,15 @@ static NSString *TmpVideoUrl = @"http:\/\/tb-video.bdstatic.com\/videocp\/120453
     [super viewWillAppear:animated];
     [SSPlayer manager].player.viewControllerDisappear = NO;
 
-    
     if (![[SSPlayer manager].player.scrollView isEqual:self.tableView]) {
-        
         [[SSPlayer manager] playerWithScrollView:self.tableView];
         [SSPlayer manager].player.assetURLs = self.urls;
-
         WS()
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf playTheVideoAtIndexPath:weakSelf.currentIndexPath autoPlayNext:NO];
         });
-        
         [self configPlayer];
     }
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -268,6 +263,7 @@ static NSString *TmpVideoUrl = @"http:\/\/tb-video.bdstatic.com\/videocp\/120453
     self.fd_prefersNavigationBarHidden = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
+    if (self.isShowBack) {[self setNoNavBarBackBtn];}
 }
 
 - (void)viewWillLayoutSubviews {
